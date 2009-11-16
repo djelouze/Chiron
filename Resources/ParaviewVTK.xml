@@ -1,0 +1,1300 @@
+<ServerManagerConfiguration>
+   <ProxyGroup name="sources">
+      <!-- ================================================================== -->
+      <SourceProxy name="ImageGaussianSource"
+                   class="vtkImageGaussianSource"
+                   label="Gaussian Source">
+         <Documentation
+                       long_help="Outputs an image with gaussian values."
+                       short_help="Outputs an image with gaussian values.">
+         </Documentation>
+         
+         <IntVectorProperty
+                           name="WholeExtent"
+                           label="WholeExtent"
+                           number_of_elements="6"
+                           command="SetWholeExtent"
+                           default_values="0 127 0 127 0 127" >
+            <Documentation>
+            </Documentation>
+         </IntVectorProperty>
+         
+         <DoubleVectorProperty
+                              name="Center"
+                              label="Center"
+                              number_of_elements="3"
+                              command="SetCenter"
+                              default_values="63 63 63" >
+            <Documentation>
+            </Documentation>
+         </DoubleVectorProperty>
+         
+         <DoubleVectorProperty
+                              name="Maximum"
+                              label="Maximum"
+                              number_of_elements="1"
+                              command="SetMaximum"
+                              default_values="1" >
+            <Documentation>
+            </Documentation>
+         </DoubleVectorProperty>
+         
+         <DoubleVectorProperty
+                              name="StandardDeviation"
+                              label="StandardDeviation"
+                              number_of_elements="1"
+                              command="SetStandardDeviation"
+                              default_values="3" >
+            <Documentation>
+            </Documentation>
+         </DoubleVectorProperty>
+         
+         <IntVectorProperty
+                           name="ReleaseDataFlag"
+                           command="SetReleaseDataFlag"
+                           number_of_elements="1"
+                           default_values="0"
+                           animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>         
+      </SourceProxy>
+      <!-- End ImageGaussianSource -->
+      <!-- ================================================================== -->
+      <SourceProxy name="PlatonicSolidSource" class="vtkPlatonicSolidSource"
+                   label="Platonic Solid">
+         <Documentation
+                       long_help="Create a platonic solid (e.g., cube, 
+                       icosahedron, etc.)"
+                       short_help="Create a platonic solid">
+            Generates one of the first fifth platonic solid as a vtkPolyData -
+            Tetrahedron, Cube, Octahedron, Icosahedron and Dodecahedron
+         </Documentation>
+         <IntVectorProperty
+                           name="SolidType"
+                           command="SetSolidType"
+                           number_of_elements="1"
+                           default_values="3">
+            
+            <EnumerationDomain name="enum">
+               <Entry value="0" text="Tetrahedron"/>
+               <Entry value="1" text="Cube"/>
+               <Entry value="2" text="Octahedron"/>
+               <Entry value="3" text="Icosahedron"/>
+               <Entry value="4" text="Dodecahedron"/>
+            </EnumerationDomain>
+            <Documentation>
+               This property specifies the type of the platonic solid.
+            </Documentation>
+         </IntVectorProperty>
+         
+      </SourceProxy>
+      <!-- End PlatonicSolidSource -->
+      
+   </ProxyGroup>
+   <!-- End Sources Group -->
+   
+   <ProxyGroup name="filters">
+      
+      <!-- ==================================================================== -->
+      <SourceProxy name="ImageReslice" class="vtkImageReslice" label="Image Reslice">
+         <Documentation
+                       long_help=""
+                       short_help="">
+         </Documentation>
+         
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+            
+            <Documentation>
+               
+            </Documentation>
+         </InputProperty>
+         
+         <DoubleVectorProperty
+                              name="ResliceAxesDirectionCosines"
+                              command="SetResliceAxesDirectionCosines"
+                              number_of_elements="9"
+                              default_values="1 0 0 0 1 0 0 0 1"
+                              animateable="0">
+            <Documentation>
+               
+            </Documentation>
+         </DoubleVectorProperty>
+          <DoubleVectorProperty
+                              name="ResliceAxesOrigin"
+                              command="SetResliceAxesOrigin"
+                              number_of_elements="3"
+                              default_values="0 0 0"
+                              animateable="0">
+            <Documentation>
+               
+            </Documentation>
+         </DoubleVectorProperty>
+         
+          <IntVectorProperty
+                              name="TransformInputSampling"
+                              command="SetTransformInputSampling"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+
+          <IntVectorProperty
+                              name="AutoCropOutput"
+                              command="SetAutoCropOutput"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+                 
+          <IntVectorProperty
+                              name="Wrap"
+                              command="SetWrap"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+         
+          <IntVectorProperty
+                              name="Mirror"
+                              command="SetMirror"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+         
+          <IntVectorProperty
+                              name="Border"
+                              command="SetBorder"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+         
+           <IntVectorProperty
+                              name="InterpolationMode"
+                              command="SetInterpolationMode"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <EnumerationDomain name="enum">
+               <Entry value="0" text="NearestNeighbor"/>
+               <Entry value="1" text="Linear"/>
+               <Entry value="2" text="Cubic"/>
+            </EnumerationDomain>
+
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+
+          <IntVectorProperty
+                              name="Optimization"
+                              command="SetOptimization"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+
+          <DoubleVectorProperty
+                              name="BackgroundColor"
+                              command="SetBackgroundColor"
+                              number_of_elements="4"
+                              default_values="0 0 0 0"
+                              animateable="0">
+            <Documentation>
+               
+            </Documentation>
+         </DoubleVectorProperty>
+                  
+          <DoubleVectorProperty
+                              name="BackgroundLevel"
+                              command="SetBackgroundLevel"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <Documentation>
+               
+            </Documentation>
+         </DoubleVectorProperty>
+
+
+         <DoubleVectorProperty
+                              name="OutputSpacing"
+                              command="SetOutputSpacing"
+                              number_of_elements="3"
+                              default_values="1 1 1"
+                              animateable="0">
+            <Documentation>
+               
+            </Documentation>
+         </DoubleVectorProperty>
+ 
+          <DoubleVectorProperty
+                              name="OutputOrigin"
+                              command="SetOutputOrigin"
+                              number_of_elements="3"
+                              default_values="0 0 0"
+                              animateable="0">
+            <Documentation>
+               
+            </Documentation>
+         </DoubleVectorProperty>        
+         
+         <IntVectorProperty
+                              name="OutputExtent"
+                              command="SetOutputExtent"
+                              number_of_elements="6"
+                              default_values="0 1 0 1 0 1"
+                              animateable="0">
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>        
+
+         <IntVectorProperty
+                              name="OutputDimensionality"
+                              command="SetOutputDimensionality"
+                              number_of_elements="1"
+                              default_values="2"
+                              animateable="0">
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+         <IntVectorProperty
+                              name="Interpolate"
+                              command="SetInterpolate"
+                              number_of_elements="1"
+                              default_values="1"
+                              animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+         <IntVectorProperty
+                           name="ReleaseDataFlag"
+                           command="SetReleaseDataFlag"
+                           number_of_elements="1"
+                           default_values="0"
+                           animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>                 
+      </SourceProxy>
+      <!--End ImageReslice-->
+      
+      <!-- ================================================================== -->
+      <SourceProxy name="ImageResample"
+                   class="vtkImageResample"
+                   label="Image Resample">
+         <Documentation
+                       long_help="Resample Image."
+                       short_help="vtkImageResample filter.">
+         </Documentation>
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkDataSet"/>
+            </DataTypeDomain>
+         </InputProperty>
+
+        <DoubleVectorProperty
+                          name="AxisOutputSpacing"
+                           label="AxisOutputSpacing"
+                           command="SetAxisOutputSpacing"
+                           number_of_elements="3"
+                           number_of_elements_per_command="1"
+                           use_index="1"
+                           repeat_command="1"
+                           animateable="1"
+                           default_values="1 1 1" >
+            <Documentation>
+               Choose the component to extract.
+            </Documentation>
+         </DoubleVectorProperty>
+        <DoubleVectorProperty
+                          name="AxisMagnificationFactor"
+                           label="AxisMagnificationFactor"
+                           command="SetAxisMagnificationFactor"
+                           number_of_elements="3"
+                           number_of_elements_per_command="1"
+                           use_index="1"
+                           repeat_command="1"
+                           animateable="1"
+                           default_values="1 1 1" >
+            <Documentation>
+               Choose the components to extract.
+            </Documentation>
+         </DoubleVectorProperty>
+        <IntVectorProperty
+                           name="InterpolationMode"
+                           command="SetInterpolationMode"
+                           number_of_elements="1"
+                           default_values="2"
+                           animateable="0">
+          <EnumerationDomain name="enum">
+            <Entry value="0" text="NearestNeighbor"/>
+            <Entry value="1" text="Linear"/>
+            <Entry value="2" text="Cubic"/>
+          </EnumerationDomain>
+
+          <Documentation>
+
+          </Documentation>
+        </IntVectorProperty>
+        <IntVectorProperty
+                             name="Interpolate"
+                             command="SetInterpolate"
+                             number_of_elements="1"
+                             default_values="1"
+                             animateable="0">
+          <BooleanDomain name="boolean"/>
+          <Documentation>
+
+          </Documentation>
+        </IntVectorProperty>        
+        <IntVectorProperty
+                          name="ReleaseDataFlag"
+                          command="SetReleaseDataFlag"
+                          number_of_elements="1"
+                          default_values="0"
+                          animateable="0">
+           <BooleanDomain name="boolean"/>
+           <Documentation>
+              
+           </Documentation>
+         </IntVectorProperty>              </SourceProxy>
+      <!-- End ImageResample -->
+
+     <!-- ================================================================== -->
+     <SourceProxy name="ImageExtractComponents"
+                  class="vtkImageExtractComponents"
+                  label="Extract Components">
+       <Documentation
+                     long_help="Extract a number of components from an ImageData."
+                     short_help="vtkImageExtractComponents filter.">
+       </Documentation>
+       <InputProperty
+                     name="Input"
+                     command="SetInputConnection">
+         <ProxyGroupDomain name="groups">
+           <Group name="sources"/>
+           <Group name="filters"/>
+         </ProxyGroupDomain>
+         <DataTypeDomain name="input_type">
+           <DataType value="vtkDataSet"/>
+         </DataTypeDomain>
+       </InputProperty>
+
+       <IntVectorProperty
+                         name="Component1"
+                         label="Component"
+                         command="SetComponents"
+                         number_of_elements="1"
+                         animateable="1"
+                         default_values="0" >
+         <Documentation>
+           Choose the component to extract.
+         </Documentation>
+       </IntVectorProperty>
+       <IntVectorProperty
+                         name="Components2"
+                         label="Components"
+                         command="SetComponents"
+                         number_of_elements="2"
+                         animateable="1"
+                         default_values="0 1" >
+         <Documentation>
+           Choose the components to extract.
+         </Documentation>
+       </IntVectorProperty>
+       <IntVectorProperty
+                         name="Components3"
+                         label="Components"
+                         command="SetComponents"
+                         number_of_elements="3"
+                         animateable="1"
+                         default_values="0 1 2" >
+         <Documentation>
+           Choose the components to extract.
+         </Documentation>
+       </IntVectorProperty>
+       <IntVectorProperty
+                         name="ReleaseDataFlag"
+                         command="SetReleaseDataFlag"
+                         number_of_elements="1"
+                         default_values="0"
+                         animateable="0">
+          <BooleanDomain name="boolean"/>
+          <Documentation>
+             
+          </Documentation>
+         </IntVectorProperty>              </SourceProxy>
+     <!-- End ImageExtractComponents -->
+
+     <!-- ================================================================== -->
+      <SourceProxy name="ImageFlip" class="vtkImageFlip" label="Flip Image">
+         <Documentation
+                       long_help="Flip an ImageData about its center on a given axis."
+                       short_help="vtkImageFlip filter.">
+         </Documentation>
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkDataSet"/>
+            </DataTypeDomain>
+         </InputProperty>
+         
+         <IntVectorProperty
+                           name="FilteredAxis"
+                           label="Filtered Axis"
+                           command="SetFilteredAxis"
+                           number_of_elements="1"
+                           animateable="1"
+                           default_values="0" >
+            <EnumerationDomain name="enum">
+               <Entry value="0" text="X"/>
+               <Entry value="1" text="Y"/>
+               <Entry value="2" text="Z"/>
+            </EnumerationDomain>
+            <Documentation>
+            </Documentation>
+         </IntVectorProperty>
+         <IntVectorProperty
+                           name="ReleaseDataFlag"
+                           command="SetReleaseDataFlag"
+                           number_of_elements="1"
+                           default_values="0"
+                           animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>               </SourceProxy>
+      <!-- End ImageFlip -->
+      
+      <!-- ================================================================== -->
+      <SourceProxy name="ImageSobel3D" class="vtkImageSobel3D" label="Sobel 3D">
+         <Documentation
+                       long_help="Compute the vector field based on Sobel operator."
+                       short_help="vtkImageSobel3D filter.">
+         </Documentation>
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+         </InputProperty>
+         <IntVectorProperty
+                           name="ReleaseDataFlag"
+                           command="SetReleaseDataFlag"
+                           number_of_elements="1"
+                           default_values="0"
+                           animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>
+      </SourceProxy>
+      <!-- End ImageSobel3D -->
+      
+      <!-- ================================================================== -->
+      <SourceProxy name="Spline" class="vtkSplineFilter" label="Spline">
+         <Documentation
+                       long_help="Resample the PolyData lines in a spline fashion."
+                       short_help="vtkSplineFilter filter.">
+         </Documentation>
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkPolyData"/>
+            </DataTypeDomain>
+         </InputProperty>
+         
+         <IntVectorProperty
+                           name="Subdivide"
+                           command="SetSubdivide"
+                           number_of_elements="1"
+                           default_values="1">
+            
+            <EnumerationDomain name="enum">
+               <Entry value="0" text="Specified"/>
+               <Entry value="1" text="Length"/>
+            </EnumerationDomain>
+         </IntVectorProperty>
+         <IntVectorProperty
+                           name="NumberOfSubdivisions"
+                           command="SetNumberOfSubdivisions"
+                           number_of_elements="1"
+                           default_values="5">
+         </IntVectorProperty>
+         
+         <DoubleVectorProperty
+                              name="Length"
+                              command="SetLength"
+                              number_of_elements="1"
+                              default_values="1">
+         </DoubleVectorProperty>
+         
+      </SourceProxy>
+      <!-- End SplineFilter -->
+
+     <!-- ================================================================== -->
+     <SourceProxy name="TensorGlyph" class="vtkTensorGlyph" label="Tensor Glyph">
+       <Documentation
+                     long_help=""
+                     short_help="vtkTensorGlyph filter.">
+       </Documentation>
+       <InputProperty
+                     name="Input"
+                     command="SetInputConnection">
+         <ProxyGroupDomain name="groups">
+           <Group name="sources"/>
+           <Group name="filters"/>
+         </ProxyGroupDomain>
+         <DataTypeDomain name="input_type">
+           <DataType value="vtkPolyData"/>
+         </DataTypeDomain>
+       </InputProperty>
+       <InputProperty
+                     name="Source"
+                     command="SetSourceConnection">
+         <ProxyGroupDomain name="groups">
+           <Group name="sources"/>
+           <Group name="filters"/>
+         </ProxyGroupDomain>
+         <DataTypeDomain name="input_type">
+           <DataType value="vtkPolyData"/>
+         </DataTypeDomain>
+         <ProxyListDomain name="proxy_list">
+           <Proxy group="sources" name="ArrowSource" />
+           <Proxy group="sources" name="ConeSource" />
+           <Proxy group="sources" name="CubeSource" />
+           <Proxy group="sources" name="CylinderSource" />
+           <Proxy group="sources" name="LineSource" />
+           <Proxy group="sources" name="SphereSource" />
+           <Proxy group="sources" name="GlyphSource2D" />
+         </ProxyListDomain>        
+       </InputProperty>
+       
+       <IntVectorProperty
+                         name="Scaling"
+                         command="SetScaling"
+                         number_of_elements="1"
+                         default_values="1">
+
+         <BooleanDomain name="bool"/>
+       </IntVectorProperty>
+       <IntVectorProperty
+                         name="ThreeGlyphs"
+                         command="SetThreeGlyphs"
+                         number_of_elements="1"
+                         default_values="1">
+
+         <BooleanDomain name="bool"/>
+       </IntVectorProperty>
+       <IntVectorProperty
+                         name="Symmetric"
+                         command="SetSymmetric"
+                         number_of_elements="1"
+                         default_values="1">
+
+         <BooleanDomain name="bool"/>
+       </IntVectorProperty>
+       <IntVectorProperty
+                        name="ExtractEigenvalues"
+                        command="SetExtractEigenvalues"
+                        number_of_elements="1"
+                        default_values="1">
+
+         <BooleanDomain name="bool"/>
+       </IntVectorProperty>
+       <IntVectorProperty
+                        name="ColorGlyphs"
+                        command="SetColorGlyphs"
+                        number_of_elements="1"
+                        default_values="1">
+
+         <BooleanDomain name="bool"/>
+       </IntVectorProperty>
+       <IntVectorProperty
+                         name="ColorMode"
+                         command="SetColorMode"
+                         number_of_elements="1"
+                         default_values="1">
+
+         <EnumerationDomain name="enum">
+           <Entry value="0" text="Scalar"/>
+           <Entry value="1" text="EigenValues"/>
+         </EnumerationDomain>
+       </IntVectorProperty>
+       <IntVectorProperty
+                        name="ClampScaling"
+                        command="SetClampScaling"
+                        number_of_elements="1"
+                        default_values="0">
+
+         <BooleanDomain name="bool"/>
+       </IntVectorProperty>       
+       <DoubleVectorProperty
+                            name="Length"
+                            command="SetLength"
+                            number_of_elements="1"
+                            default_values="1">
+       </DoubleVectorProperty>
+
+       <DoubleVectorProperty
+                            name="ScaleFactor"
+                            command="SetScaleFactor"
+                            number_of_elements="1"
+                            default_values="1">
+       </DoubleVectorProperty>
+       <DoubleVectorProperty
+                            name="MaxScaleFactor"
+                            command="SetMaxScaleFactor"
+                            number_of_elements="1"
+                            default_values="1">
+       </DoubleVectorProperty>
+     </SourceProxy>
+     <!-- End TensorGlyph -->     
+      <!-- ================================================================== -->
+      <SourceProxy name="ImageMathematics" class="vtkImageMathematics" label="Image Math">
+         <Documentation
+                       long_help="Provides some image operations, one or two inputs."
+                       short_help="vtkImageMathematics filter.">
+         </Documentation>
+         <InputProperty
+                       name="Input1"
+                       command="SetInputConnection"
+                       port_index="0">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+            <Documentation>
+               Set the input to the Image Mathematics filter.
+            </Documentation>
+         </InputProperty>
+         <InputProperty
+                       name="Input2"
+                       command="SetInputConnection"
+                       port_index="1"
+                       is_optional="1">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+            <Documentation>
+               Set the input to the Image Mathematics filter.
+            </Documentation>
+         </InputProperty>
+         
+         <IntVectorProperty
+                           name="Operation"
+                           command="SetOperation"
+                           number_of_elements="1"
+                           default_values="0">
+            
+            <EnumerationDomain name="enum">
+               <Entry value="0" text="Add"/>
+               <Entry value="1" text="Substract"/>
+               <Entry value="2" text="Multiply"/>
+               <Entry value="3" text="Divide"/>
+               <Entry value="4" text="Invert"/>
+               <Entry value="5" text="Sin"/>
+               <Entry value="6" text="Cos"/>
+               <Entry value="7" text="Exp"/>
+               <Entry value="8" text="Log"/>
+               <Entry value="9" text="Abs"/>
+               <Entry value="10" text="Sqr"/>
+               <Entry value="11" text="Sqrt"/>
+               <Entry value="12" text="Min"/>
+               <Entry value="13" text="Max"/>
+               <Entry value="14" text="Atan"/>
+               <Entry value="15" text="Atan2"/>
+               <Entry value="16" text="Multiply by k"/>
+               <Entry value="17" text="Add c"/>
+               <Entry value="18" text="Conjugate"/>
+               <Entry value="19" text="Complex multiply"/>
+               <Entry value="20" text="Replace by k"/>
+            </EnumerationDomain>
+         </IntVectorProperty>
+         
+         <DoubleVectorProperty
+                              name="ConstantK"
+                              command="SetConstantK"
+                              number_of_elements="1"
+                              default_values="1">
+         </DoubleVectorProperty>
+         
+         <DoubleVectorProperty
+                              name="ConstantC"
+                              command="SetConstantC"
+                              number_of_elements="1"
+                              default_values="0">
+         </DoubleVectorProperty>
+         
+         <IntVectorProperty
+                           name="DivideByZeroToC"
+                           command="SetDivideByZeroToC"
+                           number_of_elements="1"
+                           default_values="1">
+            <BooleanDomain name="boolean"/>
+         </IntVectorProperty>
+         <IntVectorProperty
+                           name="ReleaseDataFlag"
+                           command="SetReleaseDataFlag"
+                           number_of_elements="1"
+                           default_values="0"
+                           animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>                  
+      </SourceProxy>
+      <!-- End ImageMathematics -->
+      
+      <!-- ================================================================== -->
+      <SourceProxy name="ImageCast" class="vtkImageCast" label="Image Cast">
+         <Documentation
+                       long_help="Convert input image to another type."
+                       short_help="vtkImageCast filter.">
+         </Documentation>
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+            <Documentation>
+               Set the input to the Image Cast filter.
+            </Documentation>
+         </InputProperty>
+         
+         <IntVectorProperty
+                           name="OutputScalarType"
+                           command="SetOutputScalarType"
+                           number_of_elements="1"
+                           default_values="7">
+            <EnumerationDomain name="enum">
+               <Entry value="10" text="Float"/>
+               <Entry value="11" text="Double"/>
+               <Entry value="6" text="Int"/>
+               <Entry value="7" text="UnsignedInt"/>
+               <Entry value="8" text="Long"/>
+               <Entry value="9" text="UnsignedLong"/>
+               <Entry value="6" text="Short"/>
+               <Entry value="5" text="UnsignedShort"/>
+               <Entry value="3" text="UnsignedChar"/>
+               <Entry value="2" text="Char"/>
+            </EnumerationDomain>
+         </IntVectorProperty>
+         
+         <IntVectorProperty
+                           name="ClampOverflow"
+                           command="SetClampOverflow"
+                           number_of_elements="1"
+                           default_values="1">
+            <BooleanDomain name="boolean"/>
+         </IntVectorProperty>
+         <IntVectorProperty
+                           name="ReleaseDataFlag"
+                           command="SetReleaseDataFlag"
+                           number_of_elements="1"
+                           default_values="0"
+                           animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>               </SourceProxy>
+      <!-- End ImageCast -->
+      
+      <!-- ================================================================== -->
+      <SourceProxy name="ImageShiftScale" class="vtkImageShiftScale" 
+                   label="Image Shift Scale">
+         <Documentation
+                       long_help="Change image data range."
+                       short_help="vtkImageShiftScale filter.">
+         </Documentation>
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+            <Documentation>
+               Set the input to the Image ShiftScale filter.
+            </Documentation>
+         </InputProperty>
+         <DoubleVectorProperty
+                              name="Shift"
+                              command="SetShift"
+                              number_of_elements="1"
+                              default_values="0">
+         </DoubleVectorProperty>
+         <DoubleVectorProperty
+                              name="Scale"
+                              command="SetScale"
+                              number_of_elements="1"
+                              default_values="1">
+         </DoubleVectorProperty>
+         <IntVectorProperty
+                           name="OutputScalarType"
+                           command="SetOutputScalarType"
+                           number_of_elements="1"
+                           default_values="7">
+            <EnumerationDomain name="enum">
+               <Entry value="10" text="Float"/>
+               <Entry value="11" text="Double"/>
+               <Entry value="6" text="Int"/>
+               <Entry value="7" text="UnsignedInt"/>
+               <Entry value="8" text="Long"/>
+               <Entry value="9" text="UnsignedLong"/>
+               <Entry value="6" text="Short"/>
+               <Entry value="5" text="UnsignedShort"/>
+               <Entry value="3" text="UnsignedChar"/>
+               <Entry value="2" text="Char"/>
+            </EnumerationDomain>
+         </IntVectorProperty>
+         
+         <IntVectorProperty
+                           name="ClampOverflow"
+                           command="SetClampOverflow"
+                           number_of_elements="1"
+                           default_values="1">
+            <BooleanDomain name="boolean"/>
+         </IntVectorProperty>
+         <IntVectorProperty
+                           name="ReleaseDataFlag"
+                           command="SetReleaseDataFlag"
+                           number_of_elements="1"
+                           default_values="0"
+                           animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>         
+      </SourceProxy>
+      <!-- End ShiftScale -->
+      <!-- ================================================================== -->
+      <SourceProxy name="ImageMagnitude" class="vtkImageMagnitude" label="Image Magnitude">
+         <Documentation
+                       long_help="Collapse image components."
+                       short_help="vtkImageMagnitude filter.">
+         </Documentation>
+         
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+         </InputProperty>
+      </SourceProxy>
+      <IntVectorProperty
+                        name="ReleaseDataFlag"
+                        command="SetReleaseDataFlag"
+                        number_of_elements="1"
+                        default_values="0"
+                        animateable="0">
+         <BooleanDomain name="boolean"/>
+         <Documentation>
+            
+         </Documentation>
+         </IntVectorProperty>               <!-- End ImageMagnitude -->
+
+     <!-- ================================================================== -->
+     <SourceProxy name="ImageDivergence" class="vtkImageDivergence" label="Image Divergence">
+       <Documentation
+                     long_help="Compute the rate of change of a vector field."
+                     short_help="vtkImageDivergence filter.">
+       </Documentation>
+
+       <InputProperty
+                     name="Input"
+                     command="SetInputConnection">
+         <ProxyGroupDomain name="groups">
+           <Group name="sources"/>
+           <Group name="filters"/>
+         </ProxyGroupDomain>
+         <DataTypeDomain name="input_type">
+           <DataType value="vtkImageData"/>
+         </DataTypeDomain>
+       </InputProperty>
+       <IntVectorProperty
+                         name="ReleaseDataFlag"
+                         command="SetReleaseDataFlag"
+                         number_of_elements="1"
+                         default_values="0"
+                         animateable="0">
+          <BooleanDomain name="boolean"/>
+          <Documentation>
+             
+          </Documentation>
+         </IntVectorProperty>
+      </SourceProxy>
+     <!-- End ImageMagnitude -->
+
+     <!-- ================================================================== -->
+     <SourceProxy name="ImageThreshold" class="vtkImageThreshold" label="Image Threshold">
+       <Documentation
+                     long_help=""
+                     short_help="vtkImageThreshold filter.">
+       </Documentation>
+       <InputProperty
+          name="Input"
+          command="SetInputConnection">
+         <ProxyGroupDomain name="groups">
+           <Group name="sources"/>
+           <Group name="filters"/>
+         </ProxyGroupDomain>
+         <DataTypeDomain name="input_type">
+           <DataType value="vtkImageData"/>
+         </DataTypeDomain>
+         <InputArrayDomain name="input_array" number_of_components="1">
+           <RequiredProperties>
+             <Property name="SelectInputScalars"
+                       function="FieldDataSelection"/>
+           </RequiredProperties>
+         </InputArrayDomain>
+         <Documentation>
+           This property specifies the input to the Threshold filter.
+         </Documentation>
+       </InputProperty>
+
+       <StringVectorProperty
+          name="SelectInputScalars"
+          command="SetInputArrayToProcess"
+          number_of_elements="5"
+          element_types="0 0 0 0 2"
+          label="Scalars">
+         <ArrayListDomain name="array_list"
+                          attribute_type="Scalars">
+           <RequiredProperties>
+             <Property name="Input" function="Input"/>
+           </RequiredProperties>
+         </ArrayListDomain>
+         <FieldDataDomain name="field_list">
+           <RequiredProperties>
+             <Property name="Input" function="Input"/>
+           </RequiredProperties>
+         </FieldDataDomain>
+         <Documentation>
+           The value of this property contains the name of the scalar array from which to perform thresholding.
+         </Documentation>
+       </StringVectorProperty>
+
+       <DoubleVectorProperty
+          name="ThresholdBetween"
+          command="ThresholdBetween"
+          number_of_elements="2"
+          default_values="0 0"
+          label="Threshold Range">
+         <ArrayRangeDomain name="range">
+           <RequiredProperties>
+             <Property name="Input" function="Input"/>
+             <Property name="SelectInputScalars" function="ArraySelection"/>
+           </RequiredProperties>
+         </ArrayRangeDomain>
+         <Documentation>
+           The values of this property specify the upper and lower bounds of the thresholding operation.
+         </Documentation>
+       </DoubleVectorProperty>
+
+       <IntVectorProperty
+         name="ReplaceIn"
+         command="SetReplaceIn"
+         number_of_elements="1"
+         default_values="1">
+         <BooleanDomain name="boolean"/>
+       </IntVectorProperty>
+       <DoubleVectorProperty
+         name="InValue"
+         command="SetInValue"
+         number_of_elements="1"
+         default_values="1">
+
+       </DoubleVectorProperty>
+       <IntVectorProperty
+         name="ReplaceOut"
+         command="SetReplaceOut"
+         number_of_elements="1"
+         default_values="1">
+         <BooleanDomain name="boolean"/>
+       </IntVectorProperty>
+       <DoubleVectorProperty
+         name="OutValue"
+         command="SetOutValue"
+         number_of_elements="1"
+         default_values="0">
+       </DoubleVectorProperty>
+
+       <IntVectorProperty
+         name="OutputScalarType"
+         command="SetOutputScalarType"
+         number_of_elements="1"
+         default_values="7">
+         <EnumerationDomain name="enum">
+           <Entry value="10" text="Float"/>
+           <Entry value="11" text="Double"/>
+           <Entry value="6" text="Int"/>
+           <Entry value="7" text="UnsignedInt"/>
+           <Entry value="8" text="Long"/>
+           <Entry value="9" text="UnsignedLong"/>
+           <Entry value="6" text="Short"/>
+           <Entry value="5" text="UnsignedShort"/>
+           <Entry value="3" text="UnsignedChar"/>
+           <Entry value="2" text="Char"/>
+         </EnumerationDomain>
+       </IntVectorProperty>
+
+       <Hints>
+         <Visibility replace_input="2" />
+       </Hints>
+       <!-- End Threshold -->
+     </SourceProxy>
+
+
+     <!-- ================================================================== -->
+      <SourceProxy name="ImageGaussianSmooth" class="vtkImageGaussianSmooth" label="Image Gaussian Smooth">
+         <Documentation
+                       long_help=""
+                       short_help="vtkImageGaussianSmooth filter.">
+         </Documentation>
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+         </InputProperty>
+         <DoubleVectorProperty 
+                               name="StandardDeviation"
+                               command="SetStandardDeviation"
+                               number_of_elements="1"
+                               default_values="1"
+                               >
+         </DoubleVectorProperty>
+         <DoubleVectorProperty 
+                               name="RadiusFactor"
+                               command="SetRadiusFactor"
+                               number_of_elements="1"
+                               default_values="1"
+                               >
+         </DoubleVectorProperty>
+         <IntVectorProperty 
+                            name="Dimensionality"
+                            command="SetDimensionality"
+                            number_of_elements="1"
+                            default_values="3"
+                            >
+         </IntVectorProperty>       
+         <IntVectorProperty
+                           name="ReleaseDataFlag"
+                           command="SetReleaseDataFlag"
+                           number_of_elements="1"
+                           default_values="0"
+                           animateable="0">
+            <BooleanDomain name="boolean"/>
+            <Documentation>
+               
+            </Documentation>
+         </IntVectorProperty>         
+      </SourceProxy>
+      <!-- End ImageGaussianSmooth -->   
+      
+      <!-- ================================================================== -->
+      <SourceProxy name="ImageStencil" class="vtkImageStencil" label="Image Stencil">
+         <InputProperty
+                       name="Input"
+                       command="SetInputConnection">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+         </InputProperty>
+        
+         <!--<InputProperty
+                       name="Background"
+                       command="SetInputConnection"
+                       port_index="1"
+                       is_optional="1">
+            
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageData"/>
+            </DataTypeDomain>
+         </InputProperty>-->
+        
+         <InputProperty
+                       name="Stencil"
+                       command="SetInputConnection"
+                       port_index="2">
+            <ProxyGroupDomain name="groups">
+               <Group name="sources"/>
+               <Group name="filters"/>
+            </ProxyGroupDomain>
+            <DataTypeDomain name="input_type">
+               <DataType value="vtkImageStencilData"/>
+            </DataTypeDomain>
+         </InputProperty>
+         
+         <DoubleVectorProperty 
+                               name="BackgroundValue"
+                               command="SetBackgroundValue"
+                               number_of_elements="1"
+                               default_values="0"
+                               >
+         </DoubleVectorProperty>
+         <IntVectorProperty 
+                            name="ReverseStencil"
+                            command="SetReverseStencil"
+                            number_of_elements="1"
+                            default_values="0"
+                            >
+            <BooleanDomain name="bool"/>
+         </IntVectorProperty>
+      </SourceProxy>
+      <!-- End ImageStencil -->
+
+     <!-- ================================================================== -->
+     <SourceProxy name="ProbeFilter"
+                  class="vtkProbeFilter"
+                  label="Probe Filter">
+       <Documentation
+                     long_help="Extracts a VOI of an vtkImageData according to 
+                       the bounds of the source. Choose the image as Input and the
+                       'cut' object as Bounds."
+                     short_help="Extracts a VOI defined by the bounding box of 
+                       a vtkDataSet.">
+       </Documentation>
+
+       <InputProperty
+                     name="Input"
+                     command="SetInputConnection">
+         <ProxyGroupDomain name="groups">
+           <Group name="sources"/>
+           <Group name="filters"/>
+         </ProxyGroupDomain>
+         <DataTypeDomain name="input_type">
+           <DataType value="vtkDataSet"/>
+         </DataTypeDomain>
+         <Documentation>
+           The image you want to probe.
+         </Documentation>
+       </InputProperty>
+
+       <InputProperty
+                     name="Source"
+                     command="SetSourceConnection">
+         <ProxyGroupDomain name="groups">
+           <Group name="sources"/>
+           <Group name="filters"/>
+         </ProxyGroupDomain>
+         <DataTypeDomain name="input_type">
+           <DataType value="vtkImageData"/>
+         </DataTypeDomain>
+         <Documentation>
+           The DataSet that will define the point locations to probe.
+         </Documentation>
+       </InputProperty>
+
+
+     </SourceProxy>
+     <!-- End ProbeFilter -->
+
+
+   </ProxyGroup>
+   <!-- End Filters Group -->
+</ServerManagerConfiguration>

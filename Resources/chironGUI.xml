@@ -1,0 +1,5 @@
+<ParaViewReaders>
+  <Reader name="DICOMImageReader" extensions="dcm"
+          file_description="DICOM Files and folders">
+  </Reader>
+</ParaViewReaders>

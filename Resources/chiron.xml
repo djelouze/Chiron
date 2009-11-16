@@ -1,0 +1,25 @@
+<ServerManagerConfiguration>
+  
+<ProxyGroup name="sources">
+   <!-- ================================================================== -->
+   <SourceProxy name="DICOMImageReader" class="vtkDICOMImageReader"
+                label="DICOM Reader">
+     <StringVectorProperty
+                           name="DirectoryName"
+                           number_of_elements="1"
+                           command="SetDirectoryName"
+                           immediate_update="1">
+         <FileListDomain name="files"/>
+         <Documentation>
+            This property specifies the directory name for the vtk Dicom reader.
+         </Documentation>
+         <Hints>
+           <UseDirectoryName />
+           <Property name="DirectoryName" show="1" />
+         </Hints> 
+      </StringVectorProperty>
+
+   </SourceProxy>
+    <!-- End DICOM Reader -->
+</ProxyGroup>
+</ServerManagerConfiguration>
