@@ -12,11 +12,11 @@ chrImageInfoOverlay::chrImageInfoOverlay( )
    this->Callback->SetCallback( chrImageInfoOverlay::OnMouseMove );
    this->Callback->SetClientData( this );
 
-   this->ImageName = this->AddInfo("ImageName");
-   this->ImageExtent = this->AddInfo("ImageExtent");
-   this->ImageSpacing = this->AddInfo("ImageSpacing");
-   this->PointerCoordinates = this->AddInfo("PointerCoordinates");
-   this->ImageIntensity = this->AddInfo("ImageIntensity");
+   this->PointerCoordinates = this->AddInfo("Coordinates");
+   this->ImageIntensity = this->AddInfo("Intensity");
+   this->ImageSpacing = this->AddInfo("Spacing");
+   this->ImageExtent = this->AddInfo("Extent");
+   this->ImageName = this->AddInfo("Name");
 
    this->CellPicker = vtkCellPicker::New( );
    this->PointPicker = vtkPointPicker::New( );
@@ -33,8 +33,6 @@ chrImageInfoOverlay::~chrImageInfoOverlay( )
 
    this->CellPicker->Delete( );
    this->PointPicker->Delete( );
- 
-
 }
 
 void chrImageInfoOverlay::Activate( )
@@ -70,7 +68,7 @@ void chrImageInfoOverlay::OnMouseMove( vtkObject* obj, unsigned long eid, void* 
    vtkIdType pointId = Self->PointPicker->GetPointId( );
    vtkDataSet* dataSet = Self->PointPicker->GetDataSet( );
    vtkImageData* imageData = vtkImageData::SafeDownCast( dataSet );
-   if( imageData )
+   if( imageData && pointId >= 0 )
    {
       ostringstream streamIntensity;
       double intensity = imageData->GetPointData( )
@@ -95,8 +93,13 @@ void chrImageInfoOverlay::OnMouseMove( vtkObject* obj, unsigned long eid, void* 
                     << extent[4]<< " - " << extent[5];
       Self->ImageExtent->SetInput( streamExtent.str().c_str() );
 
-
-
+      ostringstream streamPos;
+      double position[3];
+      Self->PointPicker->GetPickPosition( position );
+      streamPos << position[0] << " ; " 
+                   << position[1] << " ; " 
+                   << position[2];
+      Self->PointerCoordinates->SetInput( streamPos.str().c_str() );
    }
 
    iren->Render( );
