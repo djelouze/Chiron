@@ -1,5 +1,8 @@
 #include "ChironToolbarActions.h"
 
+#include "chrEventCatcher.h"
+#include "chrImageInfoOverlay.h"
+
 #include <QApplication>
 #include <QStyle>
 #include <QWheelEvent>
@@ -117,11 +120,13 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
 
 void ChironToolbarActions::connectToChironModules( pqView* view )
 {
-  QVTKWidget* qvtkRenderWidget = qobject_cast<QVTKWidget*>(view->getWidget());
+   chrEventCatcher* moduleEvent = new chrEventCatcher( );
+   moduleEvent->SetView( view );
+//   moduleEvent->Activate( );
 
-  vtkRenderWindow* renWin = qvtkRenderWidget->GetRenderWindow();
-  vtkRenderWindowInteractor* iren = renWin->GetInteractor(  );
-  cout << "connection pqView " << view << " to Chiron modules"<<endl;
+   chrImageInfoOverlay* moduleOverlay = new chrImageInfoOverlay( );
+   moduleOverlay->SetView( view );
+   moduleOverlay->Activate( );
 }
 
 
