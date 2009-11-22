@@ -18,9 +18,19 @@ ADD_PARAVIEW_PLUGIN(ChironToolbar "0.1"
                             ${CHIRON_TOOLBAR_IFACE_SRCS} 
                             ChironToolbarActions.cxx
                     GUI_RESOURCES ${CHIRON_RESOURCES_PATH}/ChironToolbar.qrc
-                    SERVER_MANAGER_XML ${CHIRON_RESOURCES_PATH}/chiron.xml
-                    GUI_RESOURCE_FILES ${CHIRON_RESOURCES_PATH}/chironGUI.xml
                     )
 
+TARGET_LINK_LIBRARIES( ChironToolbar ChironModules )
+
 #------------------------------------------------------------------
+
+# READERS PLUGIN --------------------------------------------------
+
+  # Expose the DICOM Reader to ParaView
+ ADD_PARAVIEW_PLUGIN(
+   ChironReaders          #<--Name for the plugin
+  "1.0"                        #<--Version string
+   SERVER_MANAGER_XML ${CHIRON_RESOURCES_PATH}/chiron.xml  #<-- server manager xml
+   GUI_RESOURCE_FILES ${CHIRON_RESOURCES_PATH}/chironGUI.xml
+ )
 
