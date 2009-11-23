@@ -34,6 +34,7 @@ QVTKWidget* chrViewModule::GetQVTKWidget( )
 vtkRenderWindow* chrViewModule::GetRenderWindow( )
 {
    QVTKWidget* qvtkWidget = this->GetQVTKWidget( );
+
    if( qvtkWidget )
       return( qvtkWidget->GetRenderWindow( ) );
    else
@@ -43,6 +44,7 @@ vtkRenderWindow* chrViewModule::GetRenderWindow( )
 vtkRenderWindowInteractor* chrViewModule::GetRenderWindowInteractor( )
 {
    vtkRenderWindow* renWin = this->GetRenderWindow( );
+
    if( renWin )
       return( renWin->GetInteractor( ) );
    else
@@ -51,7 +53,8 @@ vtkRenderWindowInteractor* chrViewModule::GetRenderWindowInteractor( )
 
 vtkRenderer* chrViewModule::GetRenderer( )
 {
-    vtkRenderWindow* renWin = this->GetRenderWindow( );
+   vtkRenderWindow* renWin = this->GetRenderWindow( );
+
    if( renWin )
    {
       vtkRendererCollection* renCollection = this->GetRenderWindow( )
