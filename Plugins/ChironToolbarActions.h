@@ -17,6 +17,9 @@
 #ifndef __CHIRONTOOLBARACTIONS_H__
 #define __CHIRONTOOLBARACTIONS_H__
 
+// Chiron includes
+#include "chrViewModule.h"
+
 // QT includes
 #include <QActionGroup>
 
@@ -29,8 +32,11 @@ class ChironToolbarActions : public QActionGroup
 public:
   //! Constructor: Defines Qt Slot/Signal connection
   ChironToolbarActions(QObject* p);
+  //! Destructor:
+  //!    - free the viewModuleList
+  virtual ~ChironToolbarActions( );
 
-public slots:
+protected slots:
   //! Callback for each action triggerred.
   //! This function is called after a click on a button of the toolBar
   void onAction(QAction* a);
@@ -38,6 +44,7 @@ public slots:
 
 private:
    void connectToViewCreation( bool on );
+   std::vector<chrViewModule*> viewModuleList;
 };
 
 #endif //__CHIRONTOOLBARACTIONS_H__

@@ -76,6 +76,11 @@ ChironToolbarActions::ChironToolbarActions(QObject* p) : QActionGroup(p)
                     this, SLOT(onAction(QAction*)));
 }
 
+ChironToolbarActions::~ChironToolbarActions()
+{
+   while( !this->viewModuleList.empty( ) )
+      this->viewModuleList.pop_back( );
+}
 
 //-----------------------------------------------------------------------------
 void ChironToolbarActions::onAction(QAction* a)
@@ -92,11 +97,23 @@ void ChironToolbarActions::onAction(QAction* a)
 
    QString actionStr = a->data().toString();
 
+   // Main activation button
+   //   - activate/deactivate existing modules
+   //   - connect to the viewCreated signal in order to 
+   //     perform asynchronous activations
    if( actionStr == QString( "EnableChiron") )
    {
       // When Chiron is enabled, view creations are detected and connected
       // to each module
       this->connectToViewCreation( a->isChecked( ));
+      if( a->isChecked( ) )
+      {
+         //! \todo loop over viewModuleList to activate them
+      }
+      else
+      {
+         //! \todo loop over viewModuleList to deactivate them
+      }
    }
 }
 
@@ -106,27 +123,33 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
    pqObjectBuilder* builder = core->getObjectBuilder();
 
    if( connect )
+   {
       QObject::connect(builder, 
                        SIGNAL(viewCreated(pqView*)),
                        this,
                        SLOT(connectToChironModules(pqView*)));
+   }
    else
+   {
       QObject::disconnect(builder, 
                           SIGNAL(viewCreated(pqView*)), 
                           this,
                           SLOT(connectToChironModules(pqView*)));
+
+   }
 }
 
 
 void ChironToolbarActions::connectToChironModules( pqView* view )
 {
-   chrEventCatcher* moduleEvent = new chrEventCatcher( );
-   moduleEvent->SetView( view );
+//   chrEventCatcher* moduleEvent = new chrEventCatcher( );
+//   moduleEvent->SetView( view );
 //   moduleEvent->Activate( );
 
    chrImageInfoOverlay* moduleOverlay = new chrImageInfoOverlay( );
    moduleOverlay->SetView( view );
    moduleOverlay->Activate( );
+   this->viewModuleList.push_back( moduleOverlay );
 }
 
 
