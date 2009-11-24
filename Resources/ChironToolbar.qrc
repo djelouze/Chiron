@@ -1,5 +1,6 @@
 ﻿<RCC>
   <qresource prefix="/ToolbarIcons" >
     <file>chiron-256x256.png</file>
+    <file>scale-256x256.png</file>
   </qresource>
 </RCC>

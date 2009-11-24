@@ -2,6 +2,7 @@
 
 #include "chrEventCatcher.h"
 #include "chrImageInfoOverlay.h"
+#include "chrScaleInfoOverlay.h"
 
 #include <QApplication>
 #include <QStyle>
@@ -150,6 +151,10 @@ void ChironToolbarActions::connectToChironModules( pqView* view )
    moduleOverlay->SetView( view );
    moduleOverlay->Activate( );
    this->viewModuleList.push_back( moduleOverlay );
+ 
+   chrScaleInfoOverlay* moduleScaleOverlay = new chrScaleInfoOverlay();
+   moduleScaleOverlay->SetView( view );
+   moduleScaleOverlay->Activate( );
 }
 
 
