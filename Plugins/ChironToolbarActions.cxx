@@ -142,9 +142,9 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
 
 void ChironToolbarActions::connectToChironModules( pqView* view )
 {
-//   chrEventCatcher* moduleEvent = new chrEventCatcher( );
-//   moduleEvent->SetView( view );
-//   moduleEvent->Activate( );
+   chrEventCatcher* moduleEvent = new chrEventCatcher( );
+   moduleEvent->SetView( view );
+   moduleEvent->Activate( );
 
    chrImageInfoOverlay* moduleOverlay = new chrImageInfoOverlay( );
    moduleOverlay->SetView( view );
