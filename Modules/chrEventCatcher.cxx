@@ -18,7 +18,6 @@ void chrEventCatcher::Activate( )
    {
       this->GetRenderWindowInteractor( )
           ->AddObserver( vtkCommand::MouseMoveEvent, this->Callback, 1.0 );
-      this->AddButton( SLOT(NewButton( )) );
    }
    else
       cout << "View not initialized" << endl;

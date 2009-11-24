@@ -24,9 +24,6 @@ public:
 protected:
    virtual int IsViewValid( pqView* );
 
-protected slots:
-   void NewButton( ){cout << "click" << endl;};
-
 private:
    vtkCallbackCommand* Callback;
 
