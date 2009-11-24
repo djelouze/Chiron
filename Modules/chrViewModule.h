@@ -27,6 +27,7 @@
 
 // QT include
 #include <QObject>
+#include <QIcon>
 
 class chrViewModule : public QObject
 {
@@ -62,7 +63,7 @@ protected:
    //! classes and pass it to AddButton.
    //! \todo This is a PoC implementation. It would be nice to add any widgets
    //! to the view toolbar (slider, combobox,...)
-   void AddButton( const char* slot );
+   void AddButton( const char* slot, QIcon qicon );
 
    //! Get the QVTKWidget embedded in the pqView
    QVTKWidget* GetQVTKWidget( );
