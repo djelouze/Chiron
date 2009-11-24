@@ -15,12 +15,13 @@ chrEventCatcher::~chrEventCatcher( )
 void chrEventCatcher::Activate( )
 {
    if( this->GetView( ) != 0 )
-{
-
-  this->GetRenderWindowInteractor( )
-      ->AddObserver( vtkCommand::MouseMoveEvent, this->Callback, 1.0 );
-}
-else cout << "View not initialized" << endl;
+   {
+      this->GetRenderWindowInteractor( )
+          ->AddObserver( vtkCommand::MouseMoveEvent, this->Callback, 1.0 );
+      this->AddButton( SLOT(NewButton( )) );
+   }
+   else
+      cout << "View not initialized" << endl;
 }
 
 void chrEventCatcher::Deactivate( )
@@ -39,6 +40,6 @@ int chrEventCatcher::IsViewValid( pqView* view )
 
 void chrEventCatcher::CatchEventCallback( vtkObject* obj, unsigned long eid, void* clientdata, void *calldata)
 {
-   cout << "MouseMove" << endl;
+//   cout << "MouseMove" << endl;
 }
 
