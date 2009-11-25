@@ -36,5 +36,12 @@ int chrScaleInfoOverlay::IsViewValid( pqView* view )
 
 void chrScaleInfoOverlay::setLegendProperty( )
 {
-//! \todo Create a dialog box for vtkLegendScaleActor setting.
+   //! test: just toggle the scale legend visiblity
+   int vis = this->LegendScaleActor->GetVisibility( );
+   this->LegendScaleActor->SetVisibility( !vis );
+   this->GetRenderWindow( )->Render( );
+   //! \todo Create a dialog box for vtkLegendScaleActor setting.
+
+//test mouse cursor change
+//this->GetQVTKWidget()->setCursor( QCursor( QPixmap( ":/Cursors/slice-32x32.png") ) );
 }
