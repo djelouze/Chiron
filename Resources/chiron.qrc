@@ -3,4 +3,8 @@
     <file>chiron-256x256.png</file>
     <file>scale-256x256.png</file>
   </qresource>
+  <qresource prefix="/Cursors" >
+    <file>slice-32x32.png</file>
+    <file>brightness-32x32.png</file>
+  </qresource>
 </RCC>

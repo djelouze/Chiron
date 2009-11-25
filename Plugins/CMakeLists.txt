@@ -17,7 +17,7 @@ ADD_PARAVIEW_PLUGIN(ChironToolbar "0.1"
                     SOURCES ${CHIRON_TOOLBAR_MOC_SRCS}
                             ${CHIRON_TOOLBAR_IFACE_SRCS} 
                             ChironToolbarActions.cxx
-                    GUI_RESOURCES ${CHIRON_RESOURCES_PATH}/ChironToolbar.qrc
+                    GUI_RESOURCES ${CHIRON_RESOURCES_PATH}/chiron.qrc
                     )
 
 TARGET_LINK_LIBRARIES( ChironToolbar ChironModules )
