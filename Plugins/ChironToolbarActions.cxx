@@ -1,50 +1,17 @@
 #include "ChironToolbarActions.h"
 
-#include "chrEventCatcher.h"
+// Chiron includes
+#include "chrSliceVolume.h"
 #include "chrImageInfoOverlay.h"
 #include "chrScaleInfoOverlay.h"
 
-#include <QApplication>
-#include <QStyle>
-#include <QWheelEvent>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QSlider>
+// QT includes
 #include <QObject>
-#include <iostream>
-#include "QVTKWidget.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRenderWindow.h"
 
+// ParaView includes
 #include "pqApplicationCore.h"
-#include "pqMainWindowCore.h"
 #include "pqObjectBuilder.h"
-#include "pqServer.h"
-#include "pqView.h"
-#include "pqRenderView.h"
 
-#include "pqActiveView.h"
-#include "pqPipelineSource.h"
-#include "pqDisplayPolicy.h"
-#include "pqOutputPort.h"
-#include "pqServerManagerModel.h"
-#include "pqServerManagerSelectionModel.h"
-#include "pqUndoStack.h"
-#include "vtkSMProxy.h"
-#include "vtkSMViewProxy.h"
-#include "vtkSMOutputPort.h"
-#include "vtkSMRenderViewProxy.h"
-#include "vtkSMDimensionsDomain.h"
-#include "vtkCamera.h"
-#include "vtkSMDoubleVectorProperty.h"
-#include "vtkSMIntVectorProperty.h"
-#include "pqViewManager.h"
-#include "pqPropertyManager.h"
-#include "pqMultiViewFrame.h"
-#include "pqDataRepresentation.h"
-#include "pqServerResource.h"
-
-#include "vtkEventQtSlotConnect.h"
 //-----------------------------------------------------------------------------
 ChironToolbarActions::ChironToolbarActions(QObject* p) : QActionGroup(p)
 {
@@ -86,16 +53,6 @@ ChironToolbarActions::~ChironToolbarActions()
 //-----------------------------------------------------------------------------
 void ChironToolbarActions::onAction(QAction* a)
 {
-   // Depending on which toolbar button has been clicked,
-   // different actions are performed
-   pqApplicationCore* core = pqApplicationCore::instance();
-   pqObjectBuilder* builder = core->getObjectBuilder();
-   pqServerManagerModel* sm = core->getServerManagerModel();
-   pqServerManagerSelectionModel* smSel = core->getSelectionModel( );
-
-   // item represents the current selected proxy in the pipeline browser
-   pqServerManagerModelItem* item = smSel->currentItem();
-
    QString actionStr = a->data().toString();
 
    // Main activation button
@@ -143,7 +100,7 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
 
 void ChironToolbarActions::connectToChironModules( pqView* view )
 {
-   chrEventCatcher* moduleEvent = new chrEventCatcher( );
+   chrSliceVolume* moduleEvent = new chrSliceVolume( );
    moduleEvent->SetView( view );
    moduleEvent->Activate( );
 
