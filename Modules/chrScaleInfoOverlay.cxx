@@ -1,5 +1,7 @@
 #include "chrScaleInfoOverlay.h"
 
+// VTK includes
+#include "vtkAxisActor2D.h"
 
 chrScaleInfoOverlay::chrScaleInfoOverlay( )
 {
@@ -7,6 +9,9 @@ chrScaleInfoOverlay::chrScaleInfoOverlay( )
    // Default configuration:
    this->LegendScaleActor->SetBottomAxisVisibility( 0 );
    this->LegendScaleActor->SetLeftAxisVisibility( 0 );
+   this->LegendScaleActor->SetLegendVisibility( 0 );
+   this->LegendScaleActor->SetCornerOffsetFactor( 0 );
+   this->LegendScaleActor->GetRightAxis( )->SetNumberOfLabels( 11 );
 }
 
 chrScaleInfoOverlay::~chrScaleInfoOverlay( )
@@ -29,6 +34,7 @@ void chrScaleInfoOverlay::Activate( )
       cout << "View not initialized" << endl;
 }
 
+
 int chrScaleInfoOverlay::IsViewValid( pqView* view )
 {
    return( 1 );
@@ -45,3 +51,4 @@ void chrScaleInfoOverlay::setLegendProperty( )
 //test mouse cursor change
 //this->GetQVTKWidget()->setCursor( QCursor( QPixmap( ":/Cursors/slice-32x32.png") ) );
 }
+
