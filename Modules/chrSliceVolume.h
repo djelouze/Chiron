@@ -1,0 +1,50 @@
+#ifndef __CHRSLICEVOLUME_H__
+#define __CHRSLICEVOLUME_H__
+
+// Chiron includes
+#include "chrViewModule.h"
+
+// VTK includes
+#include "vtkEventQtSlotConnect.h"
+
+class chrSliceVolume : public chrViewModule
+{
+Q_OBJECT
+
+public:
+   chrSliceVolume( );
+   virtual ~chrSliceVolume( );
+
+   virtual void Activate( );
+   virtual void Deactivate( );
+
+protected:
+   virtual int IsViewValid( pqView* );
+
+protected slots:
+      void enterSliceMode( );
+
+      void sliceDown(vtkObject * obj, unsigned long,
+                 void * client_data, void *,
+                 vtkCommand * command);
+      void sliceUp(vtkObject * obj, unsigned long,
+                     void * client_data, void *,
+                     vtkCommand * command);
+//      void leftButton(vtkObject * obj, unsigned long,
+//                   void * client_data, void *,
+//                   vtkCommand * command);
+//      void keyPress(vtkObject * obj, unsigned long,
+//                      void * client_data, void *,
+//                      vtkCommand * command);
+
+private:
+   //! If a SliceRepresentation is visible in the view,
+   //! then slice is added 'inc'.
+   void ChangeSlice( int inc );
+
+   vtkEventQtSlotConnect* EventConnect;
+   int Activated;
+};
+
+#endif //__CHRSLICEVOLUME
+
