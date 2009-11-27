@@ -9,6 +9,8 @@ chrSliceVolume::chrSliceVolume( )
 {
    this->EventConnect = vtkEventQtSlotConnect::New( );
    this->Activated = 0;
+   this->Dragging = 0;
+   this->lastY = 0;
 }
 
 
@@ -22,7 +24,9 @@ void chrSliceVolume::Activate( )
    if( this->GetView( ) != 0 )
    {
       this->AddButton( SLOT( enterSliceMode() ),
-                       QIcon(":/Cursors/slice-32x32.png")
+                       QIcon(":/Cursors/slice-32x32.png"),
+                       1,
+                       "Slice mode"
                      );
    }
 }
@@ -52,6 +56,42 @@ void chrSliceVolume::enterSliceMode( )
                                               void*, 
                                               vtkCommand*)),
                                    this->GetView( ), 1.0);
+      this->EventConnect->Connect(
+                                  this->GetRenderWindowInteractor(),
+                                  vtkCommand::MouseMoveEvent,
+                                  this,
+                                  SLOT(mouseMove( 
+                                              vtkObject*, 
+                                              unsigned long, 
+                                              void*, 
+                                              void*, 
+                                              vtkCommand*)),
+                                   this->GetView( ), 1.0);
+
+      this->EventConnect->Connect(
+                                  this->GetRenderWindowInteractor(),
+                                  vtkCommand::LeftButtonPressEvent,
+                                  this,
+                                  SLOT(leftButtonPress( 
+                                              vtkObject*, 
+                                              unsigned long, 
+                                              void*, 
+                                              void*, 
+                                              vtkCommand*)),
+                                   this->GetView( ), 1.0);
+
+      this->EventConnect->Connect(
+                                  this->GetRenderWindowInteractor(),
+                                  vtkCommand::LeftButtonReleaseEvent,
+                                  this,
+                                  SLOT(leftButtonRelease( 
+                                              vtkObject*, 
+                                              unsigned long, 
+                                              void*, 
+                                              void*, 
+                                              vtkCommand*)),
+                                   this->GetView( ), 1.0);
+
 
 
       this->GetQVTKWidget()
@@ -61,7 +101,6 @@ void chrSliceVolume::enterSliceMode( )
    }
    else
    {
-      //! \todo disconnect
       this->EventConnect->Disconnect( ); 
       
       this->GetQVTKWidget()
@@ -72,6 +111,41 @@ void chrSliceVolume::enterSliceMode( )
 
 void chrSliceVolume::Deactivate( )
 {
+}
+
+void chrSliceVolume::leftButtonPress( vtkObject* o, unsigned long eid,
+                                void* clientdata, void* calldata,
+                                vtkCommand* command)
+{
+   command->AbortFlagOn();
+   int lastx;
+   this->GetRenderWindowInteractor( )->GetEventPosition( lastx, 
+                                                         this->lastY );
+   this->Dragging = 1;
+}
+
+void chrSliceVolume::leftButtonRelease( vtkObject* o, unsigned long eid,
+                                void* clientdata, void* calldata,
+                                vtkCommand* command)
+{
+   command->AbortFlagOn();
+   this->Dragging = 0;
+}
+
+
+
+void chrSliceVolume::mouseMove( vtkObject* o, unsigned long eid,
+                                void* clientdata, void* calldata,
+                                vtkCommand* command)
+{
+   int x, y;
+   if( this->Dragging )
+   {
+      command->AbortFlagOn();
+      this->GetRenderWindowInteractor( )->GetEventPosition( x, y );
+      this->ChangeSlice( y - this->lastY );
+   }
+   this->lastY = y;
 }
 
 void chrSliceVolume::sliceDown( vtkObject* o, unsigned long eid,

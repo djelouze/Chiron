@@ -23,16 +23,22 @@ protected:
 
 protected slots:
       void enterSliceMode( );
-
+      void mouseMove(vtkObject * obj, unsigned long,
+                 void * client_data, void *,
+                 vtkCommand * command);
+ 
       void sliceDown(vtkObject * obj, unsigned long,
                  void * client_data, void *,
                  vtkCommand * command);
       void sliceUp(vtkObject * obj, unsigned long,
                      void * client_data, void *,
                      vtkCommand * command);
-//      void leftButton(vtkObject * obj, unsigned long,
-//                   void * client_data, void *,
-//                   vtkCommand * command);
+      void leftButtonPress(vtkObject * obj, unsigned long,
+                   void * client_data, void *,
+                   vtkCommand * command);
+      void leftButtonRelease(vtkObject * obj, unsigned long,
+                   void * client_data, void *,
+                   vtkCommand * command);
 //      void keyPress(vtkObject * obj, unsigned long,
 //                      void * client_data, void *,
 //                      vtkCommand * command);
@@ -44,6 +50,8 @@ private:
 
    vtkEventQtSlotConnect* EventConnect;
    int Activated;
+   int Dragging;
+   int lastY;
 };
 
 #endif //__CHRSLICEVOLUME
