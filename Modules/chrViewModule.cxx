@@ -72,30 +72,23 @@ vtkRenderer* chrViewModule::GetRenderer( )
       return( 0 );
 }
 
-void chrViewModule::AddButton( const char* slot, QIcon qicon )
+QAction* chrViewModule::AddButton( const char* slot, 
+                               QIcon qicon, 
+                               int checkable,
+                               const char* toolTips)
 {
    pqApplicationCore* core = pqApplicationCore::instance();
    pqViewManager* viewManager = qobject_cast<pqViewManager*>
                                    (core->manager("MULTIVIEW_MANAGER"));
    pqMultiViewFrame* multiViewFrame = viewManager->getFrame( this->View );
  
-//   if( !this->bottomToolBar )
-//   {
-//      this->bottomToolBar = new QHBoxLayout( );
-//      this->bottomToolBar->setSpacing(0);
-//      this->bottomToolBar->setMargin(0);
-//      this->bottomToolBar->setObjectName(QString::fromUtf8("bottomToolBar"));
-//      qobject_cast<QVBoxLayout*>(multiViewFrame->layout( ))->addLayout( this->bottomToolBar);
-//      this->bottomToolBar->addStretch();
-//   }
-
-   QAction* action = new QAction( qicon, //QIcon(":/ToolbarIcons/chiron-256x256.png"),
-                                  "Test", this );
+   QAction* action = new QAction( qicon, toolTips, this );
+   action->setCheckable( checkable );
    QToolButton* button = new QToolButton( multiViewFrame );
    button->setDefaultAction(action);
    button->setObjectName(action->objectName());
-//   this->bottomToolBar->insertWidget(0,button);
    multiViewFrame->addTitlebarAction( action );
    QObject::connect( action, SIGNAL( triggered( bool )),
                      this, slot );
+   return( action );
 }

@@ -63,7 +63,10 @@ protected:
    //! classes and pass it to AddButton.
    //! \todo This is a PoC implementation. It would be nice to add any widgets
    //! to the view toolbar (slider, combobox,...)
-   void AddButton( const char* slot, QIcon qicon );
+   QAction* AddButton( const char* slot, 
+                   QIcon qicon,
+                   int checkable=0,
+                   const char* toolTips="Module button" );
 
    //! Get the QVTKWidget embedded in the pqView
    QVTKWidget* GetQVTKWidget( );
