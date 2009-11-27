@@ -2,8 +2,10 @@
 
 // Chiron includes
 #include "chrSliceVolume.h"
+#include "chrWindowLevel.h"
 #include "chrImageInfoOverlay.h"
 #include "chrScaleInfoOverlay.h"
+#include "chrGenericLayout.h"
 
 // QT includes
 #include <QObject>
@@ -80,7 +82,10 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
    pqApplicationCore* core = pqApplicationCore::instance();
    pqObjectBuilder* builder = core->getObjectBuilder();
 
-   if( connect )
+   chrGenericLayout* layoutModule = new chrGenericLayout();
+   layoutModule->Activate( );
+
+   if( 0 )//connect )
    {
       QObject::connect(builder, 
                        SIGNAL(viewCreated(pqView*)),
@@ -100,9 +105,14 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
 
 void ChironToolbarActions::connectToChironModules( pqView* view )
 {
-   chrSliceVolume* moduleEvent = new chrSliceVolume( );
-   moduleEvent->SetView( view );
-   moduleEvent->Activate( );
+   chrSliceVolume* moduleSlice = new chrSliceVolume( );
+   moduleSlice->SetView( view );
+   moduleSlice->Activate( );
+
+   chrWindowLevel* moduleWL = new chrWindowLevel( );
+   moduleWL->SetView( view );
+   moduleWL->Activate( );
+
 
    chrImageInfoOverlay* moduleOverlay = new chrImageInfoOverlay( );
    moduleOverlay->SetView( view );
