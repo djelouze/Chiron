@@ -103,7 +103,7 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
    chrGenericLayout* layoutModule = new chrGenericLayout();
    layoutModule->Activate( );
 
-   if( 0 )//connect )
+   if( connect )
    {
       QObject::connect(builder, 
                        SIGNAL(viewCreated(pqView*)),
@@ -123,23 +123,9 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
 
 void ChironToolbarActions::connectToChironModules( pqView* view )
 {
-   chrSliceVolume* moduleSlice = new chrSliceVolume( );
-   moduleSlice->SetView( view );
-   moduleSlice->Activate( );
-
    chrWindowLevel* moduleWL = new chrWindowLevel( );
    moduleWL->SetView( view );
    moduleWL->Activate( );
-
-
-   chrImageInfoOverlay* moduleOverlay = new chrImageInfoOverlay( );
-   moduleOverlay->SetView( view );
-   moduleOverlay->Activate( );
-   this->viewModuleList.push_back( moduleOverlay );
- 
-   chrScaleInfoOverlay* moduleScaleOverlay = new chrScaleInfoOverlay();
-   moduleScaleOverlay->SetView( view );
-   moduleScaleOverlay->Activate( );
 }
 
 
