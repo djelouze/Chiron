@@ -88,14 +88,23 @@ void chrImageInfoOverlay::OnMouseMove( vtkObject* obj, unsigned long eid, void* 
    vtkImageData* imageData = vtkImageData::SafeDownCast( dataSet );
    if( imageData && pointId >= 0 )
    {
+      ostringstream streamProducer;
+      streamProducer << imageData->GetProducerPort( )
+                                 ->GetProducer( )
+                                 ->GetClassName( )
+                     << " : "
+                     << imageData->GetProducerPort( )
+                                 ->GetProducer( );
+      Self->ImageName->SetInput( streamProducer.str().c_str() );
+
+      ostringstream streamSpacing;
       ostringstream streamIntensity;
       double intensity = imageData->GetPointData( )
                                 ->GetScalars( )
-                                ->GetComponent( pointId, 0 ); 
+                                ->GetComponent( pointId, 0 );
       streamIntensity << intensity;
       Self->ImageIntensity->SetInput( streamIntensity.str().c_str() );
 
-      ostringstream streamSpacing;
       double spacing[3];
       imageData->GetSpacing( spacing );
       streamSpacing << spacing[0] << " ; " 

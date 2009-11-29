@@ -15,12 +15,20 @@
 //    You have received a copy of the GNU General Public License
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
+
+//! \class chrImageInfoOverlay
+//!
+//! \todo comments!!
+//! \author Jerome Velut
+//! \date 29 nov 2009
  
 #ifndef __CHRIMAGEINFOOVERLAY_H__
 #define __CHRIMAGEINFOOVERLAY_H__
 
 #include "chrInfoOverlay.h"
 #include "QVTKWidget.h"
+#include "vtkAlgorithmOutput.h"
+#include "vtkAlgorithm.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 #include "vtkRendererCollection.h"
