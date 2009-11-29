@@ -31,6 +31,8 @@
 // Chiron includes
 #include "chrApplicationModule.h"
 #include "chrSliceVolume.h"
+#include "chrImageInfoOverlay.h"
+#include "chrScaleInfoOverlay.h"
 
 // ParaView includes
 #include "pqServer.h"

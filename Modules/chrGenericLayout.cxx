@@ -105,4 +105,12 @@ void chrGenericLayout::activateViewModules( pqView* view )
    chrSliceVolume* sliceModule = new chrSliceVolume( );
    sliceModule->SetView( view );
    sliceModule->Activate( );
+
+   chrScaleInfoOverlay* scaleInfoOverlay = new chrScaleInfoOverlay( );
+   scaleInfoOverlay->SetView( view );
+   scaleInfoOverlay->Activate( );
+
+   chrImageInfoOverlay* imageInfoOverlay = new chrImageInfoOverlay( );
+   imageInfoOverlay->SetView( view );
+   imageInfoOverlay->Activate( );
 }
