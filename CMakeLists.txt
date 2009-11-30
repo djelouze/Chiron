@@ -59,7 +59,7 @@ MARK_AS_ADVANCED(
 )
 
 SUBDIRS(
-   Algorithms
+#   Algorithms
    Resources
    Plugins
    Modules
