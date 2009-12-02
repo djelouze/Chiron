@@ -91,6 +91,8 @@ void chrImageInfoOverlay::OnMouseMove( vtkObject* obj, unsigned long eid, void* 
       ostringstream streamProducer;
       streamProducer << imageData->GetProducerPort( )
                                  ->GetProducer( )
+                                 //->GetInputConnection( 0, 0)
+                                 //->GetProducer( )
                                  ->GetClassName( )
                      << " : "
                      << imageData->GetProducerPort( )
