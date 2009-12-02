@@ -33,10 +33,11 @@
 
 // ParaView includes
 #include "pqView.h"
+#include "pqRenderView.h"
 #include "pqApplicationCore.h"
 #include "pqViewManager.h"
 #include "pqMultiViewFrame.h"
-
+#include "vtkSMRenderViewProxy.h"
 // VTK includes
 #include "QVTKWidget.h"
 #include "vtkRenderWindow.h"
