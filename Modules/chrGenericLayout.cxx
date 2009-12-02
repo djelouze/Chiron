@@ -105,12 +105,30 @@ void chrGenericLayout::activateViewModules( pqView* view )
    chrSliceVolume* sliceModule = new chrSliceVolume( );
    sliceModule->SetView( view );
    sliceModule->Activate( );
-
+   
    chrScaleInfoOverlay* scaleInfoOverlay = new chrScaleInfoOverlay( );
    scaleInfoOverlay->SetView( view );
    scaleInfoOverlay->Activate( );
-
+   
    chrImageInfoOverlay* imageInfoOverlay = new chrImageInfoOverlay( );
    imageInfoOverlay->SetView( view );
    imageInfoOverlay->Activate( );
+   
+   this->viewModuleCollection.push_back( sliceModule );
+   this->viewModuleCollection.push_back( scaleInfoOverlay );
+   this->viewModuleCollection.push_back( imageInfoOverlay );
 }
+
+void chrGenericLayout::Deactivate( )
+{
+   pqObjectBuilder* builder = this->Core->getObjectBuilder();
+   QObject::disconnect(builder, SIGNAL(viewCreated(pqView*)),
+                    this,SLOT(activateViewModules(pqView*)));
+
+//   while( !this->viewModuleCollection.empty( ) )
+//   {
+//      this->viewModuleCollection.back( )->Deactivate( );
+//      this->viewModuleCollection.pop_back( );
+//   }
+}
+

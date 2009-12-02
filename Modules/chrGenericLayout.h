@@ -56,7 +56,8 @@ public:
    virtual ~chrGenericLayout( );
 
    void Activate( );
-
+   void Deactivate( );
+   
 protected:
    void createViews( pqServer* );
    void resetViewDirection( );
@@ -70,6 +71,7 @@ private:
       pqView* yzView;
       pqView* threeDView;
 
+      std::vector<chrViewModule*> viewModuleCollection;
 };
 
 #endif //__CHRGENERICLAYOUT

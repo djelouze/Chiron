@@ -62,6 +62,10 @@ ChironToolbarActions::ChironToolbarActions(QObject* p) : QActionGroup(p)
    // is a signal sent when one of the toolbar button is pressed
    QObject::connect(this, SIGNAL(triggered(QAction*)), 
                     this, SLOT(onAction(QAction*)));
+
+  // Instanciate the generic layout module
+  this->layoutModule = new chrGenericLayout();
+
 }
 
 ChironToolbarActions::~ChironToolbarActions()
@@ -84,14 +88,6 @@ void ChironToolbarActions::onAction(QAction* a)
       // When Chiron is enabled, view creations are detected and connected
       // to each module
       this->connectToViewCreation( a->isChecked( ));
-      if( a->isChecked( ) )
-      {
-         //! \todo loop over viewModuleList to activate them
-      }
-      else
-      {
-         //! \todo loop over viewModuleList to deactivate them
-      }
    }
 }
 
@@ -100,23 +96,13 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
    pqApplicationCore* core = pqApplicationCore::instance();
    pqObjectBuilder* builder = core->getObjectBuilder();
 
-   chrGenericLayout* layoutModule = new chrGenericLayout();
-   layoutModule->Activate( );
-
    if( connect )
    {
-      QObject::connect(builder, 
-                       SIGNAL(viewCreated(pqView*)),
-                       this,
-                       SLOT(connectToChironModules(pqView*)));
+      this->layoutModule->Activate( );
    }
    else
    {
-      QObject::disconnect(builder, 
-                          SIGNAL(viewCreated(pqView*)), 
-                          this,
-                          SLOT(connectToChironModules(pqView*)));
-
+      this->layoutModule->Deactivate( );
    }
 }
 

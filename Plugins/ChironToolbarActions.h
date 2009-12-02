@@ -36,7 +36,7 @@
 #define __CHIRONTOOLBARACTIONS_H__
 
 // Chiron includes
-#include "chrViewModule.h"
+#include "chrGenericLayout.h"
 
 // QT includes
 #include <QActionGroup>
@@ -63,6 +63,7 @@ protected slots:
 private:
    void connectToViewCreation( bool on );
    std::vector<chrViewModule*> viewModuleList;
+   chrGenericLayout* layoutModule;
 };
 
 #endif //__CHIRONTOOLBARACTIONS_H__
