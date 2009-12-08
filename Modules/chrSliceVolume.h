@@ -16,6 +16,18 @@
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
  
+//! \class chrSliceVolume
+//! \brief Brings interactions for slicing a volume.
+//!
+//! When activated, the click event is caught and route to this class
+//! that change the slice of every existing slice representation.
+//! This is a little bit awkward and is about to change
+//!
+//! \todo Think about a "representaion picker" to slice only the picked volume.
+//!
+//! \author Jerome Velut
+//! \date 7 dec 2009
+
 #ifndef __CHRSLICEVOLUME_H__
 #define __CHRSLICEVOLUME_H__
 

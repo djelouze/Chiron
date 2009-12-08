@@ -17,8 +17,20 @@
 //    If not, see <http://www.gnu.org/licenses/>.
 
 //! \class chrImageInfoOverlay
+//! \brief Display image info on a renderer.
 //!
-//! \todo comments!!
+//! This class overlays some image info, such as the extent/spacing, the VTK 
+//! algorithm that produced this image but also the image intensity under the
+//! mouse pointer.
+//!
+//! \warning The paraview slicer induces a shadowed pipeline that doesn't
+//! reflects the user pipeline (from pipeline browser). Effects are:
+//!    - the image name seems exotic ("vtkPVUpdateSuppressor")
+//!    - in 3D view, the slice representation is 0-dim in z.
+//!    - in 2D view, the info are not updated when leaving the four first
+//! slices.
+//! \todo Investigate the picking in ParaView
+//!
 //! \author Jerome Velut
 //! \date 29 nov 2009
  

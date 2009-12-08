@@ -16,6 +16,18 @@
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
  
+//! \class chrScaleInfoOverlay
+//! \brief Overlays rules on a VTK renderer
+//! 
+//! When activated, the concerned view renders a vtkLegendScaleActor.
+//! A button is added to the view menu to toggle the actor visibility/
+//!
+//! \see vtkLegendScaleActor
+//! \todo Add a property panel for user settings.
+//!
+//! \author Jerome Velut
+//! \date 7 dec 2009
+
 #ifndef __CHRSCALEINFOOVERLAY_H__
 #define __CHRSCALEINFOOVERLAY_H__
 

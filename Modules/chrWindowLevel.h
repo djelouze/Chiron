@@ -15,6 +15,17 @@
 //    You have received a copy of the GNU General Public License
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
+
+//! \class chrWindowLevel
+//! \brief Change the contrast/luminosity interactively
+//!
+//! Not implemented
+//!
+//! \todo See how to access the Scalar Color property from a plugin
+//!
+//! \author Jerome Velut
+//! \date 7 dec 2009
+
  
 #ifndef __CHRWINDOWLEVEL_H__
 #define __CHRWINDOWLEVEL_H__
