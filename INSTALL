@@ -1,0 +1,33 @@
+Chiron compilation process:
+
+I assume that you are under linux and that you clone the Chiron repo into:
+~/Codes/Chiron
+The following steps are illustrated with linux commands
+
+- Compile the current CVS revision of ParaView. For that, you will need Qt and
+CMake (check versions on the paraview website).
+- Create an out-of-source build directory and cd-in
+   mkdir ~/Softwares/Chiron
+   cd ~/Softwares/Chiron
+- Execute CMake with the Chiron's CMakeLists
+   ccmake ~/Codes/Chiron
+- Choose your build type (debug or release or...)
+- Set the ParaView directory: it is the built directory
+   [~/Softwares/ParaView-3.7/Debug]
+- Configure
+   [press 'c'] 2x
+- Generate
+   [press 'g']
+- Now compile with your preferred IDE or make.
+- Once the compilation is done (less than 1 minute), the plugin is loadable
+   in ParaView -> Tools -> Plugin Manager -> Load New -> libChironToolbar.so
+
+-------------------------------
+Note on documentation :
+During the CMake step, you are proposed to build the documentation.
+This is a Doxygen generated doc, so you *need* doxygen. If you choose "Yes",
+the documentation will be generated at the next "Configure" in CMake. It should
+take some times.
+------------------------------
+
+
