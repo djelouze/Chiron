@@ -63,7 +63,6 @@ void chrInfoOverlay::Activate( )
 {
    if( this->GetView( ) != 0 )
    {
-      this->Layout( );
  
       this->InfoCollection->InitTraversal( );
       vtkActor2D* info;
@@ -71,6 +70,8 @@ void chrInfoOverlay::Activate( )
       while(   (info = this->InfoCollection->GetNextActor2D( ) ) != 0x0 
             && renderer != 0x0 )
          renderer->AddActor( info );
+      
+      this->Layout( );
    }
    else
       cout << "View not initialized" << endl;
