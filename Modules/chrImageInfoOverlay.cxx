@@ -89,14 +89,12 @@ void chrImageInfoOverlay::OnMouseMove( vtkObject* obj, unsigned long eid, void* 
    if( imageData && pointId >= 0 )
    {
       ostringstream streamProducer;
-      streamProducer << imageData->GetProducerPort( )
-                                 ->GetProducer( )
-                                 //->GetInputConnection( 0, 0)
-                                 //->GetProducer( )
-                                 ->GetClassName( )
-                     << " : "
-                     << imageData->GetProducerPort( )
-                                 ->GetProducer( );
+      vtkAlgorithm* source = Self->UpstreamPipeline( imageData, 3 );
+      vtkImageReader2* reader = vtkImageReader2::SafeDownCast( source );
+      if( reader )
+          streamProducer << reader->GetFileName( );
+      else
+         streamProducer << source->GetClassName( );
       Self->ImageName->SetInput( streamProducer.str().c_str() );
 
       ostringstream streamSpacing;
@@ -134,3 +132,12 @@ void chrImageInfoOverlay::OnMouseMove( vtkObject* obj, unsigned long eid, void* 
    iren->Render( );
 }
 
+vtkAlgorithm* chrImageInfoOverlay::UpstreamPipeline( vtkImageData* img,
+                                                     int nbSteps )
+{
+   vtkAlgorithm* producer = img->GetProducerPort( )->GetProducer( );
+   for( int i = 0; i < nbSteps; i++ )
+      producer = producer->GetInputConnection( 0, 0 )->GetProducer( );
+
+   return( producer );
+}

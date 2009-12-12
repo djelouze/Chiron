@@ -21,7 +21,8 @@
 //!
 //! This class overlays some image info, such as the extent/spacing, the VTK 
 //! algorithm that produced this image but also the image intensity under the
-//! mouse pointer.
+//! mouse pointer. If the source "IsA" vtkImageReader2, the file name is printed
+//! instead of the class name.
 //!
 //! \warning The paraview slicer induces a shadowed pipeline that doesn't
 //! reflects the user pipeline (from pipeline browser). Effects are:
@@ -37,10 +38,16 @@
 #ifndef __CHRIMAGEINFOOVERLAY_H__
 #define __CHRIMAGEINFOOVERLAY_H__
 
+// Chiron includes
 #include "chrInfoOverlay.h"
+
+// ParaView includes"
 #include "QVTKWidget.h"
+
+// VTK includes
 #include "vtkAlgorithmOutput.h"
 #include "vtkAlgorithm.h"
+#include "vtkImageReader2.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 #include "vtkRendererCollection.h"
@@ -52,34 +59,39 @@
 #include "vtkImageData.h"
 #include "vtkPointData.h"
 
-class chrImageInfoOverlay : public chrInfoOverlay{
+class chrImageInfoOverlay : public chrInfoOverlay
+{
 public:
-chrImageInfoOverlay( );
-virtual ~chrImageInfoOverlay( );
+   //! Constructor
+   chrImageInfoOverlay( );
+   //! Destructor
+   virtual ~chrImageInfoOverlay( );
 
-//! Inherited from chrViewModule
-virtual void Activate( );
+   //! Inherited from chrViewModule
+   virtual void Activate( );
 
 protected:
-//! Inherited from chrViewModule
-virtual int IsViewValid( pqView* );
+   //! Inherited from chrViewModule
+   virtual int IsViewValid( pqView* );
 
 private:
-vtkCallbackCommand* Callback;
-static void OnMouseMove( vtkObject* obj, 
+   vtkCallbackCommand* Callback; //!< used to get mouse movement
+   //! Callback function linked to a mouse move event
+   static void OnMouseMove( vtkObject* obj, 
                          unsigned long eid, 
                          void* clientdata, 
                          void *calldata);
+   //! Find the nth upstream algorithm producing the given image data.
+   vtkAlgorithm* UpstreamPipeline( vtkImageData* img, int n);
 
-vtkTextActor* ImageName;
-vtkTextActor* ImageExtent;
-vtkTextActor* ImageSpacing;
-vtkTextActor* ImageIntensity;
-vtkTextActor* PointerCoordinates;
+   vtkTextActor* ImageName; //!< Overlay info
+   vtkTextActor* ImageExtent; //!< Overlay info
+   vtkTextActor* ImageSpacing; //!< Overlay info
+   vtkTextActor* ImageIntensity; //!< Overlay info
+   vtkTextActor* PointerCoordinates; //!< Overlay info
 
-vtkCellPicker* CellPicker;
-vtkPointPicker* PointPicker;
-
+   vtkCellPicker* CellPicker; //!< not used
+   vtkPointPicker* PointPicker; //!< pick the image intensity
 };
 
 #endif //__CHRIMAGEINFOOVERLAY_H__
