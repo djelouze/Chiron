@@ -18,13 +18,6 @@
  
 #include "ChironToolbarActions.h"
 
-// Chiron includes
-#include "chrSliceVolume.h"
-#include "chrWindowLevel.h"
-#include "chrImageInfoOverlay.h"
-#include "chrScaleInfoOverlay.h"
-#include "chrGenericLayout.h"
-
 // QT includes
 #include <QObject>
 
@@ -64,7 +57,7 @@ ChironToolbarActions::ChironToolbarActions(QObject* p) : QActionGroup(p)
                     this, SLOT(onAction(QAction*)));
 
   // Instanciate the generic layout module
-  this->layoutModule = new chrGenericLayout();
+  this->changeActiveViewModule = new chrChangeActiveView();
 
 }
 
@@ -98,20 +91,20 @@ void ChironToolbarActions::connectToViewCreation( bool connect )
 
    if( connect )
    {
-      this->layoutModule->Activate( );
+      this->changeActiveViewModule->Activate( );
    }
    else
    {
-      this->layoutModule->Deactivate( );
+      this->changeActiveViewModule->Deactivate( );
    }
 }
 
 
 void ChironToolbarActions::connectToChironModules( pqView* view )
 {
-   chrWindowLevel* moduleWL = new chrWindowLevel( );
-   moduleWL->SetView( view );
-   moduleWL->Activate( );
+//   chrWindowLevel* moduleWL = new chrWindowLevel( );
+//   moduleWL->SetView( view );
+//   moduleWL->Activate( );
 }
 
 
