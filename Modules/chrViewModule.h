@@ -31,6 +31,9 @@
 #ifndef __CHRVIEWMODULE_H__
 #define __CHRVIEWMODULE_H__
 
+// Chiron includes
+#include "chrModule.h"
+
 // ParaView includes
 #include "pqView.h"
 #include "pqRenderView.h"
@@ -38,6 +41,7 @@
 #include "pqViewManager.h"
 #include "pqMultiViewFrame.h"
 #include "vtkSMRenderViewProxy.h"
+
 // VTK includes
 #include "QVTKWidget.h"
 #include "vtkRenderWindow.h"
@@ -45,10 +49,9 @@
 #include "vtkRenderWindowInteractor.h"
 
 // QT include
-#include <QObject>
 #include <QIcon>
 
-class chrViewModule : public QObject
+class chrViewModule : public chrModule
 {
 
 Q_OBJECT
@@ -65,13 +68,6 @@ public:
    void SetView( pqView* );
    //! Return the pqView attached to this module
    pqView* GetView( );
-
-   //! Pure virtual function. Implement the processus of activation such as
-   //! graphic object creation, Qt/VTK event dispatcher, etc.
-   virtual void Activate( ) = 0;
-   //! Pure virtual function. Child classes are responsible of freeing the
-   //! view from added objects/actions.
-   virtual void Deactivate( ) = 0;
 
 protected:
    //! Check the view validity. Default is true for any pqView object.
@@ -99,7 +95,6 @@ protected:
 
 private:
    pqView* View;
-   QHBoxLayout* bottomToolBar;
    
 };
 

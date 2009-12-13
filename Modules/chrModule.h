@@ -16,11 +16,10 @@
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
  
-//! \class chrApplicationModule
-//! \brief Chiron base class that provides functionalities at application
-//! level
+//! \class chrModule
+//! \brief Chiron base interface for module. 
 //!
-//! A chrApplicationModule is intended to be instanciate by a ParaView plugin
+//! A chrModule is intended to be instanciate by a ParaView plugin
 //! (Toolbar or AutoStart plugin). This is a design concept, the interface
 //! is quite empty. It derives from QObject in order to declare slots and
 //! signals.
@@ -28,27 +27,39 @@
 //! \author Jerome Velut
 //! \date 26 nov 2009
 
-#ifndef __CHRAPPLICATIONMODULE_H__
-#define __CHRAPPLICATIONMODULE_H__
+#ifndef __CHRMODULE_H__
+#define __CHRMODULE_H__
 
-// Chiron includes
-#include "chrModule.h"
+// QT includes
+#include <QObject>
 
 // ParaView includes
 #include "pqApplicationCore.h"
 
-class chrApplicationModule : public chrModule
+class chrModule : public QObject
 {
 Q_OBJECT
 
 public:
    //! Constructor:
    //! initialize this->Core to the current ParaView instance
-   chrApplicationModule( );
+   chrModule( ){this->Activated = 0;};
 
    //! Destructor:
-   virtual ~chrApplicationModule( );
+   virtual ~chrModule( ){};
+
+   //! Pure virtual function. Implement the processus of activation such as
+   //! graphic object creation, Qt/VTK event dispatcher, etc.
+   virtual void Activate( )=0;
+
+   //! Pure virtual function. Implement the processus of deactivation.
+   virtual void Deactivate( )=0;
+
+protected:
+   pqApplicationCore* Core; //!< Application instance
+   int Activated; //!< Module is activated or not. Could be used in Activate() to avoid
+                  //!< multiple activations
 };
 
-#endif //__CHRAPPLICATIONMODULE_H__
+#endif //__CHRMODULE_H__
 

@@ -21,7 +21,6 @@
 chrViewModule::chrViewModule( )
 {
    this->View = 0;
-   this->bottomToolBar = 0;
 }
 
 
@@ -33,7 +32,7 @@ chrViewModule::~chrViewModule( )
 
 void chrViewModule::SetView( pqView* view )
 {
-   if( this->IsViewValid( view ) )
+   if( this->IsViewValid( view ) && this->View != view )
    {
       this->View = view;
       double black[3]  = {0, 0, 0};
