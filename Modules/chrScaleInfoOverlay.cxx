@@ -58,7 +58,7 @@ void chrScaleInfoOverlay::Activate( )
 
 int chrScaleInfoOverlay::IsViewValid( pqView* view )
 {
-   return( 1 );
+   return( chrInfoOverlay::IsViewValid( view ) );
 }
 
 void chrScaleInfoOverlay::setLegendProperty( )
