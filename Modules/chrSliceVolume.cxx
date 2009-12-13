@@ -51,12 +51,14 @@ void chrSliceVolume::ButtonActivate( )
 
 void chrSliceVolume::Activate( )
 {
-   this->toggleSliceMode( );
+   if( this->GetView() )
+      this->toggleSliceMode( );
 }
 
 void chrSliceVolume::Deactivate( )
 {
-   this->toggleSliceMode( );
+   if( this->GetView() )
+      this->toggleSliceMode( );
 }
 
 void chrSliceVolume::toggleSliceMode( )
