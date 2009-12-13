@@ -48,11 +48,14 @@ public:
    virtual void Activate( );
    virtual void Deactivate( );
 
+   //! Add a button to the view menu bar that toggle activation
+   void ButtonActivate( );
+
 protected:
    virtual int IsViewValid( pqView* );
 
 protected slots:
-      void enterSliceMode( );
+      void toggleSliceMode( );
       void mouseMove(vtkObject * obj, unsigned long,
                  void * client_data, void *,
                  vtkCommand * command);
@@ -79,7 +82,6 @@ private:
    void ChangeSlice( int inc );
 
    vtkEventQtSlotConnect* EventConnect;
-   int Activated;
    int Dragging;
    int lastY;
 };

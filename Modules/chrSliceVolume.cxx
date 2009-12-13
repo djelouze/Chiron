@@ -37,18 +37,29 @@ chrSliceVolume::~chrSliceVolume( )
 
 }
 
-void chrSliceVolume::Activate( )
+void chrSliceVolume::ButtonActivate( )
 {
    if( this->GetView( ) != 0 )
    {
-      this->AddButton( SLOT( enterSliceMode() ),
+      this->AddButton( SLOT( toggleSliceMode() ),
                        QIcon(":/Cursors/slice-32x32.png"),
                        1,
                        "Slice mode"
                      );
    }
 }
-void chrSliceVolume::enterSliceMode( )
+
+void chrSliceVolume::Activate( )
+{
+   this->toggleSliceMode( );
+}
+
+void chrSliceVolume::Deactivate( )
+{
+   this->toggleSliceMode( );
+}
+
+void chrSliceVolume::toggleSliceMode( )
 {
    if( !this->Activated )
    {
@@ -114,7 +125,6 @@ void chrSliceVolume::enterSliceMode( )
 
       this->GetQVTKWidget()
           ->setCursor( QCursor( QPixmap( ":/Cursors/slice-32x32.png") ) );
-
       this->Activated = 1;
    }
    else
@@ -127,9 +137,6 @@ void chrSliceVolume::enterSliceMode( )
    }
 }
 
-void chrSliceVolume::Deactivate( )
-{
-}
 
 void chrSliceVolume::leftButtonPress( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
@@ -217,7 +224,11 @@ void chrSliceVolume::ChangeSlice( int inc )
 
 int chrSliceVolume::IsViewValid( pqView* view )
 {
-   return( 1 );
+   pqRenderView* renderView = qobject_cast<pqRenderView*>(view);
+   if( renderView )
+      return( 1 );
+   else
+      return( 0 );
 }
 
 
