@@ -40,17 +40,17 @@ void chrChangeActiveView::Activate( )
 
 void chrChangeActiveView::activateViewModules( pqView* view )
 {
+   chrImageInfoOverlay* imageInfoOverlay = new chrImageInfoOverlay( );
+   imageInfoOverlay->SetView( view );
+   imageInfoOverlay->Activate( );
+   
    chrSliceVolume* sliceModule = new chrSliceVolume( );
    sliceModule->SetView( view );
-   sliceModule->Activate( );
+   sliceModule->ButtonActivate( );
    
    chrScaleInfoOverlay* scaleInfoOverlay = new chrScaleInfoOverlay( );
    scaleInfoOverlay->SetView( view );
    scaleInfoOverlay->Activate( );
-   
-   chrImageInfoOverlay* imageInfoOverlay = new chrImageInfoOverlay( );
-   imageInfoOverlay->SetView( view );
-   imageInfoOverlay->Activate( );
    
    this->viewModuleCollection.push_back( sliceModule );
    this->viewModuleCollection.push_back( scaleInfoOverlay );
@@ -59,10 +59,10 @@ void chrChangeActiveView::activateViewModules( pqView* view )
 
 void chrChangeActiveView::Deactivate( )
 {
-//   while( !this->viewModuleCollection.empty( ) )
-//   {
-//      this->viewModuleCollection.back( )->Deactivate( );
-//      this->viewModuleCollection.pop_back( );
-//   }
+   while( !this->viewModuleCollection.empty( ) )
+   {
+      this->viewModuleCollection.back( )->Deactivate( );
+      this->viewModuleCollection.pop_back( );
+   }
 }
 
