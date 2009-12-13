@@ -55,8 +55,8 @@ public:
    //! Destructor:
    virtual ~chrGenericLayout( );
 
-   void Activate( );
-   void Deactivate( );
+   virtual void Activate( );
+   virtual void Deactivate( );
    
 protected:
    void createViews( pqServer* );
