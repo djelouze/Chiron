@@ -16,6 +16,15 @@
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
  
+//! \class chrInfoOverlay
+//! \brief Base class to add text actor as overlay on a view.
+//!
+//! chrInfoOverlay inherits from chrViewModule the capability of linking
+//! to a ParaView view. 
+//!
+//! \author Jerome Velut
+//! \date 13 dec 2009
+
 #ifndef __CHRINFOOVERLAY_H__
 #define __CHRINFOOVERLAY_H__
 
@@ -24,7 +33,7 @@
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 #include "vtkRendererCollection.h"
-#include "vtkActor2DCollection.h"
+#include "vtkPropCollection.h"
 #include "vtkCallbackCommand.h"
 #include "vtkPicker.h"
 #include "vtkTextActor.h"
@@ -34,22 +43,27 @@ public:
 chrInfoOverlay( );
 virtual ~chrInfoOverlay( );
 
-//! Inherited from chrViewModule
+//! Inherited from chrModule
 virtual void Activate( );
 virtual void Deactivate( );
 
 protected:
 //! Inherited from chrViewModule
 virtual int IsViewValid( pqView* );
+
 //! Add an information to overlay on the view. It adds a vtkTextActor to
 //! the info collection and return it
-vtkTextActor* AddInfo( const char* defaultText );
+vtkTextActor* AddTextInfo( const char* defaultText );
 
+//! Add a 2D actor to the view
+void AddProp( vtkProp* prop );
+
+//! Initialize text actors' positions
 virtual void Layout( );
 
 private:
 
-vtkActor2DCollection* InfoCollection;
+vtkPropCollection* InfoCollection;
 
 };
 

@@ -21,7 +21,7 @@
 
 chrInfoOverlay::chrInfoOverlay( )
 {
-   this->InfoCollection = vtkActor2DCollection::New( );
+   this->InfoCollection = vtkPropCollection::New( );
 }
 
 
@@ -30,16 +30,20 @@ chrInfoOverlay::~chrInfoOverlay( )
    this->InfoCollection->Delete( );
 }
 
-vtkTextActor* chrInfoOverlay::AddInfo( const char* defaultInfo )
+vtkTextActor* chrInfoOverlay::AddTextInfo( const char* defaultInfo )
 {
    // Instanciate a new text actor that will be added to the renderer
    vtkTextActor* info = vtkTextActor::New( );
    info->SetInput( defaultInfo );
 
-   // Append to the info list
-   this->InfoCollection->AddItem( info );
-   
+   this->AddProp( info );
    return( info );
+}
+
+void chrInfoOverlay::AddProp( vtkProp* prop )
+{
+   // Append to the info list
+   this->InfoCollection->AddItem( prop );
 }
 
 
@@ -47,53 +51,56 @@ void chrInfoOverlay::Layout( )
 {
    // Init info list traversing
    this->InfoCollection->InitTraversal( );
-   vtkActor2D* info;
+   vtkProp* info;
    int infoId = 0;
-   while( (info = this->InfoCollection->GetNextActor2D( ) ) != 0x0 )
+   while( (info = this->InfoCollection->GetNextProp( ) ) != 0x0 )
    {
        // Default layout: - constant x (10 in display coordinate)
        //                 - y depends on info index
-       info->SetDisplayPosition( 10, infoId*15 + 10 );
-       infoId ++;
+       vtkActor2D* text = vtkActor2D::SafeDownCast( info );
+       if( text )
+       {
+          text->SetDisplayPosition( 10, infoId*15 + 10 );
+          infoId ++;
+       }
    }
 }
 
 
 void chrInfoOverlay::Activate( )
 {
-   if( this->GetView( ) != 0 )
+   if( this->GetView( ) != 0 && !this->Activated )
    {
  
       this->InfoCollection->InitTraversal( );
-      vtkActor2D* info;
+      vtkProp* info;
       vtkRenderer* renderer = this->GetRenderer( );
-      while(   (info = this->InfoCollection->GetNextActor2D( ) ) != 0x0 
+      while(   (info = this->InfoCollection->GetNextProp( ) ) != 0x0 
             && renderer != 0x0 )
          renderer->AddActor( info );
       
       this->Layout( );
+      this->Activated = 1;
    }
    else
+   {
       cout << "View not initialized" << endl;
+      this->Activated = 0;
+   }
 }
 
 void chrInfoOverlay::Deactivate( )
 {
-   if( this->GetView( ) != 0 )
+   if( this->GetView( ) != 0 && this->Activated )
    {
-
-      vtkRendererCollection* renCollection = this->GetRenderWindow( )
-                                                 ->GetRenderers( );
-      //! \warning It may exists several renderers. Thus the first one is not
-      //! necessary the good one.
-      vtkRenderer* renderer = renCollection->GetFirstRenderer( );
-
-      this->Layout( );
+      vtkRenderer* renderer = this->GetRenderer( );
  
       this->InfoCollection->InitTraversal( );
-      vtkActor2D* info;
-      while( (info = this->InfoCollection->GetNextActor2D( ) ) != 0x0 )
+      vtkProp* info;
+      while( (info = this->InfoCollection->GetNextProp( ) ) != 0x0 )
          renderer->RemoveActor( info );
+
+      this->Activated = 0;
    }
    else
       cout << "View not initialized" << endl;
@@ -103,7 +110,13 @@ void chrInfoOverlay::Deactivate( )
 
 int chrInfoOverlay::IsViewValid( pqView* view )
 {
-   return( 1 );
+   // For now, the overlay is only possible for 3D render view)
+   pqRenderView* renderView = qobject_cast<pqRenderView*>(view);
+   cout << renderView << endl;
+   if( renderView )
+      return( 1 );
+   else
+      return( 0 );
 }
 
 

@@ -30,6 +30,8 @@ chrScaleInfoOverlay::chrScaleInfoOverlay( )
    this->LegendScaleActor->SetLegendVisibility( 0 );
    this->LegendScaleActor->SetCornerOffsetFactor( 0 );
    this->LegendScaleActor->GetRightAxis( )->SetNumberOfLabels( 11 );
+
+   this->AddProp( this->LegendScaleActor );
 }
 
 chrScaleInfoOverlay::~chrScaleInfoOverlay( )
@@ -42,9 +44,8 @@ void chrScaleInfoOverlay::Activate( )
    // parent class is responsible of adding actor to the renderer.
    chrInfoOverlay::Activate( );
 
-   if( this->GetView( ) != 0 )
+   if( this->Activated )
    {
-      this->GetRenderer( )->AddActor( this->LegendScaleActor );
       this->AddButton( SLOT(setLegendProperty( )), 
                        QIcon(":/ToolbarIcons/scale-256x256.png" ),
                        1, // checkable

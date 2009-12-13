@@ -30,11 +30,11 @@ chrImageInfoOverlay::chrImageInfoOverlay( )
    this->Callback->SetCallback( chrImageInfoOverlay::OnMouseMove );
    this->Callback->SetClientData( this );
 
-   this->PointerCoordinates = this->AddInfo("Coordinates");
-   this->ImageIntensity = this->AddInfo("Intensity");
-   this->ImageSpacing = this->AddInfo("Spacing");
-   this->ImageExtent = this->AddInfo("Extent");
-   this->ImageName = this->AddInfo("Name");
+   this->PointerCoordinates = this->AddTextInfo("Coordinates");
+   this->ImageIntensity = this->AddTextInfo("Intensity");
+   this->ImageSpacing = this->AddTextInfo("Spacing");
+   this->ImageExtent = this->AddTextInfo("Extent");
+   this->ImageName = this->AddTextInfo("Name");
 
    this->CellPicker = vtkCellPicker::New( );
    this->PointPicker = vtkPointPicker::New( );
@@ -58,8 +58,9 @@ void chrImageInfoOverlay::Activate( )
    // parent class is responsible of adding actor to the renderer.
    chrInfoOverlay::Activate( );
 
-   if( this->GetView( ) != 0 )
+   if( this->Activated ) // Parent class has properly activated the module
    {
+      // Watch for MouseMoveEvent
       this->GetRenderWindowInteractor( )
           ->AddObserver( vtkCommand::MouseMoveEvent, this->Callback, 1.0 );
    }
@@ -69,7 +70,7 @@ void chrImageInfoOverlay::Activate( )
 
 int chrImageInfoOverlay::IsViewValid( pqView* view )
 {
-   return( 1 );
+   return( chrInfoOverlay::IsViewValid( view ));
 }
 
 void chrImageInfoOverlay::OnMouseMove( vtkObject* obj, unsigned long eid, void* clientdata, void *calldata)
