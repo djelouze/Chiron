@@ -59,10 +59,10 @@ void chrChangeActiveView::activateViewModules( pqView* view )
 
 void chrChangeActiveView::Deactivate( )
 {
-   while( !this->viewModuleCollection.empty( ) )
-   {
-      this->viewModuleCollection.back( )->Deactivate( );
-      this->viewModuleCollection.pop_back( );
-   }
+//   while( !this->viewModuleCollection.empty( ) )
+//   {
+//      this->viewModuleCollection.back( )->Deactivate( );
+//      this->viewModuleCollection.pop_back( );
+//   }
 }
 
