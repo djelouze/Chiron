@@ -35,3 +35,5 @@ ELSE( WIN32 )
                 ${CHIRONMODULES_MOC_SRCS}
                 ${CHIRONMODULES_CXX} )
 ENDIF( WIN32)
+
+TARGET_LINK_LIBRARIES( ChironModules ChironAlgo )
