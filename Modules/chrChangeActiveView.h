@@ -33,6 +33,7 @@
 #include "chrSliceVolume.h"
 #include "chrImageInfoOverlay.h"
 #include "chrScaleInfoOverlay.h"
+#include "chrClickAndSlice.h"
 
 // ParaView includes
 #include "pqServer.h"
