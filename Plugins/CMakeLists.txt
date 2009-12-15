@@ -36,6 +36,7 @@ ADD_PARAVIEW_PLUGIN(ChironToolbar "0.1"
                             ${CHIRON_TOOLBAR_IFACE_SRCS} 
                             ChironToolbarActions.cxx
                     GUI_RESOURCES ${CHIRON_RESOURCES_PATH}/chiron.qrc
+                    REQUIRED_PLUGINS ChironAlgoPlugin
                     )
 
 TARGET_LINK_LIBRARIES( ChironToolbar ChironModules )
@@ -52,3 +53,14 @@ TARGET_LINK_LIBRARIES( ChironToolbar ChironModules )
    GUI_RESOURCE_FILES ${CHIRON_RESOURCES_PATH}/chironGUI.xml
  )
 
+# ALGO PLUGIN --------------------------------------------------
+
+ ADD_PARAVIEW_PLUGIN(
+   ChironAlgoPlugin          #<--Name for the plugin
+  "1.0"                        #<--Version string
+   SERVER_MANAGER_XML ${CHIRON_ALGORITHMS_PATH}/vtkPolylineSource.xml  #<-- server manager xml
+   SERVER_MANAGER_SOURCES ${CHIRON_ALGORITHMS_PATH}/vtkPolylineSource.cxx 
+)
+
+
+TARGET_LINK_LIBRARIES( ChironAlgoPlugin ChironAlgo )
