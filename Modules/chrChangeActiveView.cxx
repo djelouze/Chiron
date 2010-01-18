@@ -48,9 +48,13 @@ void chrChangeActiveView::activateViewModules( pqView* view )
    sliceModule->SetView( view );
    sliceModule->ButtonActivate( );
    
-   chrClickAndSlice* clickAndSliceModule = new chrClickAndSlice( );
-   clickAndSliceModule->SetView( view );
-   clickAndSliceModule->ButtonActivate( );
+//   chrClickAndSlice* clickAndSliceModule = new chrClickAndSlice( );
+//   clickAndSliceModule->SetView( view );
+//   clickAndSliceModule->ButtonActivate( );
+   
+   chrLandmarkSelector* landmarkModule = new chrLandmarkSelector( );
+   landmarkModule->SetView( view );
+   landmarkModule->ButtonActivate( );
    
    chrScaleInfoOverlay* scaleInfoOverlay = new chrScaleInfoOverlay( );
    scaleInfoOverlay->SetView( view );
