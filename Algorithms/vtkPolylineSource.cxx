@@ -30,6 +30,7 @@ vtkStandardNewMacro(vtkPolylineSource);
 
 vtkPolylineSource::vtkPolylineSource()
 {
+  this->CellType = 0;
   this->Points = 0;
   this->SetNumberOfInputPorts(0);
 }
@@ -80,7 +81,11 @@ int vtkPolylineSource::RequestData(
     output->SetPoints(newPoints);
   newPoints->Delete();
 
-  output->SetLines(newLines);
+  if( this->CellType == 0 )
+     output->SetLines(newLines);
+  else 
+     output->SetVerts(newLines);
+
   newLines->Delete();
 
   return 1;

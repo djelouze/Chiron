@@ -42,6 +42,9 @@ public:
   vtkSetObjectMacro(Points,vtkPoints);
   vtkGetObjectMacro(Points,vtkPoints);
 
+  void SetCellTypeToVertices( ){this->CellType = 1;this->Modified();};
+  void SetCellTypeToLines( ){this->CellType = 0;this->Modified();};
+
 protected:
   vtkPolylineSource( );
   ~vtkPolylineSource() {};
@@ -53,6 +56,8 @@ protected:
 private:
   vtkPolylineSource(const vtkPolylineSource&);  // Not implemented.
   void operator=(const vtkPolylineSource&);  // Not implemented.
+
+  int CellType; //!< spcify if the output topology will be made of vertices or lines
 };
 
 #endif //__VTKPOLYLINESOURCE_H__
