@@ -33,21 +33,15 @@ chrLandmarkSelector::chrLandmarkSelector( )
 
    this->LandmarkPolyData->SetPoints( this->LandmarkPoints );
    this->LandmarkPolyData->SetVerts( this->LandmarkVertices );
-   this->LandmarkVertices->InsertNextCell( 0 );
 
    // temporary visualisation pipeline
-   this->LandmarkGlyph = vtkGlyph2D::New( );
-   this->LandmarkSource = vtkGlyphSource2D::New( );
    this->LandmarkMapper = vtkPolyDataMapper::New( );
    this->LandmarkActor = vtkActor::New( );
-//   this->LandmarkActor->GetProperty( )->SetRepresentationToPoints( );
-//   this->LandmarkActor->GetProperty( )->SetPointSize( 3 );
 
-   this->LandmarkGlyph->SetInput( this->LandmarkPolyData );
-   this->LandmarkSource->CrossOn( );
-   this->LandmarkGlyph->SetSourceConnection( this->LandmarkSource->GetOutputPort( ) );
-   this->LandmarkMapper->SetInputConnection( this->LandmarkGlyph->GetOutputPort( ) );
+   this->LandmarkMapper->SetInput( this->LandmarkPolyData );
    this->LandmarkActor->SetMapper( this->LandmarkMapper );
+   this->LandmarkActor->SetPickable( 0 );
+   this->LandmarkActor->GetProperty()->SetPointSize( 3 );
 }
 
 
@@ -178,9 +172,9 @@ void chrLandmarkSelector::keyPress(vtkObject * obj, unsigned long,
                               vtkCommand * command)
 {
    command->AbortFlagOn();
-   if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'r' ) // Set the points list as a PolylineSource
+   if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'r' ) // Set the points list as a ChainSource
    {
-      this->BuildPolylineSource( );
+      this->BuildChainSource( );
    }
 }
 
@@ -190,7 +184,10 @@ void chrLandmarkSelector::sliceDown( vtkObject* o, unsigned long eid,
                                 vtkCommand* command)
 {
    command->AbortFlagOn();
-   this->ChangeSlice( -1 );
+   if( this->GetRenderWindowInteractor()->GetShiftKey() )
+      this->ChangeSlice( -10 );
+   else
+      this->ChangeSlice( -1 );
 }
 
 void chrLandmarkSelector::sliceUp( vtkObject* o, unsigned long eid,
@@ -198,7 +195,10 @@ void chrLandmarkSelector::sliceUp( vtkObject* o, unsigned long eid,
                                 vtkCommand* command)
 {
    command->AbortFlagOn();
-   this->ChangeSlice( 1 );
+   if( this->GetRenderWindowInteractor()->GetShiftKey() )
+      this->ChangeSlice( 10 );
+   else
+      this->ChangeSlice( 1 );
 }
 
 void chrLandmarkSelector::ChangeSlice( int inc )
@@ -233,7 +233,7 @@ void chrLandmarkSelector::ChangeSlice( int inc )
 
 }
 
-void chrLandmarkSelector::BuildPolylineSource( )
+void chrLandmarkSelector::BuildChainSource( )
 {
    // The objectBuilder make the view factory available
       pqObjectBuilder* builder = pqApplicationCore::instance()->getObjectBuilder();
@@ -247,17 +247,17 @@ void chrLandmarkSelector::BuildPolylineSource( )
       {
          pqPipelineSource* pipelineSource = 0;
          pipelineSource = builder->createSource( "sources", 
-                                                 "PolylineSource", 
+                                                 "ChainSource", 
                                                  serversList[0] );
          if( pipelineSource )
          {
-            vtkPolylineSource* objLineSource = 0;
-            objLineSource = static_cast<vtkPolylineSource*>(pipelineSource->getProxy()->GetClientSideObject());
-            if( objLineSource )
+            vtkChainSource* objChainSource = 0;
+            objChainSource = static_cast<vtkChainSource*>(pipelineSource->getProxy()->GetClientSideObject());
+            if( objChainSource)
             {
-               objLineSource->SetPoints( this->LandmarkPoints );
-               objLineSource->SetCellTypeToVertices( );
-               objLineSource->Update( );
+               objChainSource->SetPoints( this->LandmarkPoints );
+               objChainSource->SetCellTypeToVertices( );
+               objChainSource->Update( );
                
                pipelineSource->getProxy()->UpdateSelfAndAllInputs();
                viewManager->getActiveView()->getRepresentation(0)->renderView(true);
@@ -274,7 +274,7 @@ void chrLandmarkSelector::InsertPoint( )
 {
    int* position = this->GetRenderWindowInteractor( )->GetEventPosition();
       
-   vtkPicker* picker = vtkPicker::New( );
+   vtkPointPicker* picker = vtkPointPicker::New( );
    picker->Pick( position[0], position[1], 0, this->GetRenderer() );
    vtkPoints* pickedPositions = picker->GetPickedPositions( );
 
