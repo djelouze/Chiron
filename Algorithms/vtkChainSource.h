@@ -16,7 +16,7 @@
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
  
-//! \class vtkPolylineSource
+//! \class vtkChainSource
 //! \brief VTK source based on a set of vtkPoints
 //!
 //! \todo Comments
@@ -30,11 +30,11 @@
 #include "vtkPolyDataAlgorithm.h"
 #include "vtkPoints.h"
 
-class VTK_EXPORT vtkPolylineSource : public vtkPolyDataAlgorithm 
+class VTK_EXPORT vtkChainSource : public vtkPolyDataAlgorithm 
 {
 public:
-  static vtkPolylineSource *New();
-  vtkTypeRevisionMacro(vtkPolylineSource,vtkPolyDataAlgorithm);
+  static vtkChainSource *New();
+  vtkTypeRevisionMacro(vtkChainSource,vtkPolyDataAlgorithm);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
@@ -46,16 +46,16 @@ public:
   void SetCellTypeToLines( ){this->CellType = 0;this->Modified();};
 
 protected:
-  vtkPolylineSource( );
-  ~vtkPolylineSource() {};
+  vtkChainSource( );
+  ~vtkChainSource() {};
 
   int RequestData(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
   int RequestInformation(vtkInformation *, vtkInformationVector **, vtkInformationVector *);
   vtkPoints* Points;
 
 private:
-  vtkPolylineSource(const vtkPolylineSource&);  // Not implemented.
-  void operator=(const vtkPolylineSource&);  // Not implemented.
+  vtkChainSource(const vtkChainSource&);  // Not implemented.
+  void operator=(const vtkChainSource&);  // Not implemented.
 
   int CellType; //!< spcify if the output topology will be made of vertices or lines
 };

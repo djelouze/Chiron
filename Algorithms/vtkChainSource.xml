@@ -1,17 +1,17 @@
 <ServerManagerConfiguration>
    <ProxyGroup name="sources">
       <!-- ================================================================== -->
-      <SourceProxy name="PolylineSource"
-                   class="vtkPolylineSource"
-                   label="Polyline Source">
+      <SourceProxy name="ChainSource"
+                   class="vtkChainSource"
+                   label="Chain Source">
          <Documentation
                        long_help="."
-                       short_help="Output a line from a vtkPoints.">
+                       short_help="Output a chain (line or vertices)  from a vtkPoints.">
          </Documentation>
          
 
       </SourceProxy>
-      <!-- End PolylineSource -->
+      <!-- End ChainSource -->
    </ProxyGroup>
    <!-- End Source Group -->
 </ServerManagerConfiguration>

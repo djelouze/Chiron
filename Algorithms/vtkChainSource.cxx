@@ -1,18 +1,4 @@
-/*=========================================================================
-
-  Program:   Visualization Toolkit
-  Module:    $RCSfile: vtkPolylineSource.cxx,v $
-
-  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen
-  All rights reserved.
-  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     PURPOSE.  See the above copyright notice for more information.
-
-=========================================================================*/
-#include "vtkPolylineSource.h"
+#include "vtkChainSource.h"
 
 #include "vtkCellArray.h"
 #include "vtkFloatArray.h"
@@ -24,18 +10,17 @@
 #include "vtkPoints.h"
 #include "vtkPolyData.h"
 
-#include <math.h>
-vtkCxxRevisionMacro(vtkPolylineSource, "$Revision: 1.48 $");
-vtkStandardNewMacro(vtkPolylineSource);
+vtkCxxRevisionMacro(vtkChainSource, "$Revision: 1.48 $");
+vtkStandardNewMacro(vtkChainSource);
 
-vtkPolylineSource::vtkPolylineSource()
+vtkChainSource::vtkChainSource()
 {
   this->CellType = 0;
   this->Points = 0;
   this->SetNumberOfInputPorts(0);
 }
 
-int vtkPolylineSource::RequestInformation(
+int vtkChainSource::RequestInformation(
   vtkInformation *vtkNotUsed(request),
   vtkInformationVector **vtkNotUsed(inputVector),
   vtkInformationVector *outputVector)
@@ -47,7 +32,7 @@ int vtkPolylineSource::RequestInformation(
   return 1;
 }
 
-int vtkPolylineSource::RequestData(
+int vtkChainSource::RequestData(
   vtkInformation *vtkNotUsed(request),
   vtkInformationVector **vtkNotUsed(inputVector),
   vtkInformationVector *outputVector)
@@ -82,16 +67,22 @@ int vtkPolylineSource::RequestData(
   newPoints->Delete();
 
   if( this->CellType == 0 )
+  {
      output->SetLines(newLines);
-  else 
+     cout << "Setting topology to line" << endl;
+  }
+  else
+  { 
      output->SetVerts(newLines);
+     cout << "Setting topology to vertex" << endl;
+  }
 
   newLines->Delete();
 
   return 1;
 }
 
-void vtkPolylineSource::PrintSelf(ostream& os, vtkIndent indent)
+void vtkChainSource::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
 }
