@@ -22,7 +22,7 @@
 //! When activated, the click event is caught and route to this class
 //! that increments the slice of every existing slice representation.
 //! The click event position is used to append a points to a vtkPoints
-//! list. When 'r' is pressed, a vtkPolylineSource is added to the 
+//! list. When 'r' is pressed, a vtkChainSource is added to the 
 //! current server based on the vtkPoints. Points are resetted.
 //!
 //!
@@ -34,7 +34,7 @@
 
 // Chiron includes
 #include "chrViewModule.h"
-#include "vtkPolylineSource.h"
+#include "vtkChainSource.h"
 
 // VTK includes
 #include "vtkEventQtSlotConnect.h"
@@ -89,7 +89,7 @@ private:
    //! to the last event that occurs in he interactor
    void InsertPoint( );
 
-   //! Create a vtkPolylineSource based on UserPoint
+   //! Create a vtkChainSource based on UserPoint
    //! and add it to the first server
    void BuildPolylineSource( );
 

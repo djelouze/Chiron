@@ -155,8 +155,8 @@ void chrClickAndSlice::BuildPolylineSource( )
                                                  serversList[0] );
          if( pipelineSource )
          {
-            vtkPolylineSource* objLineSource = 0;
-            objLineSource = static_cast<vtkPolylineSource*>(pipelineSource->getProxy()->GetClientSideObject());
+            vtkChainSource* objLineSource = 0;
+            objLineSource = static_cast<vtkChainSource*>(pipelineSource->getProxy()->GetClientSideObject());
             if( objLineSource )
             {
                objLineSource->SetPoints( this->UserPoints );

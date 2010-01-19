@@ -58,8 +58,8 @@ TARGET_LINK_LIBRARIES( ChironToolbar ChironModules )
  ADD_PARAVIEW_PLUGIN(
    ChironAlgoPlugin          #<--Name for the plugin
   "1.0"                        #<--Version string
-   SERVER_MANAGER_XML ${CHIRON_ALGORITHMS_PATH}/vtkPolylineSource.xml  #<-- server manager xml
-   SERVER_MANAGER_SOURCES ${CHIRON_ALGORITHMS_PATH}/vtkPolylineSource.cxx 
+   SERVER_MANAGER_XML ${CHIRON_ALGORITHMS_PATH}/vtkChainSource.xml  #<-- server manager xml
+   SERVER_MANAGER_SOURCES ${CHIRON_ALGORITHMS_PATH}/vtkChainSource.cxx 
 )
 
 
