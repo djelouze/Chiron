@@ -84,8 +84,12 @@ vtkRenderer* chrViewModule::GetRenderer( )
                                                  ->GetRenderers( );
       //! \warning It may exists several renderers. Thus the first one is not
       //! necessary the good one.
-      vtkRenderer* renderer = renCollection->GetFirstRenderer( );
-      return( renderer );
+      renCollection->InitTraversal( );
+      vtkRenderer* renderer;
+      while( (renderer = renCollection->GetNextItem( )) != 0 )
+         if( renderer->GetLayer() == 0)
+            return( renderer );
+      return( renCollection->GetFirstRenderer( ) );
    }
    else
       return( 0 );
