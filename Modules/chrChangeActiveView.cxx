@@ -42,7 +42,7 @@ void chrChangeActiveView::activateViewModules( pqView* view )
 {
    chrImageInfoOverlay* imageInfoOverlay = new chrImageInfoOverlay( );
    imageInfoOverlay->SetView( view );
-//   imageInfoOverlay->Activate( );
+   imageInfoOverlay->Activate( );
    
    chrSliceVolume* sliceModule = new chrSliceVolume( );
    sliceModule->SetView( view );
