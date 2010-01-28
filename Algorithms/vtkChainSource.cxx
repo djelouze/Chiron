@@ -84,7 +84,7 @@ int vtkChainSource::RequestData(
     output->SetPoints(newPoints);
   newPoints->Delete();
 
-  if( this->CellType == 0 )
+  if( this->CellType == 1 )
   {
      output->SetLines(newLines);
      cout << "Setting topology to line" << endl;
