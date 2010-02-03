@@ -42,8 +42,11 @@ public:
   vtkSetObjectMacro(Points,vtkPoints);
   vtkGetObjectMacro(Points,vtkPoints);
 
-  void SetCellTypeToVertices( ){this->CellType = 1;this->Modified();};
-  void SetCellTypeToLines( ){this->CellType = 0;this->Modified();};
+  vtkSetMacro( CellType, int );
+  vtkGetMacro( CellType, int );
+
+  void SetCellTypeToVertices( ){this->SetCellType(0);};
+  void SetCellTypeToLines( ){this->SetCellType(1);};
 
 protected:
   vtkChainSource( );
