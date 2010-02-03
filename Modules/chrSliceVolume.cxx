@@ -16,12 +16,13 @@
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
  
-#include "chrSliceVolume.h"
+#include <chrSliceVolume.h>
 
 // ParaView includes
-#include "pqDataRepresentation.h"
-#include "vtkSMIntVectorProperty.h"
-#include "vtkSMProxy.h"
+#include <pqDataRepresentation.h>
+#include <vtkSMIntVectorProperty.h>
+#include <vtkSMProxy.h>
+#include <vtkSMDimensionsDomain.h>
 
 chrSliceVolume::chrSliceVolume( )
 {
@@ -197,6 +198,10 @@ void chrSliceVolume::ChangeSlice( int inc )
    QList<pqRepresentation*> repList;
    repList = this->GetView( )->getRepresentations( );
 
+   int multiplicator = 1;
+   if( this->GetRenderWindowInteractor( )->GetShiftKey( ) )
+      multiplicator = 10;
+
    int i = 0;
    for( i = 0; i < repList.count();i ++)
    {
@@ -212,8 +217,9 @@ void chrSliceVolume::ChangeSlice( int inc )
             if( ivp )
             {
                int currentSlice = ivp->GetElement( 0 );
-
-               ivp->SetElement(0, currentSlice + inc);
+               int nextSlice = currentSlice + inc * multiplicator;
+               
+               ivp->SetElement(0, nextSlice );
 
                imageSlice->getProxy()->UpdateVTKObjects();
                imageSlice->renderView(true);
