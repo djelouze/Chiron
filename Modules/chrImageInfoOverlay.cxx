@@ -93,7 +93,10 @@ void chrImageInfoOverlay::OnMouseMove( vtkObject* obj, unsigned long eid, void* 
       vtkAlgorithm* source = Self->UpstreamPipeline( imageData, 3 );
       vtkImageReader2* reader = vtkImageReader2::SafeDownCast( source );
       if( reader )
-          streamProducer << reader->GetFileName( );
+          if( reader->GetFileName( ) )
+             streamProducer << reader->GetFileName( );
+          else
+             streamProducer << "Unknown name";
       else
          streamProducer << source->GetClassName( );
       Self->ImageName->SetInput( streamProducer.str().c_str() );
