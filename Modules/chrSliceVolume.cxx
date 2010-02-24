@@ -166,7 +166,7 @@ void chrSliceVolume::mouseMove( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   int x, y;
+   int x = 0, y = 0;
    if( this->Dragging )
    {
       command->AbortFlagOn();
