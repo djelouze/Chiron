@@ -42,19 +42,15 @@ void chrChangeActiveView::activateViewModules( pqView* view )
 {
    chrImageInfoOverlay* imageInfoOverlay = new chrImageInfoOverlay( );
    imageInfoOverlay->SetView( view );
-   //imageInfoOverlay->Activate( );
    
    chrSliceVolume* sliceModule = new chrSliceVolume( );
    sliceModule->SetView( view );
-   sliceModule->ButtonActivate( );
    
-//   chrClickAndSlice* clickAndSliceModule = new chrClickAndSlice( );
-//   clickAndSliceModule->SetView( view );
-//   clickAndSliceModule->ButtonActivate( );
+   chrClickAndSlice* clickAndSliceModule = new chrClickAndSlice( );
+   clickAndSliceModule->SetView( view );
    
    chrLandmarkSelector* landmarkModule = new chrLandmarkSelector( );
    landmarkModule->SetView( view );
-   landmarkModule->ButtonActivate( );
    
    chrScaleInfoOverlay* scaleInfoOverlay = new chrScaleInfoOverlay( );
    scaleInfoOverlay->SetView( view );

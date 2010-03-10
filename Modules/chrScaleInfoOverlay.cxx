@@ -46,10 +46,6 @@ void chrScaleInfoOverlay::Activate( )
 
    if( this->Activated )
    {
-      this->AddButton( SLOT(setLegendProperty( )), 
-                       QIcon(":/ToolbarIcons/scale-256x256.png" ),
-                       1, // checkable
-                       "Scale legend property")->setChecked( 1 );
    }
    else
       cout << "View not initialized" << endl;

@@ -73,16 +73,6 @@ protected:
    //! Check the view validity. Default is true for any pqView object.
    virtual int IsViewValid( pqView* ){return( 1 );};
 
-   //! Add a button to the pqView toolbar. When the button is clicked,
-   //! 'slot' is called. Typical use is to define a slot function in child
-   //! classes and pass it to AddButton.
-   //! \todo This is a PoC implementation. It would be nice to add any widgets
-   //! to the view toolbar (slider, combobox,...)
-   QAction* AddButton( const char* slot, 
-                   QIcon qicon,
-                   int checkable=0,
-                   const char* toolTips="Module button" );
-
    //! Get the QVTKWidget embedded in the pqView
    QVTKWidget* GetQVTKWidget( );
    //! Get the vtkRenderWindow embedded in the QVTKWidget

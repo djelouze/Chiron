@@ -38,17 +38,6 @@ chrSliceVolume::~chrSliceVolume( )
 
 }
 
-void chrSliceVolume::ButtonActivate( )
-{
-   if( this->GetView( ) != 0 )
-   {
-      this->AddButton( SLOT( toggleSliceMode() ),
-                       QIcon(":/Cursors/slice-32x32.png"),
-                       1,
-                       "Slice mode"
-                     );
-   }
-}
 
 void chrSliceVolume::Activate( )
 {

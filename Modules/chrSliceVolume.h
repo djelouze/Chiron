@@ -48,9 +48,6 @@ public:
    virtual void Activate( );
    virtual void Deactivate( );
 
-   //! Add a button to the view menu bar that toggle activation
-   void ButtonActivate( );
-
 protected:
    virtual int IsViewValid( pqView* );
 

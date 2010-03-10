@@ -53,17 +53,6 @@ chrLandmarkSelector::~chrLandmarkSelector( )
    this->LandmarkVertices->Delete( );
 }
 
-void chrLandmarkSelector::ButtonActivate( )
-{
-   if( this->GetView( ) != 0 )
-   {
-      this->AddButton( SLOT( toggleMode() ),
-                       QIcon(":/Cursors/target-32x32.png"),
-                       1,
-                       "Landmark selector"
-                     );
-   }
-}
 
 void chrLandmarkSelector::Activate( )
 {

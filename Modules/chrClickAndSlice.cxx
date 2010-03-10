@@ -36,17 +36,6 @@ chrClickAndSlice::~chrClickAndSlice( )
    this->UserPoints->Delete( );
 }
 
-void chrClickAndSlice::ButtonActivate( )
-{
-   if( this->GetView( ) != 0 )
-   {
-      this->AddButton( SLOT( toggleMode() ),
-                       QIcon(":/Cursors/slice-32x32.png"),
-                       1,
-                       "Click'n Slice"
-                     );
-   }
-}
 
 void chrClickAndSlice::Activate( )
 {

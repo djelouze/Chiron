@@ -41,11 +41,6 @@ void chrWindowLevel::Activate( )
 {
    if( this->GetView( ) != 0 )
    {
-      this->AddButton( SLOT( enterSliceMode() ),
-                       QIcon(":/Cursors/brightness-32x32.png"),
-                       1,
-                       "Window level"
-                     );
    }
 }
 void chrWindowLevel::enterSliceMode( )
