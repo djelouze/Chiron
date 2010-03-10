@@ -28,16 +28,12 @@
 //-----------------------------------------------------------------------------
 ChironToolbarActions::ChironToolbarActions(QObject* p) : QActionGroup(p)
 {
-   // First Chiron toolbar button is checkable, but not exclusive
-   this->setExclusive( false );
-
    // Adding buttons (ie actions) to the plugin's toolbar
    QAction* a;
    // Define a new action : Icon, tool tip and parent
    a = new QAction( QIcon(":/ToolbarIcons/chiron-256x256.png"), 
                     "Enable Chiron", 
                     this );
-   a->setCheckable( true );
    
    // setData give the possibility to determine which button has been pressed
    a->setData("EnableChiron");
@@ -78,33 +74,8 @@ void ChironToolbarActions::onAction(QAction* a)
    //     perform asynchronous activations
    if( actionStr == QString( "EnableChiron") )
    {
-      // When Chiron is enabled, view creations are detected and connected
-      // to each module
-      this->connectToViewCreation( a->isChecked( ));
-   }
-}
-
-void ChironToolbarActions::connectToViewCreation( bool connect )
-{
-   pqApplicationCore* core = pqApplicationCore::instance();
-   pqObjectBuilder* builder = core->getObjectBuilder();
-
-   if( connect )
-   {
       this->changeActiveViewModule->Activate( );
    }
-   else
-   {
-      this->changeActiveViewModule->Deactivate( );
-   }
-}
-
-
-void ChironToolbarActions::connectToChironModules( pqView* view )
-{
-//   chrWindowLevel* moduleWL = new chrWindowLevel( );
-//   moduleWL->SetView( view );
-//   moduleWL->Activate( );
 }
 
 

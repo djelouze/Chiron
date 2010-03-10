@@ -58,10 +58,8 @@ protected slots:
   //! Callback for each action triggerred.
   //! This function is called after a click on a button of the toolBar
   void onAction(QAction* a);
-  void connectToChironModules( pqView* );
 
 private:
-   void connectToViewCreation( bool on );
    std::vector<chrViewModule*> viewModuleList;
    chrChangeActiveView* changeActiveViewModule;
 };
