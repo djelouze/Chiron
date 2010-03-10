@@ -70,6 +70,9 @@ public:
    //! Inherited from chrViewModule
    virtual void Activate( );
 
+   //! Inherited from chrViewModule
+   virtual void Deactivate( );
+
 protected:
    //! Inherited from chrViewModule
    virtual int IsViewValid( pqView* );
@@ -81,6 +84,8 @@ private:
                          unsigned long eid, 
                          void* clientdata, 
                          void *calldata);
+   long unsigned int MoveEventTag; //! set when the module is activated. Used
+                                   //!  to remove the observer
    //! Find the nth upstream algorithm producing the given image data.
    vtkAlgorithm* UpstreamPipeline( vtkImageData* img, int n);
 

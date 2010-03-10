@@ -61,11 +61,21 @@ void chrImageInfoOverlay::Activate( )
    if( this->Activated ) // Parent class has properly activated the module
    {
       // Watch for MouseMoveEvent
-      this->GetRenderWindowInteractor( )
+      this->MoveEventTag = this->GetRenderWindowInteractor( )
           ->AddObserver( vtkCommand::MouseMoveEvent, this->Callback, 1.0 );
    }
    else
       cout << "View not initialized" << endl;
+}
+
+void chrImageInfoOverlay::Deactivate( )
+{
+
+   if( this->Activated )
+      this->GetRenderWindowInteractor( )
+          ->RemoveObserver( this->MoveEventTag );
+
+   chrInfoOverlay::Deactivate( );
 }
 
 int chrImageInfoOverlay::IsViewValid( pqView* view )
