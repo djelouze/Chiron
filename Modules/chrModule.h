@@ -55,6 +55,9 @@ public:
    //! Pure virtual function. Implement the processus of deactivation.
    virtual void Deactivate( )=0;
 
+public slots:
+   void toggleActivation( );
+
 protected:
    pqApplicationCore* Core; //!< Application instance
    int Activated; //!< Module is activated or not. Could be used in Activate() to avoid
