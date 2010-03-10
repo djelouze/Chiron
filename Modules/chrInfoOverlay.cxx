@@ -84,7 +84,7 @@ void chrInfoOverlay::Activate( )
    }
    else
    {
-      cout << "View not initialized" << endl;
+      // cout << "View not initialized" << endl;
       this->Activated = 0;
    }
 }
@@ -102,8 +102,8 @@ void chrInfoOverlay::Deactivate( )
 
       this->Activated = 0;
    }
-   else
-      cout << "View not initialized" << endl;
+   //else
+      // cout << "View not initialized" << endl;
 
 
 }
@@ -112,7 +112,7 @@ int chrInfoOverlay::IsViewValid( pqView* view )
 {
    // For now, the overlay is only possible for 3D render view)
    pqRenderView* renderView = qobject_cast<pqRenderView*>(view);
-   cout << renderView << endl;
+   
    if( renderView )
       return( 1 );
    else
