@@ -47,6 +47,7 @@ INCLUDE_DIRECTORIES (${EXECUTABLE_OUTPUT_PATH})
 INCLUDE_DIRECTORIES (${Chiron_SOURCE_DIR}/Algorithms) 
 INCLUDE_DIRECTORIES (${Chiron_SOURCE_DIR}/Resources)
 INCLUDE_DIRECTORIES (${Chiron_SOURCE_DIR}/Modules)
+INCLUDE_DIRECTORIES (${Chiron_SOURCE_DIR}/GuiModifiers)
 INCLUDE_DIRECTORIES (${Chiron_SOURCE_DIR}/Plugins)
 
 SET( CHIRON_RESOURCES_PATH ${Chiron_SOURCE_DIR}/Resources )
@@ -62,6 +63,7 @@ SUBDIRS(
    Algorithms
 #   Resources
    Plugins
+   GuiModifiers
    Modules
 )
 
