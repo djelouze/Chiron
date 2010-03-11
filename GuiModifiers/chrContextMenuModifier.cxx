@@ -31,13 +31,15 @@ chrContextMenuModifier::~chrContextMenuModifier( )
 
 void chrContextMenuModifier::AddContextMenuItemToView( pqRenderViewBase* view,
                                                      const char* itemText,
-                                                     chrModule* chironModule )
+                                                     chrModule* chironModule,
+                                                     const char* slot )
 {
    QWidget* contextMenu = view->getWidget( );
    QAction* action = new QAction( itemText, view );
    contextMenu->addAction( action );
    QObject::connect(action, SIGNAL(triggered(bool)),
-                    chironModule, SLOT(toggleActivation()));
+                    chironModule, 
+                    (!slot?SLOT(toggleActivation()):slot));
 
 }
 

@@ -65,7 +65,7 @@ public:
    virtual ~chrContextMenuModifier( );
 
    //!
-   void AddContextMenuItemToView( pqRenderViewBase*, const char*, chrModule* );
+   void AddContextMenuItemToView( pqRenderViewBase*, const char*, chrModule*, const char* slot=0x0 );
 
 protected:
 
