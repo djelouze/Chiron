@@ -36,6 +36,7 @@ void chrContextMenuModifier::AddContextMenuItemToView( pqRenderViewBase* view,
 {
    QWidget* contextMenu = view->getWidget( );
    QAction* action = new QAction( itemText, view );
+   action->setCheckable( true );
    contextMenu->addAction( action );
    QObject::connect(action, SIGNAL(triggered(bool)),
                     chironModule, 
