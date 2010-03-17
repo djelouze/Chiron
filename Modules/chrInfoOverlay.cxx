@@ -81,6 +81,7 @@ void chrInfoOverlay::Activate( )
       
       this->Layout( );
       this->Activated = 1;
+      this->GetRenderWindowInteractor( )->Render( );
    }
    else
    {
