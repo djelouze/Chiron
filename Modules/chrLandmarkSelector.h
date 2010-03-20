@@ -17,14 +17,17 @@
 //    If not, see <http://www.gnu.org/licenses/>.
  
 //! \class chrLandmarkSelector
-//! \brief Build a Polyline while slicing a volume.
+//! \brief Add PointSource to the pipeline centered on user mouse click.
 //!
 //! When activated, the click event is caught and route to this class
-//! that increments the slice of every existing slice representation.
-//! The click event position is used to append a points to a vtkPoints
-//! list. When 'r' is pressed, a vtkChainSource is added to the 
-//! current server based on the vtkPoints. Points are resetted.
+//! that adds a PointSource to the pipeline and centers it at the event
+//! position.
+//! When 'a' is pressed, the created PointSources are appended through
+//! a vtkChainSource. The chain source is added to the pipeline and the point
+//! sources are suppressed [not implemented].
 //!
+//! \todo Set this module as an application module.
+//! \todo Implement the 'a' key press action.
 //!
 //! \author Jerome Velut
 //! \date 14 dec 2009
@@ -34,16 +37,13 @@
 
 // Chiron includes
 #include "chrViewModule.h"
-#include "vtkChainSource.h"
 
 // VTK includes
 #include "vtkEventQtSlotConnect.h"
-#include "vtkPoints.h"
+#include "vtkSMDoubleVectorProperty.h"
 #include "vtkCellArray.h"
 #include "vtkPointPicker.h"
-#include "vtkPolyData.h"
-#include "vtkPolyDataMapper.h"
-#include "vtkActor.h"
+#include "vtkPoints.h"
 #include "vtkProperty.h"
 
 // ParaView includes
@@ -51,6 +51,10 @@
 #include "pqObjectBuilder.h"
 #include "pqPipelineSource.h"
 #include "pqServer.h"
+
+// std includes
+#include <vector>
+using namespace vtkstd;
 
 class chrLandmarkSelector : public chrViewModule
 {
@@ -69,13 +73,6 @@ protected:
 protected slots:
       void toggleMode( );
 
-      void sliceDown(vtkObject * obj, unsigned long,
-                 void * client_data, void *,
-                 vtkCommand * command);
-      void sliceUp(vtkObject * obj, unsigned long,
-                     void * client_data, void *,
-                     vtkCommand * command);
-
       void leftButtonPress(vtkObject * obj, unsigned long,
                    void * client_data, void *,
                    vtkCommand * command);
@@ -90,22 +87,13 @@ protected slots:
                       vtkCommand * command);
 
 private:
-   //! If a SliceRepresentation is visible in the view,
-   //! then slice is added 'inc'.
-   void ChangeSlice( int inc );
-
-   //! Insert a point in UserPoint with position set
-   //! to the last event that occurs in he interactor
+   //! Insert a PointSource in the pipeline centered on the user click
    void InsertPoint( );
 
-   void BuildChainSource( );
+   void AppendPointSources( );
 
    vtkEventQtSlotConnect* EventConnect;
-   vtkPoints* LandmarkPoints;
-   vtkCellArray* LandmarkVertices;
-   vtkPolyData* LandmarkPolyData;
-   vtkPolyDataMapper* LandmarkMapper;
-   vtkActor* LandmarkActor;
+   vector<pqPipelineSource*> PointSourceProxies;
 };
 
 #endif //__CHRLANDMARKSELECTOR_H__

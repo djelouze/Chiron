@@ -26,37 +26,18 @@
 chrLandmarkSelector::chrLandmarkSelector( )
 {
    this->EventConnect = vtkEventQtSlotConnect::New( );
-
-   this->LandmarkPoints = vtkPoints::New( );
-   this->LandmarkVertices = vtkCellArray::New( );
-   this->LandmarkPolyData = vtkPolyData::New( );
-
-   this->LandmarkPolyData->SetPoints( this->LandmarkPoints );
-   this->LandmarkPolyData->SetVerts( this->LandmarkVertices );
-
-   // temporary visualisation pipeline
-   this->LandmarkMapper = vtkPolyDataMapper::New( );
-   this->LandmarkActor = vtkActor::New( );
-
-   this->LandmarkMapper->SetInput( this->LandmarkPolyData );
-   this->LandmarkActor->SetMapper( this->LandmarkMapper );
-   this->LandmarkActor->SetPickable( 0 );
-   this->LandmarkActor->GetProperty()->SetPointSize( 3 );
 }
 
 
 chrLandmarkSelector::~chrLandmarkSelector( )
 {
    this->EventConnect->Delete( );
-   this->LandmarkPoints->Delete( );
-   this->LandmarkPolyData->Delete( );
-   this->LandmarkVertices->Delete( );
 }
 
 
 void chrLandmarkSelector::Activate( )
 {
-   if( this->GetView() )
+   if( this->GetView() && !this->Activated )
    {
       this->toggleMode( );
    }
@@ -64,7 +45,7 @@ void chrLandmarkSelector::Activate( )
 
 void chrLandmarkSelector::Deactivate( )
 {
-   if( this->GetView() )
+   if( this->GetView() && this->Activated )
       this->toggleMode( );
 }
 
@@ -72,28 +53,6 @@ void chrLandmarkSelector::toggleMode( )
 {
    if( !this->Activated )
    {
-      this->EventConnect->Connect(
-                                  this->GetRenderWindowInteractor(),
-                                  vtkCommand::MouseWheelBackwardEvent,
-                                  this,
-                                  SLOT(sliceDown( 
-                                              vtkObject*, 
-                                              unsigned long, 
-                                              void*, 
-                                              void*, 
-                                              vtkCommand*)),
-                                   this->GetView( ), 1.0);
-      this->EventConnect->Connect(
-                                  this->GetRenderWindowInteractor(),
-                                  vtkCommand::MouseWheelForwardEvent,
-                                  this,
-                                  SLOT(sliceUp( 
-                                              vtkObject*, 
-                                              unsigned long, 
-                                              void*, 
-                                              void*, 
-                                              vtkCommand*)),
-                                   this->GetView( ), 1.0);
        this->EventConnect->Connect(
                                   this->GetRenderWindowInteractor(),
                                   vtkCommand::LeftButtonPressEvent,
@@ -131,13 +90,12 @@ void chrLandmarkSelector::toggleMode( )
                                    this->GetView( ), 1.0);
 
       this->Activated = 1;
-      this->GetRenderer( )->AddActor( this->LandmarkActor );
+      this->PointSourceProxies.empty( );
    }
    else
    {
       this->EventConnect->Disconnect( ); 
       this->Activated = 0;
-      this->GetRenderer( )->RemoveActor( this->LandmarkActor );
    }
 }
 
@@ -145,15 +103,19 @@ void chrLandmarkSelector::leftButtonPress( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   command->AbortFlagOn();
+   if( this->GetRenderWindowInteractor( )->GetShiftKey( ) )
+      command->AbortFlagOn();
 }
 
 void chrLandmarkSelector::leftButtonRelease( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   command->AbortFlagOn();
-   this->InsertPoint( );
+   if( this->GetRenderWindowInteractor( )->GetShiftKey( ) )
+   {
+      command->AbortFlagOn();
+      this->InsertPoint( );
+   }
 }
 
 void chrLandmarkSelector::keyPress(vtkObject * obj, unsigned long,
@@ -161,103 +123,16 @@ void chrLandmarkSelector::keyPress(vtkObject * obj, unsigned long,
                               vtkCommand * command)
 {
    command->AbortFlagOn();
-   if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'r' ) // Set the points list as a ChainSource
+   if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'a' ) // Set the points list as a ChainSource
    {
-      this->BuildChainSource( );
+      this->AppendPointSources( );
    }
 }
 
-
-void chrLandmarkSelector::sliceDown( vtkObject* o, unsigned long eid,
-                                void* clientdata, void* calldata,
-                                vtkCommand* command)
+void chrLandmarkSelector::AppendPointSources( )
 {
-   command->AbortFlagOn();
-   if( this->GetRenderWindowInteractor()->GetShiftKey() )
-      this->ChangeSlice( -10 );
-   else
-      this->ChangeSlice( -1 );
+   cout << "Append point sources: not implemented" << endl;
 }
-
-void chrLandmarkSelector::sliceUp( vtkObject* o, unsigned long eid,
-                                void* clientdata, void* calldata,
-                                vtkCommand* command)
-{
-   command->AbortFlagOn();
-   if( this->GetRenderWindowInteractor()->GetShiftKey() )
-      this->ChangeSlice( 10 );
-   else
-      this->ChangeSlice( 1 );
-}
-
-void chrLandmarkSelector::ChangeSlice( int inc )
-{
-   QList<pqRepresentation*> repList;
-   repList = this->GetView( )->getRepresentations( );
-
-   int i = 0;
-   for( i = 0; i < repList.count();i ++)
-   {
-      pqDataRepresentation* imageSlice = 0;
-      imageSlice = static_cast<pqDataRepresentation*>(repList[i]);
-      if( imageSlice )
-      {
-         if( imageSlice->isVisible( ) )
-         {
-            vtkSMIntVectorProperty* ivp = 0;
-            ivp = vtkSMIntVectorProperty::SafeDownCast( imageSlice->getProxy()
-                  ->GetProperty("Slice"));
-            if( ivp )
-            {
-               int currentSlice = ivp->GetElement( 0 );
-
-               ivp->SetElement(0, currentSlice + inc);
-
-               imageSlice->getProxy()->UpdateVTKObjects();
-               imageSlice->renderView(true);
-            }
-         }
-      }
-   }
-
-}
-
-void chrLandmarkSelector::BuildChainSource( )
-{
-   // The objectBuilder make the view factory available
-      pqObjectBuilder* builder = pqApplicationCore::instance()->getObjectBuilder();
-      pqServerManagerModel* smm = pqApplicationCore::instance()->getServerManagerModel();
-      pqViewManager * viewManager = qobject_cast<pqViewManager*>
-         (pqApplicationCore::instance()->manager("MULTIVIEW_MANAGER"));
-   
-      QList<pqServer*> serversList = smm->findItems<pqServer*>( );
-
-      if( serversList.count() != 0 )
-      {
-         pqPipelineSource* pipelineSource = 0;
-         pipelineSource = builder->createSource( "sources", 
-                                                 "ChainSource", 
-                                                 serversList[0] );
-         if( pipelineSource )
-         {
-            vtkChainSource* objChainSource = 0;
-            objChainSource = static_cast<vtkChainSource*>(pipelineSource->getProxy()->GetClientSideObject());
-            if( objChainSource)
-            {
-               objChainSource->SetPoints( this->LandmarkPoints );
-               objChainSource->SetCellTypeToVertices( );
-               objChainSource->Update( );
-               
-               pipelineSource->getProxy()->UpdateSelfAndAllInputs();
-               viewManager->getActiveView()->getRepresentation(0)->renderView(true);
-
-               this->LandmarkPoints->Reset( );
-               this->LandmarkVertices->Reset( );
-            }
-         }
-      }  
-}
-
 
 void chrLandmarkSelector::InsertPoint( )
 {
@@ -267,19 +142,42 @@ void chrLandmarkSelector::InsertPoint( )
    picker->Pick( position[0], position[1], 0, this->GetRenderer() );
    vtkPoints* pickedPositions = picker->GetPickedPositions( );
 
-   if( this->LandmarkVertices->GetNumberOfCells( ) == 0 )
-      this->LandmarkVertices->InsertNextCell( 0 );
-   
    int i;
+   double point[3];
    for( i = 0; i < pickedPositions->GetNumberOfPoints( ) ; i++)
    {
-      double point[3];
       pickedPositions->GetPoint( i, point );
-      vtkIdType ptId = this->LandmarkPoints->InsertNextPoint( point );
-      this->LandmarkVertices->InsertCellPoint( ptId );
-      this->LandmarkVertices->UpdateCellCount( this->LandmarkPoints->GetNumberOfPoints( ));
    }
-   this->LandmarkPolyData->Modified( );
+
+   pqObjectBuilder* builder = pqApplicationCore::instance()->getObjectBuilder();
+   pqServerManagerModel* smm = pqApplicationCore::instance()->getServerManagerModel();
+   pqViewManager * viewManager = qobject_cast<pqViewManager*>
+                 (pqApplicationCore::instance()->manager("MULTIVIEW_MANAGER"));
+
+   QList<pqServer*> serversList = smm->findItems<pqServer*>( );
+
+   if( serversList.count() != 0 )
+   {
+      pqPipelineSource* pipelineSource = 0;
+      pipelineSource = builder->createSource( "sources",
+                                              "PointSource",
+                                              serversList[0] );
+      this->PointSourceProxies.push_back( pipelineSource );
+
+      if( pipelineSource )
+      {
+         vtkSMDoubleVectorProperty* centerProperty = 0;
+         centerProperty = static_cast<vtkSMDoubleVectorProperty*>(pipelineSource->getProxy()->GetProperty( "Center" ));
+         if( centerProperty )
+         {
+            centerProperty->SetElement( 0, point[0] );
+            centerProperty->SetElement( 1, point[1] );
+            centerProperty->SetElement( 2, point[2] );
+            pipelineSource->renderAllViews( true );
+         }
+      }
+   }
+
    this->GetRenderWindowInteractor( )->Render( ); 
 }
 
