@@ -115,8 +115,8 @@ void chrSliceVolume::toggleSliceMode( )
 
 
 
-      this->GetQVTKWidget()
-          ->setCursor( QCursor( QPixmap( ":/Cursors/slice-32x32.png") ) );
+//      this->GetQVTKWidget()
+//          ->setCursor( QCursor( QPixmap( ":/Cursors/slice-32x32.png") ) );
       this->Activated = 1;
    }
    else
@@ -134,7 +134,7 @@ void chrSliceVolume::leftButtonPress( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   command->AbortFlagOn();
+   //command->AbortFlagOn();
    int lastx;
    this->GetRenderWindowInteractor( )->GetEventPosition( lastx, 
                                                          this->lastY );
@@ -145,7 +145,7 @@ void chrSliceVolume::leftButtonRelease( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   command->AbortFlagOn();
+   //command->AbortFlagOn();
    this->Dragging = 0;
 }
 
