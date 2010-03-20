@@ -33,6 +33,7 @@
 
 // Chiron includes
 #include "chrModule.h"
+#include "chrViewModule.h"
 
 // ParaView includes
 #include "pqView.h"

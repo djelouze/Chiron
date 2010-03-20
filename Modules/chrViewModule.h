@@ -69,10 +69,10 @@ public:
    //! Return the pqView attached to this module
    pqView* GetView( );
 
-protected:
    //! Check the view validity. Default is true for any pqView object.
    virtual int IsViewValid( pqView* ){return( 1 );};
 
+protected:
    //! Get the QVTKWidget embedded in the pqView
    QVTKWidget* GetQVTKWidget( );
    //! Get the vtkRenderWindow embedded in the QVTKWidget

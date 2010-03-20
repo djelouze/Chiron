@@ -34,6 +34,13 @@ void chrContextMenuModifier::AddContextMenuItemToView( pqRenderViewBase* view,
                                                      chrModule* chironModule,
                                                      const char* slot )
 {
+   // ViewModules have a valid view checker.
+   // If the view is not valid, then don't add the menu item.
+   chrViewModule* viewModule = static_cast<chrViewModule*>(chironModule);
+   if( viewModule )
+      if( !viewModule->IsViewValid( view ) )
+         return;
+
    QWidget* contextMenu = view->getWidget( );
    QAction* action = new QAction( itemText, view );
    action->setCheckable( true );
