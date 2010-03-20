@@ -203,10 +203,21 @@ void chrSliceVolume::ChangeSlice( int inc )
             vtkSMIntVectorProperty* ivp = 0;
             ivp = vtkSMIntVectorProperty::SafeDownCast( imageSlice->getProxy()
                   ->GetProperty("Slice"));
+            
             if( ivp )
             {
+               vtkSMDimensionsDomain* domain = static_cast<vtkSMDimensionsDomain*>(ivp->GetDomain( "dims" ));
                int currentSlice = ivp->GetElement( 0 );
                int nextSlice = currentSlice + inc * multiplicator;
+ 
+               // Clamp the slice value to the image extent
+               int exists;
+               int min = domain->GetMinimum( 0, exists );
+               int max = domain->GetMaximum( 0, exists );
+               if( nextSlice < min )
+                  nextSlice = min;
+               if( nextSlice > max )
+                  nextSlice = max;
                
                ivp->SetElement(0, nextSlice );
 
