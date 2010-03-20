@@ -20,7 +20,6 @@
 
 chrApplicationModule::chrApplicationModule( )
 {
-   this->Core = pqApplicationCore::instance( );
 }
 
 chrApplicationModule::~chrApplicationModule( )

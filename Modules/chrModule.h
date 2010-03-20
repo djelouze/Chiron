@@ -43,7 +43,7 @@ Q_OBJECT
 public:
    //! Constructor:
    //! initialize this->Core to the current ParaView instance
-   chrModule( ){this->Activated = 0;};
+   chrModule( );
 
    //! Destructor:
    virtual ~chrModule( ){};

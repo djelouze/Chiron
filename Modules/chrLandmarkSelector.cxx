@@ -177,8 +177,6 @@ void chrLandmarkSelector::InsertPoint( )
          }
       }
    }
-
-   this->GetRenderWindowInteractor( )->Render( ); 
 }
 
 
