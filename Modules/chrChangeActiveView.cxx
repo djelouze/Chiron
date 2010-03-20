@@ -30,8 +30,12 @@ chrChangeActiveView::~chrChangeActiveView( )
 
 void chrChangeActiveView::Activate( )
 {
-   pqViewManager * viewManager = qobject_cast<pqViewManager*>
+   pqViewManager* viewManager = 0;
+   viewManager = qobject_cast<pqViewManager*>
                 (this->Core->manager("MULTIVIEW_MANAGER"));
+   if( !viewManager )
+      return;
+
    pqView* activeView = viewManager->getActiveView( );
    if( activeView )
       this->activateViewModules( activeView );
@@ -52,6 +56,9 @@ void chrChangeActiveView::activateViewModules( pqView* view )
    chrLandmarkSelector* landmarkModule = new chrLandmarkSelector( );
    landmarkModule->SetView( view );
    
+   chrContourTracer* contourModule = new chrContourTracer( );
+   contourModule->SetView( view );
+   
    chrScaleInfoOverlay* scaleInfoOverlay = new chrScaleInfoOverlay( );
    scaleInfoOverlay->SetView( view );
    scaleInfoOverlay->Activate( );
@@ -69,6 +76,9 @@ void chrChangeActiveView::activateViewModules( pqView* view )
    
       cxMenuModifier->AddContextMenuItemToView( rvbView, "Landmark Selector...",
                                              landmarkModule ); 
+      
+      cxMenuModifier->AddContextMenuItemToView( rvbView, "Contour Tracer...",
+                                             contourModule ); 
    }   
    
    this->viewModuleCollection.push_back( sliceModule );

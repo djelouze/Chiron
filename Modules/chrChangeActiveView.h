@@ -36,6 +36,7 @@
 #include "chrScaleInfoOverlay.h"
 #include "chrClickAndSlice.h"
 #include "chrLandmarkSelector.h"
+#include "chrContourTracer.h"
 
 // ParaView includes
 #include "pqServer.h"
