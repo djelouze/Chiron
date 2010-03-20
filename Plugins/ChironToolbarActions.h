@@ -37,6 +37,7 @@
 
 // Chiron includes
 #include "chrChangeActiveView.h"
+#include "chrFourViews.h"
 
 // QT includes
 #include <QActionGroup>
@@ -62,6 +63,7 @@ protected slots:
 private:
    std::vector<chrViewModule*> viewModuleList;
    chrChangeActiveView* changeActiveViewModule;
+   chrFourViews* fourViewsBuilder;
 };
 
 #endif //__CHIRONTOOLBARACTIONS_H__

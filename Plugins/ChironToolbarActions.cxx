@@ -29,20 +29,26 @@
 ChironToolbarActions::ChironToolbarActions(QObject* p) : QActionGroup(p)
 {
    // Adding buttons (ie actions) to the plugin's toolbar
-   QAction* a;
+   QAction* changeActiveViewAction;
    // Define a new action : Icon, tool tip and parent
-   a = new QAction( QIcon(":/ToolbarIcons/chiron-256x256.png"), 
-                    "Enable Chiron", 
+   changeActiveViewAction = new QAction( QIcon(":/ToolbarIcons/chiron-256x256.png"), 
+                    "Attach modules to active view", 
                     this );
-   
    // setData give the possibility to determine which button has been pressed
-   a->setData("EnableChiron");
-
+   changeActiveViewAction->setData("ChangeActiveView");
    // Add this action to the action group, ie the toolbar
-   this->addAction(a);
+   this->addAction( changeActiveViewAction );
 
    // New actions will be added here (property panels,...)
    // BEGIN NEW ACTIONS
+   
+   // FourViews is not ready: don't add it to the toolbar now
+   //QAction* fourViewsAction;
+   //fourViewsAction =  new QAction( QIcon(":/ToolbarIcons/chiron-256x256.png"), 
+   //                 "Build four views", 
+   //                 this );
+   //fourViewsAction->setData("FourViews");
+   //this->addAction( fourViewsAction );
  
    // END NEW ACTIONS   
 
@@ -53,8 +59,8 @@ ChironToolbarActions::ChironToolbarActions(QObject* p) : QActionGroup(p)
                     this, SLOT(onAction(QAction*)));
 
   // Instanciate the generic layout module
-  this->changeActiveViewModule = new chrChangeActiveView();
-
+  this->changeActiveViewModule = new chrChangeActiveView( );
+  this->fourViewsBuilder = new chrFourViews( );
 }
 
 ChironToolbarActions::~ChironToolbarActions()
@@ -68,14 +74,16 @@ void ChironToolbarActions::onAction(QAction* a)
 {
    QString actionStr = a->data().toString();
 
-   // Main activation button
-   //   - activate/deactivate existing modules
-   //   - connect to the viewCreated signal in order to 
-   //     perform asynchronous activations
-   if( actionStr == QString( "EnableChiron") )
+   // Perform activation according to the pressed button
+   if( actionStr == QString( "ChangeActiveView") )
    {
       this->changeActiveViewModule->Activate( );
    }
+   if( actionStr == QString( "FourViews") )
+   {
+      this->fourViewsBuilder->Activate( );
+   }
+
 }
 
 
