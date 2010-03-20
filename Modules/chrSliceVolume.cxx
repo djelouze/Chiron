@@ -221,8 +221,8 @@ void chrSliceVolume::ChangeSlice( int inc )
 
 int chrSliceVolume::IsViewValid( pqView* view )
 {
-   pqRenderView* renderView = qobject_cast<pqRenderView*>(view);
-   if( renderView )
+   pqRenderViewBase* renderViewBase = qobject_cast<pqRenderViewBase*>(view);
+   if( renderViewBase )
       return( 1 );
    else
       return( 0 );

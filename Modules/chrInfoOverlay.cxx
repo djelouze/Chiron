@@ -112,7 +112,7 @@ void chrInfoOverlay::Deactivate( )
 int chrInfoOverlay::IsViewValid( pqView* view )
 {
    // For now, the overlay is only possible for 3D render view)
-   pqRenderView* renderView = qobject_cast<pqRenderView*>(view);
+   pqRenderViewBase* renderView = qobject_cast<pqRenderViewBase*>(view);
    
    if( renderView )
       return( 1 );
