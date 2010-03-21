@@ -125,12 +125,25 @@ void chrContourTracer::keyPress(vtkObject * obj, unsigned long,
                               vtkCommand * command)
 {
    command->AbortFlagOn();
-   // Validate with clamped spline
-   if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'c' )
+   // Validate the current spline
+   if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'v' )
    {
       this->CurrentSplineSource = 0;
       this->AddedPoints.erase(this->AddedPoints.begin(), this->AddedPoints.end());
+      //! \todo Simulate a click on 'Apply' button here
    }
+   // close/open the current spline
+   if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'c' )
+   {
+      vtkSMProxy* splineProxy = static_cast<vtkSMProxy*>(this->CurrentSplineSource->getProxy());
+      vtkSMProxyProperty* paramFunctionProperty;
+      paramFunctionProperty = static_cast<vtkSMProxyProperty*>(splineProxy->GetProperty( "ParametricFunction" ));
+      vtkSMIntVectorProperty* closedProperty = 0;
+      closedProperty = static_cast<vtkSMIntVectorProperty*>(paramFunctionProperty->GetProxy( 0 )->GetProperty( "Closed" ));
+      int currentClosedState = closedProperty->GetElement( 0 );
+      closedProperty->SetElement( 0, !currentClosedState );
+   }
+      
 }
 
 void chrContourTracer::InitializeSplineSource( )
@@ -142,6 +155,8 @@ void chrContourTracer::InitializeSplineSource( )
 
    QList<pqServer*> serversList = smm->findItems<pqServer*>( );
 
+   // If at least one server exists, it adds a SplineSource to the first one
+   // Should be changed to choose one server, shouldn't be?
    if( serversList.count() != 0 )
    {
       this->CurrentSplineSource = builder->createSource( "sources",
@@ -153,12 +168,16 @@ void chrContourTracer::InitializeSplineSource( )
 
 void chrContourTracer::InsertPoint( )
 {
-  int* position = this->GetRenderWindowInteractor( )->GetEventPosition();
-      
+   // Get the event position in window coordinate
+   int* position = this->GetRenderWindowInteractor( )->GetEventPosition();
+
+   // Retrieve the 3D coordinates intersecting objects      
    vtkPointPicker* picker = vtkPointPicker::New( );
    picker->Pick( position[0], position[1], 0, this->GetRenderer() );
    vtkPoints* pickedPositions = picker->GetPickedPositions( );
 
+   // Get only one position (the last one for now)
+   //! \todo Retain the closest to the camera
    int i;
    double* point = new double[3];
    for( i = 0; i < pickedPositions->GetNumberOfPoints( ) ; i++)
@@ -166,6 +185,7 @@ void chrContourTracer::InsertPoint( )
       pickedPositions->GetPoint( i, point );
    }
 
+   // the picked point is added to the current spline point list
    this->AddedPoints.push_back( point );
 
    if( !this->CurrentSplineSource ) // First click
@@ -175,13 +195,27 @@ void chrContourTracer::InsertPoint( )
    }
 
 
+   // if the spline source has not been initialized, then do nothing
    if( this->CurrentSplineSource )
    {
-      vtkSMProxy* splineProxy = static_cast<vtkSMProxy*>(this->CurrentSplineSource->getProxy());
-      vtkSMProxyProperty* paramFunctionProperty;
-      paramFunctionProperty = static_cast<vtkSMProxyProperty*>(splineProxy->GetProperty( "ParametricFunction" ));
+      // The SplineSource proxy has a Points property attached to a 
+      // ParametricFunction proxy. Retrieve it.
+      vtkSMProxy* splineProxy = 0; 
+      splineProxy = static_cast<vtkSMProxy*>(this->CurrentSplineSource->getProxy());
+      if( !splineProxy ) // problem occurs with the spline proxy 
+         return;
+      vtkSMProxyProperty* paramFunctionProperty = 0;
+      paramFunctionProperty = static_cast<vtkSMProxyProperty*>
+                              (splineProxy->GetProperty("ParametricFunction"));
+      if( !paramFunctionProperty ) // problem occurs with the parametric 
+         return;                   // function property.
       vtkSMDoubleVectorProperty* pointsProperty = 0;
-      pointsProperty = static_cast<vtkSMDoubleVectorProperty*>(paramFunctionProperty->GetProxy( 0 )->GetProperty( "Points" ));
+      pointsProperty = static_cast<vtkSMDoubleVectorProperty*>
+                              (paramFunctionProperty
+                               ->GetProxy( 0 )
+                               ->GetProperty( "Points" ));
+      if( !pointsProperty ) // problem occurs with the points property
+         return;
 
       // Minimal number of points is 2 - according to the utilities.xml
       // At first user click, these 2 points are coincident at the user
@@ -190,20 +224,21 @@ void chrContourTracer::InsertPoint( )
       int fakeNbPoints = nbPoints;
       if( nbPoints == 1 )
          fakeNbPoints = 2;
+
+      // The set_number_command is used, meaning that the number of elements
+      // will be the parameter of SetNumberOfPoints. All we have to do is
+      // to give the property elements has a raw 1D pointer
       for( int idx = 0; idx < fakeNbPoints; idx++)
       {
-         pointsProperty->SetElement( idx*3, this->AddedPoints.at( idx%nbPoints )[0]);
-         pointsProperty->SetElement( idx*3+1, this->AddedPoints.at( idx%nbPoints )[1]);
-         pointsProperty->SetElement( idx*3+2, this->AddedPoints.at( idx%nbPoints )[2]);
+         pointsProperty->SetElement( idx*3, 
+                                     this->AddedPoints.at( idx%nbPoints )[0]);
+         pointsProperty->SetElement( idx*3+1, 
+                                     this->AddedPoints.at( idx%nbPoints )[1]);
+         pointsProperty->SetElement( idx*3+2, 
+                                     this->AddedPoints.at( idx%nbPoints )[2]);
       }
    }
-
-
-   this->GetRenderWindowInteractor( )->Render( ); 
 }
-
-
-
 
 int chrContourTracer::IsViewValid( pqView* view )
 {
