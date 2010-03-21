@@ -186,6 +186,14 @@ void chrLandmarkSelector::InsertPoint( )
             rep->setVisible( true );
             this->Core->render( );
             pipelineSource->setModifiedState( pqProxy::UNMODIFIED );
+
+            vtkSMIntVectorProperty* pickable = 0;
+            pickable = static_cast<vtkSMIntVectorProperty*>(rep->getProxy()->GetProperty( "Pickable" ));
+            if( pickable )
+            {
+               pickable->SetElement( 0, 0 );
+               rep->getProxy()->UpdateProperty( "Pickable" );
+            }
          } 
       }
    }

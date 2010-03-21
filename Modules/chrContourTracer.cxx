@@ -150,6 +150,13 @@ void chrContourTracer::keyPress(vtkObject * obj, unsigned long,
          static_cast<vtkSMSourceProxy*>(this->CurrentSplineSource->getProxy())->UpdatePipelineInformation( );
          this->Core->render();
          this->CurrentSplineSource->setModifiedState( pqProxy::UNMODIFIED );
+         vtkSMIntVectorProperty* pickable = 0;
+         pickable = static_cast<vtkSMIntVectorProperty*>(rep->getProxy()->GetProperty( "Pickable" ));
+         if( pickable )
+         {
+            pickable->SetElement( 0, 0 );
+            rep->getProxy()->UpdateProperty( "Pickable" );
+         }
       }
 
       // Now the current spline is an independent paraview object
