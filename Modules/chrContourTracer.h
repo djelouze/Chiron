@@ -24,15 +24,16 @@
 //! that adds a SplineSource to the pipeline. Each furthercoming click event
 //! on the view append a point at the end of the spline.
 //! 
-//! When 'c' is pressed, the spline is validated. Continuying clicking will
+//! When 'v' is pressed, the spline is validated. Continuying clicking will
 //! add another spline.
 //! 
+//! When 'c' is pressed, the closed state is toggled.
+//!
 //! \warning If chrSliceVolume is activated in the same time, the drag event
 //! may be annoying when placing the spline points. Actual solution is to
 //! activate first the ContourTracer module and then the SliceVolume module
 //!
 //! \todo Fix the dragging interference of SliceVolume
-//! \todo Implement the 'c' key press action with closed/opened choice
 //!
 //! \author Jerome Velut
 //! \date 20 mar 2010
@@ -66,16 +67,19 @@ class chrContourTracer : public chrViewModule
 Q_OBJECT
 
 public:
+   //! Constructor. Allocate the EventConnect member and initialize the 
+   //! CurrentSplineSource to 0
    chrContourTracer( );
    virtual ~chrContourTracer( );
 
    virtual void Activate( );
    virtual void Deactivate( );
 
-protected:
+   //! Valid view are pqRenderView (3D view)
    virtual int IsViewValid( pqView* );
 
 protected slots:
+      //! Toggle activated/deactivated state
       void toggleMode( );
 
       void leftButtonPress(vtkObject * obj, unsigned long,
@@ -97,9 +101,9 @@ private:
    //! Add a SplineSource to the pipeline
    void InitializeSplineSource( );
 
-   vtkEventQtSlotConnect* EventConnect;
-   pqPipelineSource* CurrentSplineSource;
-   vector<double*> AddedPoints; //! maintains a list of added points
+   vtkEventQtSlotConnect* EventConnect; //!< Internal event connector
+   pqPipelineSource* CurrentSplineSource; //!< SplineSource in use
+   vector<double*> AddedPoints; //!< maintains a list of added points
 };
 
 #endif //__CHRCONTOURTRACER_H__
