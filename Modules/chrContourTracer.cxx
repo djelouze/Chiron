@@ -21,7 +21,7 @@
 // ParaView includes
 #include "pqDataRepresentation.h"
 #include "vtkSMIntVectorProperty.h"
-#include "vtkSMProxy.h"
+#include "vtkSMSourceProxy.h"
 #include "vtkSMPropertyIterator.h"
 #include "vtkSMProxyProperty.h"
 
@@ -128,9 +128,34 @@ void chrContourTracer::keyPress(vtkObject * obj, unsigned long,
    // Validate the current spline
    if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'v' )
    {
+      if( this->CurrentSplineSource )
+      {
+         // Update the VTK side of the force
+         this->CurrentSplineSource->getProxy()->UpdateSelfAndAllInputs( );
+         // Set the proxy as visible through representation
+         pqRepresentation* rep = 0;
+         rep = static_cast<pqRepresentation*>(this->CurrentSplineSource->getRepresentation( this->GetView() ));
+         // but if it doesn't exist (it is the case after fresh proxy creation), create a representation
+         if( !rep )
+         {
+            pqObjectBuilder* builder = pqApplicationCore::instance()->getObjectBuilder();
+            rep = builder->createDataRepresentation( this->CurrentSplineSource
+                                                         ->getOutputPort( 0 ),
+                                                     this->GetView( ));
+         }
+         // and set it as visible
+         rep->setVisible(true);
+         // Then update the pipeline information, render and set the spline as
+         // unmodified (will switch off the "Apply" button).
+         static_cast<vtkSMSourceProxy*>(this->CurrentSplineSource->getProxy())->UpdatePipelineInformation( );
+         this->Core->render();
+         this->CurrentSplineSource->setModifiedState( pqProxy::UNMODIFIED );
+      }
+
+      // Now the current spline is an independent paraview object
       this->CurrentSplineSource = 0;
       this->AddedPoints.erase(this->AddedPoints.begin(), this->AddedPoints.end());
-      //! \todo Simulate a click on 'Apply' button here
+
    }
    // close/open the current spline
    if( this->GetRenderWindowInteractor( )->GetKeyCode() == 'c' )
@@ -237,6 +262,7 @@ void chrContourTracer::InsertPoint( )
          pointsProperty->SetElement( idx*3+2, 
                                      this->AddedPoints.at( idx%nbPoints )[2]);
       }
+      //this->CurrentSplineSource->setModifiedState( pqProxy::MODIFIED );
    }
 }
 
