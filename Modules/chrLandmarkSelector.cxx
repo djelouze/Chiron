@@ -163,18 +163,30 @@ void chrLandmarkSelector::InsertPoint( )
                                               "PointSource",
                                               serversList[0] );
       this->PointSourceProxies.push_back( pipelineSource );
+      
 
       if( pipelineSource )
       {
-         vtkSMDoubleVectorProperty* centerProperty = 0;
-         centerProperty = static_cast<vtkSMDoubleVectorProperty*>(pipelineSource->getProxy()->GetProperty( "Center" ));
-         if( centerProperty )
+         vtkSMProxy* proxy = 0;
+         proxy = pipelineSource->getProxy();
+         if( proxy )
          {
-            centerProperty->SetElement( 0, point[0] );
-            centerProperty->SetElement( 1, point[1] );
-            centerProperty->SetElement( 2, point[2] );
-            pipelineSource->renderAllViews( true );
-         }
+            vtkSMDoubleVectorProperty* centerProperty = 0;
+            centerProperty = static_cast<vtkSMDoubleVectorProperty*>(proxy->GetProperty( "Center" ));
+            if( centerProperty )
+            {
+               centerProperty->SetElement( 0, point[0] );
+               centerProperty->SetElement( 1, point[1] );
+               centerProperty->SetElement( 2, point[2] );
+               pipelineSource->renderAllViews( true );
+            }
+            proxy->UpdateSelfAndAllInputs( );
+            pqRepresentation* rep = 0;
+            rep = builder->createDataRepresentation( pipelineSource->getOutputPort( 0 ), this->GetView( ) );
+            rep->setVisible( true );
+            this->Core->render( );
+            pipelineSource->setModifiedState( pqProxy::UNMODIFIED );
+         } 
       }
    }
 }
