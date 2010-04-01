@@ -18,6 +18,8 @@
  
 #include "chrChangeActiveView.h"
 
+#include <algorithm>
+
 chrChangeActiveView::chrChangeActiveView( )
 {
 
@@ -36,9 +38,14 @@ void chrChangeActiveView::Activate( )
    if( !viewManager )
       return;
 
+   // Get the active view
    pqView* activeView = viewManager->getActiveView( );
    if( activeView )
-      this->activateViewModules( activeView );
+      // Activate the view modules if this view has not already been changed
+      if( vtkstd::find(this->changedViews.begin(),
+               this->changedViews.end(),
+               activeView ) == this->changedViews.end() ) 
+         this->activateViewModules( activeView );
 }
 
 
@@ -81,9 +88,7 @@ void chrChangeActiveView::activateViewModules( pqView* view )
                                              contourModule ); 
    }   
    
-   this->viewModuleCollection.push_back( sliceModule );
-   this->viewModuleCollection.push_back( scaleInfoOverlay );
-   this->viewModuleCollection.push_back( imageInfoOverlay );
+   this->changedViews.push_back( view );
 }
 
 void chrChangeActiveView::Deactivate( )

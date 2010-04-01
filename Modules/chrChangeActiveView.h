@@ -62,7 +62,7 @@ protected:
    void activateViewModules( pqView* );
 
 private:
-      std::vector<chrViewModule*> viewModuleCollection;
+      vtkstd::vector<pqView*> changedViews;
 };
 
 #endif //__CHRCHANGEACTIVEVIEW_H__
