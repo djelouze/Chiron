@@ -36,6 +36,9 @@
 
 // VTK includes
 #include "vtkEventQtSlotConnect.h"
+#include "vtkImageData.h"
+#include "vtkAlgorithm.h"
+#include "vtkAlgorithmOutput.h"
 
 class chrSliceVolume : public chrViewModule
 {
@@ -50,6 +53,8 @@ public:
 
 protected:
    virtual int IsViewValid( pqView* );
+
+   vtkAlgorithm* UpstreamPipeline( vtkImageData* img, int nbStep );
 
 protected slots:
       void toggleSliceMode( );
@@ -81,6 +86,7 @@ private:
    vtkEventQtSlotConnect* EventConnect;
    int Dragging;
    int lastY;
+   vtkAlgorithm* PickedAlgorithm;
 };
 
 #endif //__CHRSLICEVOLUME

@@ -18,8 +18,12 @@
  
 #include <chrSliceVolume.h>
 
+//VTK includes
+#include "vtkPicker.h"
+
 // ParaView includes
 #include <pqDataRepresentation.h>
+#include <pqPipelineSource.h>
 #include <vtkSMIntVectorProperty.h>
 #include <vtkSMProxy.h>
 #include <vtkSMDimensionsDomain.h>
@@ -30,6 +34,7 @@ chrSliceVolume::chrSliceVolume( )
    this->Activated = 0;
    this->Dragging = 0;
    this->lastY = 0;
+   this->PickedAlgorithm = 0;
 }
 
 
@@ -136,8 +141,15 @@ void chrSliceVolume::leftButtonPress( vtkObject* o, unsigned long eid,
 {
    //command->AbortFlagOn();
    int lastx;
-   this->GetRenderWindowInteractor( )->GetEventPosition( lastx, 
-                                                         this->lastY );
+   vtkRenderWindowInteractor* renWinInt = this->GetRenderWindowInteractor( );
+   renWinInt->GetEventPosition( lastx, this->lastY );
+   vtkPicker* picker = vtkPicker::New( );
+   picker->Pick( lastx, this->lastY, 0, this->GetRenderer() );
+   vtkDataSet* dataSet = picker->GetDataSet();
+   vtkImageData* imageData = vtkImageData::SafeDownCast( dataSet );
+   if( imageData )
+      this->PickedAlgorithm = this->UpstreamPipeline( imageData, 3 );
+
    this->Dragging = 1;
 }
 
@@ -198,7 +210,9 @@ void chrSliceVolume::ChangeSlice( int inc )
       imageSlice = static_cast<pqDataRepresentation*>(repList[i]);
       if( imageSlice )
       {
-         if( imageSlice->isVisible( ) )
+         
+         if( imageSlice->isVisible( ) 
+             && imageSlice->getInput()->getProxy()->GetClientSideObject() == this->PickedAlgorithm )
          {
             vtkSMIntVectorProperty* ivp = 0;
             ivp = vtkSMIntVectorProperty::SafeDownCast( imageSlice->getProxy()
@@ -206,6 +220,7 @@ void chrSliceVolume::ChangeSlice( int inc )
             
             if( ivp )
             {
+
                vtkSMDimensionsDomain* domain = static_cast<vtkSMDimensionsDomain*>(ivp->GetDomain( "dims" ));
                int currentSlice = ivp->GetElement( 0 );
                int nextSlice = currentSlice + inc * multiplicator;
@@ -239,4 +254,13 @@ int chrSliceVolume::IsViewValid( pqView* view )
       return( 0 );
 }
 
+vtkAlgorithm* chrSliceVolume::UpstreamPipeline( vtkImageData* img,
+                                                     int nbSteps )
+{
+   vtkAlgorithm* producer = img->GetProducerPort( )->GetProducer( );
+   for( int i = 0; i < nbSteps; i++ )
+      producer = producer->GetInputConnection( 0, 0 )->GetProducer( );
+
+   return( producer );
+}
 
