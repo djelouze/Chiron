@@ -53,6 +53,9 @@ void chrChangeActiveView::activateViewModules( pqView* view )
 {
    chrImageInfoOverlay* imageInfoOverlay = new chrImageInfoOverlay( );
    imageInfoOverlay->SetView( view );
+ 
+   chrWindowLevel* windowLevel = new chrWindowLevel( );
+   windowLevel->SetView( view );
    
    chrSliceVolume* sliceModule = new chrSliceVolume( );
    sliceModule->SetView( view );
@@ -77,6 +80,9 @@ void chrChangeActiveView::activateViewModules( pqView* view )
       chrContextMenuModifier* cxMenuModifier = new chrContextMenuModifier( );
       cxMenuModifier->AddContextMenuItemToView( rvbView, "Image Information...",
                                              imageInfoOverlay ); 
+   
+      cxMenuModifier->AddContextMenuItemToView( rvbView, "Window/Level...",
+                                             windowLevel ); 
    
       cxMenuModifier->AddContextMenuItemToView( rvbView, "Slice Volume...",
                                              sliceModule ); 

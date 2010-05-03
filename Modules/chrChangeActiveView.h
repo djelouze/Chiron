@@ -32,6 +32,7 @@
 #include "chrApplicationModule.h"
 #include "chrContextMenuModifier.h"
 #include "chrSliceVolume.h"
+#include "chrWindowLevel.h"
 #include "chrImageInfoOverlay.h"
 #include "chrScaleInfoOverlay.h"
 #include "chrClickAndSlice.h"

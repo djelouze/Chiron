@@ -16,12 +16,17 @@
 //    along with Chiron in the file COPYING.  
 //    If not, see <http://www.gnu.org/licenses/>.
  
-#include "chrWindowLevel.h"
+#include <chrWindowLevel.h>
+
+//VTK includes
+#include "vtkPicker.h"
 
 // ParaView includes
-#include "pqDataRepresentation.h"
-#include "vtkSMIntVectorProperty.h"
-#include "vtkSMProxy.h"
+#include <pqDataRepresentation.h>
+#include <pqPipelineSource.h>
+#include <vtkSMIntVectorProperty.h>
+#include <vtkSMProxy.h>
+#include <vtkSMDimensionsDomain.h>
 
 chrWindowLevel::chrWindowLevel( )
 {
@@ -29,6 +34,8 @@ chrWindowLevel::chrWindowLevel( )
    this->Activated = 0;
    this->Dragging = 0;
    this->lastY = 0;
+   this->lastX = 0;
+   this->PickedAlgorithm = 0;
 }
 
 
@@ -37,38 +44,23 @@ chrWindowLevel::~chrWindowLevel( )
 
 }
 
+
 void chrWindowLevel::Activate( )
 {
-   if( this->GetView( ) != 0 )
-   {
-   }
+   if( this->GetView() )
+      this->toggleWindowLevelMode( );
 }
-void chrWindowLevel::enterSliceMode( )
+
+void chrWindowLevel::Deactivate( )
+{
+   if( this->GetView() )
+      this->toggleWindowLevelMode( );
+}
+
+void chrWindowLevel::toggleWindowLevelMode( )
 {
    if( !this->Activated )
    {
-      this->EventConnect->Connect(
-                                  this->GetRenderWindowInteractor(),
-                                  vtkCommand::MouseWheelBackwardEvent,
-                                  this,
-                                  SLOT(sliceDown( 
-                                              vtkObject*, 
-                                              unsigned long, 
-                                              void*, 
-                                              void*, 
-                                              vtkCommand*)),
-                                   this->GetView( ), 1.0);
-      this->EventConnect->Connect(
-                                  this->GetRenderWindowInteractor(),
-                                  vtkCommand::MouseWheelForwardEvent,
-                                  this,
-                                  SLOT(sliceUp( 
-                                              vtkObject*, 
-                                              unsigned long, 
-                                              void*, 
-                                              void*, 
-                                              vtkCommand*)),
-                                   this->GetView( ), 1.0);
       this->EventConnect->Connect(
                                   this->GetRenderWindowInteractor(),
                                   vtkCommand::MouseMoveEvent,
@@ -107,9 +99,6 @@ void chrWindowLevel::enterSliceMode( )
 
 
 
-      this->GetQVTKWidget()
-          ->setCursor( QCursor( QPixmap( ":/Cursors/brightness-32x32.png") ) );
-
       this->Activated = 1;
    }
    else
@@ -122,9 +111,6 @@ void chrWindowLevel::enterSliceMode( )
    }
 }
 
-void chrWindowLevel::Deactivate( )
-{
-}
 
 void chrWindowLevel::leftButtonPress( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
@@ -132,8 +118,15 @@ void chrWindowLevel::leftButtonPress( vtkObject* o, unsigned long eid,
 {
    command->AbortFlagOn();
    int lastx;
-   this->GetRenderWindowInteractor( )->GetEventPosition( lastx, 
-                                                         this->lastY );
+   vtkRenderWindowInteractor* renWinInt = this->GetRenderWindowInteractor( );
+   renWinInt->GetEventPosition( this->lastX, this->lastY );
+   vtkPicker* picker = vtkPicker::New( );
+   picker->Pick( this->lastX, this->lastY, 0, this->GetRenderer() );
+   vtkDataSet* dataSet = picker->GetDataSet();
+   vtkImageData* imageData = vtkImageData::SafeDownCast( dataSet );
+   if( imageData )
+      this->PickedAlgorithm = this->UpstreamPipeline( imageData, 3 );
+
    this->Dragging = 1;
 }
 
@@ -141,7 +134,7 @@ void chrWindowLevel::leftButtonRelease( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   command->AbortFlagOn();
+   //command->AbortFlagOn();
    this->Dragging = 0;
 }
 
@@ -151,37 +144,26 @@ void chrWindowLevel::mouseMove( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   int x, y;
-   command->AbortFlagOn();
+   int x = 0, y = 0;
    if( this->Dragging )
    {
+      command->AbortFlagOn();
       this->GetRenderWindowInteractor( )->GetEventPosition( x, y );
-      this->ChangeSlice( y - this->lastY );
+      this->ChangeWindowLevel( y - this->lastY, x - this->lastX );
    }
    this->lastY = y;
-}
-
-void chrWindowLevel::sliceDown( vtkObject* o, unsigned long eid,
-                                void* clientdata, void* calldata,
-                                vtkCommand* command)
-{
-   command->AbortFlagOn();
-   this->ChangeSlice( -1 );
-}
-
-void chrWindowLevel::sliceUp( vtkObject* o, unsigned long eid,
-                                void* clientdata, void* calldata,
-                                vtkCommand* command)
-{
-   command->AbortFlagOn();
-   this->ChangeSlice( 1 );
+   this->lastX = x;
 }
 
 
-void chrWindowLevel::ChangeSlice( int inc )
+void chrWindowLevel::ChangeWindowLevel( int winc, int linc )
 {
    QList<pqRepresentation*> repList;
    repList = this->GetView( )->getRepresentations( );
+
+   int multiplicator = 1;
+   if( this->GetRenderWindowInteractor( )->GetShiftKey( ) )
+      multiplicator = 10;
 
    int i = 0;
    for( i = 0; i < repList.count();i ++)
@@ -190,19 +172,24 @@ void chrWindowLevel::ChangeSlice( int inc )
       imageSlice = static_cast<pqDataRepresentation*>(repList[i]);
       if( imageSlice )
       {
-         if( imageSlice->isVisible( ) )
+         
+         if( imageSlice->isVisible( ) 
+             && imageSlice->getInput()
+                          ->getProxy()
+                          ->GetClientSideObject() == this->PickedAlgorithm )
          {
-            vtkSMIntVectorProperty* ivp = 0;
-            ivp = vtkSMIntVectorProperty::SafeDownCast( imageSlice->getProxy()
-                  ->GetProperty("Slice"));
-            if( ivp )
+            pqScalarsToColors* lut = 0;
+            lut = imageSlice->getLookupTable();
+            
+            if( lut )
             {
-               int currentSlice = ivp->GetElement( 0 );
-
-               ivp->SetElement(0, currentSlice + inc);
-
-               imageSlice->getProxy()->UpdateVTKObjects();
-               imageSlice->renderView(true);
+               if( !lut->getScalarBar(qobject_cast<pqRenderViewBase*>(this->GetView() )))
+               {
+                  QPair<double, double> range = lut->getScalarRange( );
+                  lut->setScalarRange(range.first+winc+linc,
+                                      range.second-winc+linc );
+                  imageSlice->renderView(true);
+               }
             }
          }
       }
@@ -212,7 +199,20 @@ void chrWindowLevel::ChangeSlice( int inc )
 
 int chrWindowLevel::IsViewValid( pqView* view )
 {
-   return( 1 );
+   pqRenderViewBase* renderViewBase = qobject_cast<pqRenderViewBase*>(view);
+   if( renderViewBase )
+      return( 1 );
+   else
+      return( 0 );
 }
 
+vtkAlgorithm* chrWindowLevel::UpstreamPipeline( vtkImageData* img,
+                                                     int nbSteps )
+{
+   vtkAlgorithm* producer = img->GetProducerPort( )->GetProducer( );
+   for( int i = 0; i < nbSteps; i++ )
+      producer = producer->GetInputConnection( 0, 0 )->GetProducer( );
+
+   return( producer );
+}
 
