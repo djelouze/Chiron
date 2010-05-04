@@ -207,7 +207,7 @@ void chrSliceVolume::ChangeSlice( int inc )
    for( i = 0; i < repList.count();i ++)
    {
       pqDataRepresentation* imageSlice = 0;
-      imageSlice = static_cast<pqDataRepresentation*>(repList[i]);
+      imageSlice = qobject_cast<pqDataRepresentation*>(repList[i]);
       if( imageSlice )
       {
          

@@ -116,7 +116,7 @@ void chrWindowLevel::leftButtonPress( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   command->AbortFlagOn();
+   //command->AbortFlagOn();
    int lastx;
    vtkRenderWindowInteractor* renWinInt = this->GetRenderWindowInteractor( );
    renWinInt->GetEventPosition( this->lastX, this->lastY );
@@ -169,7 +169,7 @@ void chrWindowLevel::ChangeWindowLevel( int winc, int linc )
    for( i = 0; i < repList.count();i ++)
    {
       pqDataRepresentation* imageSlice = 0;
-      imageSlice = static_cast<pqDataRepresentation*>(repList[i]);
+      imageSlice = qobject_cast<pqDataRepresentation*>(repList[i]);
       if( imageSlice )
       {
          
