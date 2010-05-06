@@ -95,6 +95,8 @@ protected slots:
                       void * client_data, void *,
                       vtkCommand * command);
 
+      int destroyedSplineSource( QObject* );
+
 private:
    //! Insert a point in the CurrentSplineSource
    void InsertPoint( );

@@ -161,7 +161,6 @@ void chrContourTracer::keyPress(vtkObject * obj, unsigned long,
 
       // Now the current spline is an independent paraview object
       this->CurrentSplineSource = 0;
-      this->AddedPoints.erase(this->AddedPoints.begin(), this->AddedPoints.end());
 
    }
    // close/open the current spline
@@ -194,12 +193,27 @@ void chrContourTracer::InitializeSplineSource( )
       this->CurrentSplineSource = builder->createSource( "sources",
                                               "SplineSource",
                                               serversList[0] );
+      this->AddedPoints.erase(this->AddedPoints.begin(), this->AddedPoints.end());
+      QObject::connect( this->CurrentSplineSource, SIGNAL( destroyed(QObject*) ),
+                        this, SLOT( destroyedSplineSource( QObject* ) ) );
    }
 }
  
 
+int chrContourTracer::destroyedSplineSource( QObject* splineSource )
+{
+   this->CurrentSplineSource = 0;
+}
+
 void chrContourTracer::InsertPoint( )
 {
+   // First click
+   if( !this->CurrentSplineSource ) // First click
+   {
+      this->InitializeSplineSource( );
+
+   }
+
    // Get the event position in window coordinate
    int* position = this->GetRenderWindowInteractor( )->GetEventPosition();
 
@@ -219,12 +233,6 @@ void chrContourTracer::InsertPoint( )
 
    // the picked point is added to the current spline point list
    this->AddedPoints.push_back( point );
-
-   if( !this->CurrentSplineSource ) // First click
-   {
-      this->InitializeSplineSource( );
-
-   }
 
 
    // if the spline source has not been initialized, then do nothing
