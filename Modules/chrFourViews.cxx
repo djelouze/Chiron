@@ -76,20 +76,9 @@ void chrFourViews::activateViewModules( pqView* view )
    scaleInfoOverlay->SetView( view );
    scaleInfoOverlay->Activate( );
 
-   pqRenderViewBase* rvbView = 0;
-   rvbView = static_cast<pqRenderViewBase*>(view);
-   if( rvbView )
-   {
-      chrContextMenuModifier* cxMenuModifier = new chrContextMenuModifier( );
-      cxMenuModifier->AddContextMenuItemToView( rvbView, "Image Information...",
-                                             imageInfoOverlay ); 
+   chrContextMenuModifier* cxMenuModifier = new chrContextMenuModifier( );
+   cxMenuModifier->SetView( view );   
    
-      cxMenuModifier->AddContextMenuItemToView( rvbView, "Slice Volume...",
-                                             sliceModule ); 
-   
-      cxMenuModifier->AddContextMenuItemToView( rvbView, "Landmark Selector...",
-                                             landmarkModule ); 
-   }   
    
    this->viewModuleCollection.push_back( sliceModule );
    this->viewModuleCollection.push_back( scaleInfoOverlay );

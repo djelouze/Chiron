@@ -17,4 +17,4 @@ ELSE( WIN32 )
                 ${CHIRONMODULES_CXX} )
 ENDIF( WIN32)
 
-TARGET_LINK_LIBRARIES( ChironModules ChironAlgo ChironGuiModifiers)
+TARGET_LINK_LIBRARIES( ChironModules ChironAlgo )

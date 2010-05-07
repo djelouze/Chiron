@@ -77,26 +77,18 @@ void chrChangeActiveView::activateViewModules( pqView* view )
    scaleInfoOverlay->SetView( view );
    scaleInfoOverlay->Activate( );
 
-   pqRenderViewBase* rvbView = 0;
-   rvbView = static_cast<pqRenderViewBase*>(view);
-   if( rvbView )
-   {
-      chrContextMenuModifier* cxMenuModifier = new chrContextMenuModifier( );
-      cxMenuModifier->AddContextMenuItemToView( rvbView, "Image Information...",
-                                             imageInfoOverlay ); 
-   
-      cxMenuModifier->AddContextMenuItemToView( rvbView, "Window/Level...",
-                                             windowLevel ); 
-   
-      cxMenuModifier->AddContextMenuItemToView( rvbView, "Slice Volume...",
-                                             sliceModule ); 
-   
-      cxMenuModifier->AddContextMenuItemToView( rvbView, "Landmark Selector...",
-                                             landmarkModule ); 
-      
-      cxMenuModifier->AddContextMenuItemToView( rvbView, "Contour Tracer...",
-                                             contourModule ); 
-   }   
+   chrContextMenuModifier* cxMenuModifier = new chrContextMenuModifier( );
+   cxMenuModifier->SetView( view );
+   cxMenuModifier->AddContextMenuItemToView( imageInfoOverlay,  
+                                             "Image Information...");
+   cxMenuModifier->AddContextMenuItemToView( windowLevel,
+                                             "Window/Level...");
+   cxMenuModifier->AddContextMenuItemToView( sliceModule,
+                                             "Slice Volume...");
+   cxMenuModifier->AddContextMenuItemToView( landmarkModule,
+                                             "Landmark Selector...");
+   cxMenuModifier->AddContextMenuItemToView( contourModule,
+                                             "Contour Tracer...");
    
    this->changedViews.push_back( view );
 }
