@@ -87,6 +87,10 @@ private:
    //! then slice is added 'inc'.
    void ChangeSlice( int inc );
 
+   //! If a volume is selected in the pipeline browser, change its
+   //! representation to slice
+   void ChangeSelectedProxyRepresentationToSlice( );
+
    vtkEventQtSlotConnect* EventConnect;
    int Dragging;
    int lastY;

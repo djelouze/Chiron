@@ -26,6 +26,7 @@
 #include "vtkPicker.h"
 
 // ParaView includes
+#include <pqServerManagerSelectionModel.h>
 #include <pqDataRepresentation.h>
 #include <pqPipelineSource.h>
 #include <vtkSMIntVectorProperty.h>
@@ -126,6 +127,7 @@ void chrSliceVolume::toggleSliceMode( )
 
 //      this->GetQVTKWidget()
 //          ->setCursor( QCursor( QPixmap( ":/Cursors/slice-32x32.png") ) );
+      this->ChangeSelectedProxyRepresentationToSlice( );
       this->Activated = 1;
    }
    else
@@ -138,6 +140,25 @@ void chrSliceVolume::toggleSliceMode( )
    }
 }
 
+
+void chrSliceVolume::ChangeSelectedProxyRepresentationToSlice( )
+{
+   pqServerManagerSelectionModel* selectionModel = this->Core->getSelectionModel();
+   const pqServerManagerSelection* selectedItems = selectionModel->selectedItems ();
+
+   // selectedItems is a list of pqServerManagerModelItem
+   int i;
+   for( int i = 0; i < selectedItems->size( );i++ )
+   {
+      pqServerManagerModelItem* item = selectedItems->at(i);
+      pqPipelineSource* source = static_cast<pqPipelineSource*>(item);
+      if( source )
+      {
+       //! \todo Implement the representation check, ie is slicing possible...  
+      }
+   }
+
+}
 
 void chrSliceVolume::leftButtonPress( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
