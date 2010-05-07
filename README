@@ -12,15 +12,12 @@ The idea behind this is to harness the parallel computing/rendering framework
 natively handled by ParaView while providing an user-friendly GUI according to
 the medical professionals habits.
 
-Chiron is open source (GPL, see COPYING for details). This is intended to
-change in order to match the ParaView licence (BSD). The git head branch of this
-repo is compiled againt the current CVS version of ParaView.
-
-Currently, no binaries are provided. You have to compile your own ParaView and 
-then compile Chiron. Use CMake(2) and read INSTALL.
+Currently, no binaries are provided. You have to compile your own ParaView(3) 
+and then compile Chiron. Use CMake(2) and read INSTALL.
 
 
 (1) ParaView is an opensource software dedicated to parallel visualisation.
 Go to http://www.paraview.org and simply enjoy.
 (2) CMake is cross-plateform meta-compiler. Go to http://www.cmake.org and use
 it.
+(3) ParaView 3.6, 3.8 or git head 3.9
