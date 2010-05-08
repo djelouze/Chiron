@@ -27,7 +27,7 @@
 
 // ParaView includes
 #include <pqServerManagerSelectionModel.h>
-#include <pqDataRepresentation.h>
+#include <pqPipelineRepresentation.h>
 #include <pqPipelineSource.h>
 #include <vtkSMIntVectorProperty.h>
 #include <vtkSMProxy.h>
@@ -143,8 +143,10 @@ void chrSliceVolume::toggleSliceMode( )
 
 void chrSliceVolume::ChangeSelectedProxyRepresentationToSlice( )
 {
-   pqServerManagerSelectionModel* selectionModel = this->Core->getSelectionModel();
-   const pqServerManagerSelection* selectedItems = selectionModel->selectedItems ();
+   pqServerManagerSelectionModel* selectionModel = this->Core
+                                                       ->getSelectionModel();
+   const pqServerManagerSelection* selectedItems;
+   selectedItems = selectionModel->selectedItems ();
 
    // selectedItems is a list of pqServerManagerModelItem
    int i;
@@ -154,10 +156,23 @@ void chrSliceVolume::ChangeSelectedProxyRepresentationToSlice( )
       pqPipelineSource* source = static_cast<pqPipelineSource*>(item);
       if( source )
       {
-       //! \todo Implement the representation check, ie is slicing possible...  
+       //! \todo Implement the representation check, ie is slicing possible...
+         pqOutputPort* outputPort = source->getOutputPort( 0 );
+         if( outputPort )
+         {
+            if( !strcmp( outputPort->getDataClassName(), "vtkImageData" ))
+            {
+               pqPipelineRepresentation* rep = qobject_cast<pqPipelineRepresentation*>(outputPort->getRepresentation( 
+                                                    this->GetView()));
+               // 6 is ImageSliceRepresentation
+               // 3 is outline
+               if( rep->getRepresentationType() != 6 )
+                  rep->setRepresentation( 6 );
+               this->GetView()->render();
+            }
+         }
       }
    }
-
 }
 
 void chrSliceVolume::leftButtonPress( vtkObject* o, unsigned long eid,

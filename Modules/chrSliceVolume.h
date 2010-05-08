@@ -38,6 +38,10 @@
 // Chiron includes
 #include "chrViewModule.h"
 
+// ParaView includes
+#include "pqOutputPort.h"
+#include "pqObjectBuilder.h"
+
 // VTK includes
 #include "vtkEventQtSlotConnect.h"
 #include "vtkImageData.h"
