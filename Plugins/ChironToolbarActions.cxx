@@ -48,11 +48,11 @@ ChironToolbarActions::ChironToolbarActions(QObject* p) : QActionGroup(p)
    
    // FourViews is not ready: don't add it to the toolbar now
    QAction* fourViewsAction;
-   fourViewsAction =  new QAction( QIcon(":/ToolbarIcons/chiron-256x256.png"), 
-                    "Build four views", 
-                    this );
-   fourViewsAction->setData("FourViews");
-   this->addAction( fourViewsAction );
+//   fourViewsAction =  new QAction( QIcon(":/ToolbarIcons/chiron-256x256.png"), 
+//                    "Build four views", 
+//                    this );
+//   fourViewsAction->setData("FourViews");
+//   this->addAction( fourViewsAction );
  
    // END NEW ACTIONS   
 
