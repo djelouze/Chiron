@@ -26,8 +26,7 @@
 //!
 //! A chrApplicationModule is intended to be instanciate by a ParaView plugin
 //! (Toolbar or AutoStart plugin). This is a design concept, the interface
-//! is quite empty. It derives from QObject in order to declare slots and
-//! signals.
+//! is quite empty.
 //!
 //! \author Jerome Velut
 //! \date 26 nov 2009
@@ -47,7 +46,6 @@ Q_OBJECT
 
 public:
    //! Constructor:
-   //! initialize this->Core to the current ParaView instance
    chrApplicationModule( );
 
    //! Destructor:

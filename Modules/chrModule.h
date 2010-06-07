@@ -60,6 +60,7 @@ public:
    virtual void Deactivate( )=0;
 
 public slots:
+   // Change activation status
    void toggleActivation( );
 
 protected:

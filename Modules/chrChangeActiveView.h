@@ -64,10 +64,11 @@ public:
    void Deactivate( );
    
 protected:
-   void activateViewModules( pqView* );
+   //! For a given view, activate the modules
+   void linkModulesToView( pqView* );
 
 private:
-      vtkstd::vector<pqView*> changedViews;
+      vtkstd::vector<pqView*> changedViews; //!< Stores the changed views
 };
 
 #endif //__CHRCHANGEACTIVEVIEW_H__

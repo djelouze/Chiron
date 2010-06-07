@@ -88,7 +88,7 @@ protected:
    vtkRenderWindowInteractor* GetRenderWindowInteractor( );
 
 private:
-   pqView* View;
+   pqView* View; //!< The view linked to this module
    
 };
 

@@ -49,11 +49,11 @@ void chrChangeActiveView::Activate( )
       if( vtkstd::find(this->changedViews.begin(),
                this->changedViews.end(),
                activeView ) == this->changedViews.end() ) 
-         this->activateViewModules( activeView );
+         this->linkModulesToView( activeView );
 }
 
 
-void chrChangeActiveView::activateViewModules( pqView* view )
+void chrChangeActiveView::linkModulesToView( pqView* view )
 {
    chrImageInfoOverlay* imageInfoOverlay = new chrImageInfoOverlay( );
    imageInfoOverlay->SetView( view );
