@@ -109,7 +109,7 @@ void chrContourTracer::leftButtonPress( vtkObject* o, unsigned long eid,
                                 void* clientdata, void* calldata,
                                 vtkCommand* command)
 {
-   if( this->GetRenderWindowInteractor( )->GetControlKey( ) )
+   //if( this->GetRenderWindowInteractor( )->GetControlKey( ) )
       command->AbortFlagOn();
 }
 
