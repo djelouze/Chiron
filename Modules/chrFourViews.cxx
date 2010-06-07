@@ -37,24 +37,17 @@ void chrFourViews::Activate( )
    pqViewManager * viewManager = 0;
    viewManager = qobject_cast<pqViewManager*>
                 (this->Core->manager("MULTIVIEW_MANAGER"));
-   if( !viewManager )
-      return;
 
-   // BUGGY: viewManager->reset( );
-   pqView* activeView = 0;
-   for( int widgetId = 0; widgetId < viewManager->count( ); widgetId++ )
+   pqObjectBuilder* objectBuilder = 0;
+   objectBuilder = this->Core->getObjectBuilder( );
+
+   while( viewManager->getActiveView() )
    {
-      pqMultiViewFrame* mvFrame = static_cast<pqMultiViewFrame*>(viewManager->widget( widgetId ));
-      cout << "removing widget " << mvFrame << endl;
-      if( mvFrame )
-         mvFrame->close( );
+      cerr << "destroying " << viewManager->getActiveView() << endl;
+      objectBuilder->destroy( viewManager->getActiveView() );
+      cerr << viewManager->getActiveView() <<" destroyed " << endl;
    }
-//   do{
-//   activeView = viewManager->getActiveView( );
-//   viewManager->getFrame( activeView )->close( );
-//   } while( activeView ); 
-//   if( activeView )
-//      this->activateViewModules( activeView );
+
 }
 
 
