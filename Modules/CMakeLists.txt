@@ -1,4 +1,4 @@
-### Listing of the files used in chiron modules 
+### Listing of the files used in chiron modules
 FILE(GLOB CHIRONMODULES_HDRS *.h)
 FILE(GLOB CHIRONMODULES_CXX *.cxx)
 
@@ -8,13 +8,18 @@ QT4_WRAP_CPP(CHIRONMODULES_MOC_SRCS ${CHIRONMODULES_HDRS})
 
 
 IF( WIN32 )
-   ADD_LIBRARY( ChironModules STATIC 
-                ${CHIRONMODULES_MOC_SRCS}
-                ${CHIRONMODULES_CXX} )
+    ADD_LIBRARY( ChironModules STATIC
+                 ${CHIRONMODULES_MOC_SRCS}
+                 ${CHIRONMODULES_CXX} 
+    )
 ELSE( WIN32 )
-   ADD_LIBRARY( ChironModules SHARED 
-                ${CHIRONMODULES_MOC_SRCS}
-                ${CHIRONMODULES_CXX} )
+    ADD_LIBRARY( ChironModules SHARED
+                 ${CHIRONMODULES_MOC_SRCS}
+                 ${CHIRONMODULES_CXX} 
+    )
 ENDIF( WIN32)
 
-TARGET_LINK_LIBRARIES( ChironModules ChironAlgo )
+TARGET_LINK_LIBRARIES( 
+    ChironModules 
+    ChironAlgo 
+)
