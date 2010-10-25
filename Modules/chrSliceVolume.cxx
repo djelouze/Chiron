@@ -188,7 +188,7 @@ void chrSliceVolume::leftButtonPress( vtkObject* o, unsigned long eid,
    vtkDataSet* dataSet = picker->GetDataSet();
    vtkImageData* imageData = vtkImageData::SafeDownCast( dataSet );
    if( imageData )
-      this->PickedAlgorithm = this->UpstreamPipeline( imageData, 3 );
+      this->PickedAlgorithm = this->UpstreamPipeline( imageData, 0 );
 
    this->Dragging = 1;
 }
@@ -243,16 +243,15 @@ void chrSliceVolume::ChangeSlice( int inc )
    if( this->GetRenderWindowInteractor( )->GetShiftKey( ) )
       multiplicator = 10;
 
-   int i = 0;
-   for( i = 0; i < repList.count();i ++)
+   for( int i = 0; i < repList.count();i ++)
    {
       pqDataRepresentation* imageSlice = 0;
       imageSlice = qobject_cast<pqDataRepresentation*>(repList[i]);
       if( imageSlice )
       {
-         
-         if( imageSlice->isVisible( ) 
-             && imageSlice->getInput()->getProxy()->GetClientSideObject() == this->PickedAlgorithm )
+         if( imageSlice->isVisible( )) 
+             //&& imageSlice->getInput()->getProxy()->GetClientSideObject() 
+             //   == this->PickedAlgorithm )
          {
             vtkSMIntVectorProperty* ivp = 0;
             ivp = vtkSMIntVectorProperty::SafeDownCast( imageSlice->getProxy()
@@ -280,6 +279,10 @@ void chrSliceVolume::ChangeSlice( int inc )
                imageSlice->renderView(true);
             }
          }
+      }
+      else
+      {
+//         cout << "No ImageSlice representations" << endl;
       }
    }
 
