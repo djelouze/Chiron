@@ -43,7 +43,8 @@ void chrViewModule::SetView( pqView* view )
       if( qobject_cast<pqRenderView*>(view) )
       {
          qobject_cast<pqRenderView*>(view)->getRenderViewProxy( )
-                                       ->SetBackgroundColorCM( black );
+                                       ->GetRenderer()
+                                       ->SetBackground( black );
       }
    }
 }
