@@ -132,36 +132,6 @@ void chrClickAndSlice::keyPress(vtkObject * obj, unsigned long,
 
 void chrClickAndSlice::BuildPolylineSource( )
 {
-   // The objectBuilder make the view factory available
-      pqObjectBuilder* builder = pqApplicationCore::instance()->getObjectBuilder();
-      pqServerManagerModel* smm = pqApplicationCore::instance()->getServerManagerModel();
-      pqViewManager * viewManager = qobject_cast<pqViewManager*>
-         (pqApplicationCore::instance()->manager("MULTIVIEW_MANAGER"));
-   
-      QList<pqServer*> serversList = smm->findItems<pqServer*>( );
-
-      if( serversList.count() != 0 )
-      {
-         pqPipelineSource* pipelineSource = 0;
-         pipelineSource = builder->createSource( "sources", 
-                                                 "PolylineSource", 
-                                                 serversList[0] );
-         if( pipelineSource )
-         {
-            vtkChainSource* objLineSource = 0;
-            objLineSource = static_cast<vtkChainSource*>(pipelineSource->getProxy()->GetClientSideObject());
-            if( objLineSource )
-            {
-               objLineSource->SetPoints( this->UserPoints );
-               objLineSource->Update( );
-               
-               pipelineSource->getProxy()->UpdateSelfAndAllInputs();
-               viewManager->getActiveView()->getRepresentation(0)->renderView(true);
-
-               this->UserPoints->Reset( );
-            }
-         }
-      }  
 }
 
 void chrClickAndSlice::ChangeSlice( int inc )

@@ -26,9 +26,7 @@
 //! When activated, the click event is caught and route to this class
 //! that increments the slice of every existing slice representation.
 //! The click event position is used to append a points to a vtkPoints
-//! list. When 'r' is pressed, a vtkChainSource is added to the 
-//! current server based on the vtkPoints. Points are resetted.
-//!
+//! list. 
 //!
 //! \author Jerome Velut
 //! \date 14 dec 2009
@@ -38,7 +36,6 @@
 
 // Chiron includes
 #include "chrViewModule.h"
-#include "vtkChainSource.h"
 
 // VTK includes
 #include "vtkEventQtSlotConnect.h"

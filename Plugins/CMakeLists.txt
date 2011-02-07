@@ -25,9 +25,9 @@ ADD_PARAVIEW_PLUGIN(
             ChironToolbarActions.cxx
     GUI_RESOURCES ${CHIRON_RESOURCES_PATH}/chiron.qrc
     GUI_RESOURCE_FILES ${CHIRON_RESOURCES_PATH}/chironGUI.xml
-    SERVER_MANAGER_XML ${CHIRON_ALGORITHMS_PATH}/vtkChainSource.xml
+    SERVER_MANAGER_XML 
                        ${CHIRON_RESOURCES_PATH}/chiron.xml
-    SERVER_MANAGER_SOURCES ${CHIRON_ALGORITHMS_PATH}/vtkChainSource.cxx
+
 )
 
 TARGET_LINK_LIBRARIES( 
@@ -47,18 +47,6 @@ ADD_PARAVIEW_PLUGIN(
     GUI_RESOURCE_FILES ${CHIRON_RESOURCES_PATH}/chironGUI.xml
 )
 
-# ALGO PLUGIN --------------------------------------------------
-
-ADD_PARAVIEW_PLUGIN(
-    ChironAlgoPlugin          #<--Name for the plugin
-    "1.0"                        #<--Version string
-    SERVER_MANAGER_XML ${CHIRON_ALGORITHMS_PATH}/vtkChainSource.xml
-    SERVER_MANAGER_SOURCES ${CHIRON_ALGORITHMS_PATH}/vtkChainSource.cxx
-)
 
 
-TARGET_LINK_LIBRARIES( 
-    ChironAlgoPlugin 
-    ChironAlgo 
-)
 
