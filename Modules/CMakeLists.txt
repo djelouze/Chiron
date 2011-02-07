@@ -7,19 +7,7 @@ QT4_WRAP_CPP(CHIRONMODULES_MOC_SRCS ${CHIRONMODULES_HDRS})
 
 
 
-IF( WIN32 )
-    ADD_LIBRARY( ChironModules STATIC
-                 ${CHIRONMODULES_MOC_SRCS}
-                 ${CHIRONMODULES_CXX} 
-    )
-ELSE( WIN32 )
-    ADD_LIBRARY( ChironModules SHARED
-                 ${CHIRONMODULES_MOC_SRCS}
-                 ${CHIRONMODULES_CXX} 
-    )
-ENDIF( WIN32)
-
-TARGET_LINK_LIBRARIES( 
-    ChironModules 
-    ChironAlgo 
+ADD_LIBRARY( ChironModules SHARED
+               ${CHIRONMODULES_MOC_SRCS}
+               ${CHIRONMODULES_CXX} 
 )
