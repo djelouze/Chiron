@@ -164,10 +164,8 @@ void chrSliceVolume::ChangeSelectedProxyRepresentationToSlice( )
             {
                pqPipelineRepresentation* rep = qobject_cast<pqPipelineRepresentation*>(outputPort->getRepresentation( 
                                                     this->GetView()));
-               // 6 is ImageSliceRepresentation
-               // 3 is outline
-               if( rep->getRepresentationType() != 6 )
-                  rep->setRepresentation( 6 );
+               if( rep->getRepresentationType().compare("Slice", Qt::CaseInsensitive) != 0 )
+                  rep->setRepresentation( "Slice" );
                this->GetView()->render();
             }
          }
