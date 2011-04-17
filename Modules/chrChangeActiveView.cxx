@@ -75,7 +75,6 @@ void chrChangeActiveView::linkModulesToView( pqView* view )
    
    chrScaleInfoOverlay* scaleInfoOverlay = new chrScaleInfoOverlay( );
    scaleInfoOverlay->SetView( view );
-   scaleInfoOverlay->Activate( );
 
    chrContextMenuModifier* cxMenuModifier = new chrContextMenuModifier( );
    cxMenuModifier->SetView( view );
@@ -89,6 +88,8 @@ void chrChangeActiveView::linkModulesToView( pqView* view )
                                              "Landmark Selector...");
    cxMenuModifier->AddContextMenuItemToView( contourModule,
                                              "Contour Tracer...");
+   cxMenuModifier->AddContextMenuItemToView( scaleInfoOverlay,
+                                             "Rules...");   
    
    this->changedViews.push_back( view );
 }
