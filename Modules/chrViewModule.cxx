@@ -23,6 +23,7 @@
 #include "chrViewModule.h"
 
 #include "vtkSMDoubleVectorProperty.h"
+#include "pqTwoDRenderView.h"
 
 chrViewModule::chrViewModule( )
 {
@@ -42,17 +43,14 @@ void chrViewModule::SetView( pqView* view )
    {
       this->View = view;
       double background[3]  = {0, 0, 0};
-      pqRenderView* renderView = qobject_cast<pqRenderView*>(view) ;
-      if( renderView )
-      {
-         vtkSMDoubleVectorProperty* bgColorProp;
-         bgColorProp = static_cast<vtkSMDoubleVectorProperty*>(
-                                   renderView->getRenderViewProxy( )
+      vtkSMDoubleVectorProperty* bgColorProp;
+      bgColorProp = static_cast<vtkSMDoubleVectorProperty*>(
+                                   view->getViewProxy( )
                                    ->GetProperty( "Background" )
                        );
-         bgColorProp->SetElements( background );
-         renderView->getRenderViewProxy()->ResetCamera();
-      }
+      bgColorProp->SetElements( background );
+      view->getViewProxy()->UpdateProperty("Background");
+      view->render();
    }
 }
 
