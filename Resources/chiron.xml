@@ -18,6 +18,10 @@
            <Property name="DirectoryName" show="1" />
          </Hints> 
       </StringVectorProperty>
+  <Hints>
+    <ReaderFactory extensions="dcm"
+                   file_description="Dicom Directory" />
+ </Hints>
 
    </SourceProxy>
     <!-- End DICOM Reader -->
