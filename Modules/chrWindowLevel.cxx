@@ -129,7 +129,7 @@ void chrWindowLevel::leftButtonPress( vtkObject* o, unsigned long eid,
    vtkDataSet* dataSet = picker->GetDataSet();
    vtkImageData* imageData = vtkImageData::SafeDownCast( dataSet );
    if( imageData )
-      this->PickedAlgorithm = this->UpstreamPipeline( imageData, 3 );
+      this->PickedAlgorithm = this->UpstreamPipeline( imageData, 0 );
 
    this->Dragging = 1;
 }
