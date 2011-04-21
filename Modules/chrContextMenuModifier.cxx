@@ -22,8 +22,39 @@
  
 #include "chrContextMenuModifier.h"
 
+
+
+
+
+pqModifiedContextMenu::pqModifiedContextMenu(QObject* parent):pqPipelineContextMenuBehavior(parent)
+{
+}
+
+void pqModifiedContextMenu::buildMenu(pqDataRepresentation* repr)
+{
+  pqPipelineContextMenuBehavior::buildMenu(repr);  
+    this->Menu->addSeparator();
+  for (int i = 0; i < this->actionList.size();i++)
+     this->Menu->addAction( actionList[i] );
+
+
+
+}
+
+bool pqModifiedContextMenu::eventFilter(QObject* caller, QEvent* e)
+{
+   return( pqPipelineContextMenuBehavior::eventFilter(caller,e));
+}
+
+void pqModifiedContextMenu::AddItem(QAction* item)
+{
+   this->actionList.append(item);
+}
+
+
 chrContextMenuModifier::chrContextMenuModifier( )
 {
+  this->contextMenu = new pqModifiedContextMenu( );
 }
 
 
@@ -44,13 +75,14 @@ void chrContextMenuModifier::AddContextMenuItemToView( chrModule* chironModule,
       if( !viewModule->IsViewValid( this->GetView() ) )
          return;
 
-   QWidget* contextMenu = this->GetView()->getWidget( );
    QAction* action = new QAction( itemText, this->GetView() );
    action->setCheckable( true );
-   contextMenu->addAction( action );
+   this->contextMenu->AddItem( action );
    QObject::connect(action, SIGNAL(triggered(bool)),
                     chironModule, 
                     (!slot?SLOT(toggleActivation()):slot));
+
+   this->GetView()->getWidget()->installEventFilter(this->contextMenu);
 
 }
 

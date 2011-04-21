@@ -54,6 +54,25 @@
 // QT include
 #include <QIcon>
 #include <QObject>
+#include "pqPipelineContextMenuBehavior.h"
+#include <QMenu>
+#include <pqDataRepresentation.h>
+
+class pqModifiedContextMenu : public pqPipelineContextMenuBehavior
+{
+Q_OBJECT
+public:
+  pqModifiedContextMenu(QObject* parent=0);
+  virtual ~pqModifiedContextMenu(){};
+
+  void AddItem(QAction* item );
+protected:
+  virtual void buildMenu(pqDataRepresentation*);
+  virtual bool eventFilter(QObject* caller, QEvent* e);
+  
+  QVector<QAction*> actionList;
+
+};
 
 class chrContextMenuModifier : public chrViewModule
 {
@@ -77,7 +96,7 @@ public:
 protected:
 
 private:
-   
+   pqModifiedContextMenu* contextMenu;
 };
 
 #endif //__CHRCONTEXTMENUMODIFIER_H__
