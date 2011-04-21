@@ -172,18 +172,15 @@ void chrWindowLevel::ChangeWindowLevel( int winc, int linc )
    int i = 0;
    for( i = 0; i < repList.count();i ++)
    {
-      pqDataRepresentation* imageSlice = 0;
-      imageSlice = qobject_cast<pqDataRepresentation*>(repList[i]);
-      if( imageSlice )
+      pqDataRepresentation* repr = 0;
+      repr = qobject_cast<pqDataRepresentation*>(repList[i]);
+      if( repr )
       {
          
-         if( imageSlice->isVisible( ) 
-             && imageSlice->getInput()
-                          ->getProxy()
-                          ->GetClientSideObject() == this->PickedAlgorithm )
+         if( repr->isVisible( ) ) // && if this is the picked representation
          {
             pqScalarsToColors* lut = 0;
-            lut = imageSlice->getLookupTable();
+            lut = repr->getLookupTable();
             
             if( lut )
             {
@@ -192,7 +189,7 @@ void chrWindowLevel::ChangeWindowLevel( int winc, int linc )
                   QPair<double, double> range = lut->getScalarRange( );
                   lut->setScalarRange(range.first+winc+linc,
                                       range.second-winc+linc );
-                  imageSlice->renderView(true);
+                  repr->renderView(true);
                }
             }
          }
