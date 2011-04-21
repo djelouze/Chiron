@@ -168,7 +168,6 @@ void chrLandmarkSelector::InsertPoint( )
                                               serversList[0] );
       this->PointSourceProxies.push_back( pipelineSource );
       
-
       if( pipelineSource )
       {
          vtkSMProxy* proxy = 0;
@@ -182,7 +181,6 @@ void chrLandmarkSelector::InsertPoint( )
                centerProperty->SetElement( 0, point[0] );
                centerProperty->SetElement( 1, point[1] );
                centerProperty->SetElement( 2, point[2] );
-               pipelineSource->renderAllViews( true );
             }
             proxy->UpdateSelfAndAllInputs( );
             pqRepresentation* rep = 0;
