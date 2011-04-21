@@ -69,7 +69,7 @@ public:
 
    //! Defines the view that will be linked to this module
    //! If view is not valid (\see IsViewValid ), this->View is not changed
-   void SetView( pqView* );
+   virtual void SetView( pqView* );
    //! Return the pqView attached to this module
    pqView* GetView( );
 
