@@ -200,6 +200,7 @@ void chrContourTracer::InitializeSplineSource( )
       this->AddedPoints.erase(this->AddedPoints.begin(), this->AddedPoints.end());
       QObject::connect( this->CurrentSplineSource, SIGNAL( destroyed(QObject*) ),
                         this, SLOT( destroyedSplineSource( QObject* ) ) );
+      this->CurrentSplineSource->updatePipeline();
    }
 }
  

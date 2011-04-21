@@ -170,7 +170,8 @@ void chrLandmarkSelector::InsertPoint( )
       
       if( pipelineSource )
       {
-         vtkSMProxy* proxy = 0;
+      pipelineSource->updatePipeline();
+      vtkSMProxy* proxy = 0;
          proxy = pipelineSource->getProxy();
          if( proxy )
          {
